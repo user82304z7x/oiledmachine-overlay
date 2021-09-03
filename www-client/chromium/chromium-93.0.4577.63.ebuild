@@ -2,8 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 # Monitor
-#   https://chromereleases.googleblog.com/search/label/Beta%20updates
-#   https://chromereleases.googleblog.com/search/label/Stable%20updates
+#   https://chromereleases.googleblog.com/search/label/Dev%20updates
 # for security updates.  They are announced faster than NVD.
 # See https://omahaproxy.appspot.com/ for the latest linux version
 
@@ -21,20 +20,17 @@ inherit multilib-minimal
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
-PATCHSET="7"
+PATCHSET="6"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
-PPC64LE_PATCHSET="92-ppc64le-1"
 HIGHWAY_V="0.12.1"
-SETUPTOOLS_V="44.1.0"
 GLIBC_PATCH_V="92-glibc-2.33"
 AVPERF_REV="213518"
 CIPD_V="6484b93c6b0dfc5f2c425e8abc1e3737850851e7" # in \
 # third_party/depot_tools/cipd_client_version
-MTD_V="92.0.4515.159" # Frozen for now to reduce downloads.  Send issue request if bump needed.
-CTDM_V="92.0.4515.159" # Frozen for now to reduce downloads.  Send issue request if bump needed.
+MTD_V="${PV}"
+CTDM_V="${PV}"
 SRC_URI="
 	https://commondatastorage.googleapis.com/chromium-browser-official/${P}.tar.xz
-	https://files.pythonhosted.org/packages/ed/7b/bbf89ca71e722b7f9464ebffe4b5ee20a9e5c9a555a56e2d3914bb9119a6/setuptools-${SETUPTOOLS_V}.zip
 	https://github.com/stha09/chromium-patches/releases/download/${PATCHSET_NAME}/${PATCHSET_NAME}.tar.xz
 	https://dev.gentoo.org/~sultan/distfiles/www-client/${PN}/${PN}-${GLIBC_PATCH_V}-patch.tar.xz
 	arm64? ( https://github.com/google/highway/archive/refs/tags/${HIGHWAY_V}.tar.gz -> highway-${HIGHWAY_V}.tar.gz )
@@ -56,7 +52,6 @@ SRC_URI="
 			https://chromium.googlesource.com/chromium/src.git/+archive/refs/tags/${MTD_V}/media/test/data.tar.gz -> ${PN}-${MTD_V}-media-test-data.tar.gz
 		)
 	)
-	ppc64? ( https://dev.gentoo.org/~gyakovlev/distfiles/${PN}-${PPC64LE_PATCHSET}.tar.xz )
 "
 
 # Some assets encoded by proprietary-codecs (mp3, aac, h264) are found in both
@@ -183,9 +178,13 @@ LICENSE_BENCHMARK_WEBSITES="
 	)
 " # emerge does not understand ^^ in the LICENSE variable and have been replaced
 # with ||.  You should choose at most one.
+# GEN_ABOUT_CREDITS=1 # Uncomment to generate about_credits.html including bundled.
+# SHA512 about_credits.html fingerprint:
+LICENSE_FINGERPRINT="\
+96dd273864c491ce17f7e560edbe44c0de2d444594543aa48519fee23c1a1d87\
+fd984380cd21826a6ed7ce6d1eb3e6c62d878b1ad07fd80debcabc929a7f2572"
 LICENSE="BSD
-	 libcxx? ( chromium-92.0.4515.x-libcxx )
-	!libcxx? ( chromium-92.0.4515.x-libstdcxx )
+	chromium-93.0.4577.x
 	APSL-2
 	Apache-2.0
 	Apache-2.0-with-LLVM-exceptions
@@ -235,12 +234,6 @@ LICENSE="BSD
 	ZLIB
 	widevine? ( widevine )
 	${LICENSE_BENCHMARK_WEBSITES}"
-LICENSE_FINGERPRINT_LIBSTDCXX="\
-65346078d0f6bc0b3659b2774d7943803742f0c0a2152ecf4a4f4babd03bb00f\
-e84cbb0696d3ddb4d70c167866943c959823fb1a5eab8194ea558e16ce3f1e34" # SHA512
-LICENSE_FINGERPRINT_LIBCXX="\
-be21e8628daa9fc06823a99fb9e88ac8d2d1137312986aa38ad2ad4864a4ca7d\
-0e922fdd8f465b844bd29df2df246b6c282f1aab762d84226ac726bae274bc73" # SHA512
 # Benchmark website licenses:
 # See the webkit-gtk ebuild
 #
@@ -350,28 +343,35 @@ be21e8628daa9fc06823a99fb9e88ac8d2d1137312986aa38ad2ad4864a4ca7d\
 #   give the wrong impression that the entire software was released in public
 #   domain.
 SLOT="0"
-KEYWORDS="amd64 arm64 ~ppc64 ~x86"
+KEYWORDS="~amd64 ~arm64 ~x86"
 # vaapi is enabled by default upstream for some arches \
-# See https://github.com/chromium/chromium/blob/93.0.4577.42/media/gpu/args.gni#L24
-IUSE="component-build cups cpu_flags_arm_neon +hangouts headless +js-type-check kerberos +official pic +proprietary-codecs pulseaudio screencast selinux +suid +system-ffmpeg +system-icu +vaapi wayland widevine"
+# See https://github.com/chromium/chromium/blob/93.0.4577.63/media/gpu/args.gni#L24
+# Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
+#   incompatible as a shared lib.
+IUSE="component-build cups cpu_flags_arm_neon +hangouts headless +js-type-check kerberos +official pic +proprietary-codecs pulseaudio screencast selinux +suid system-ffmpeg system-icu +vaapi wayland widevine"
+IUSE+=" weston"
 # What is considered a proprietary codec can be found at:
-#   https://github.com/chromium/chromium/blob/93.0.4577.42/media/filters/BUILD.gn#L160
-#   https://github.com/chromium/chromium/blob/93.0.4577.42/media/media_options.gni#L38
-# Codec upstream default: https://github.com/chromium/chromium/blob/93.0.4577.42/tools/mb/mb_config_expectations/chromium.linux.json#L89
+#   https://github.com/chromium/chromium/blob/92.0.4515.159/media/filters/BUILD.gn#L160
+#   https://github.com/chromium/chromium/blob/92.0.4515.159/media/media_options.gni#L38
+#   https://github.com/chromium/chromium/blob/92.0.4515.159/media/base/supported_types.cc#L203
+#     Upstream doesn't consider MP3 proprietary, but this ebuild does.
+#   https://github.com/chromium/chromium/blob/92.0.4515.159/media/base/supported_types.cc#L284
+# Codec upstream default: https://github.com/chromium/chromium/blob/92.0.4515.159/tools/mb/mb_config_expectations/chromium.linux.json#L89
 IUSE+=" video_cards_amdgpu video_cards_amdgpu-pro video_cards_amdgpu-pro-lts
 video_cards_intel video_cards_iris video_cards_i965 video_cards_nouveau
 video_cards_nvidia video_cards_r600 video_cards_radeonsi" # For VA-API
 IUSE+=" +partitionalloc tcmalloc libcmalloc"
-# For cfi, cfi-icall defaults status, see \
-#   https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/sanitizers/sanitizers.gni
-# For cfi-full default status, see \
-#   https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/sanitizers/sanitizers.gni#L123
+# For cfi-vcall, cfi-icall defaults status, see \
+#   https://github.com/chromium/chromium/blob/93.0.4577.63/build/config/sanitizers/sanitizers.gni
+# For cfi-cast default status, see \
+#   https://github.com/chromium/chromium/blob/93.0.4577.63/build/config/sanitizers/sanitizers.gni#L123
 # For pgo default status, see \
-#   https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/pgo/pgo.gni#L15
+#   https://github.com/chromium/chromium/blob/93.0.4577.63/build/config/compiler/pgo/pgo.gni#L15
 # For libcxx default, see \
-#   https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/c++/c++.gni#L14
+#   https://github.com/chromium/chromium/blob/93.0.4577.63/build/config/c++/c++.gni#L14
 # For cdm availability see third_party/widevine/cdm/widevine.gni#L28
-IUSE+=" +cfi cfi-full +cfi-icall +clang libcxx lto-opt +pgo -pgo-full
+IUSE_LIBCXX=( bundled-libcxx system-libcxx system-libstdcxx )
+IUSE+=" ${IUSE_LIBCXX[@]} +bundled-libcxx +cfi-vcall cfi-cast +cfi-icall +clang lto-opt +pgo -pgo-full
 shadowcallstack"
 # perf-opt
 _ABIS=( abi_x86_32
@@ -412,7 +412,7 @@ BENCHMARKS_MOBILE=(
 )
 
 # Official except for UNSCHEDULED_*
-BENCHMARKS_ALL=(
+OFFICIAL_BENCHMARKS=(
 	blink_perf.accessibility
 	blink_perf.bindings
 	blink_perf.css
@@ -528,7 +528,7 @@ CONTRIB_BENCHMARKS=(
 )
 
 gen_pgo_profile_use() {
-	for x in ${BENCHMARKS_ALL[@]} ${CONTRIB_BENCHMARKS[@]} ; do
+	for x in ${OFFICIAL_BENCHMARKS[@]} ${CONTRIB_BENCHMARKS[@]} ; do
 		t="${x}"
 		t="${t//-/_}"
 		t="${t//./_}"
@@ -537,7 +537,7 @@ gen_pgo_profile_use() {
 	done
 }
 gen_pgo_profile_required_use() {
-	for d in ${BENCHMARK_DESKTOP[@]} ${CONTRIB_BENCHMARKS[@]} ; do
+	for d in ${BENCHMARK_DESKTOP[@]} ; do
 		a="${d}"
 		a="${a//-/_}"
 		a="${a//./_}"
@@ -553,21 +553,28 @@ gen_pgo_profile_required_use() {
 			"
 		done
 	done
+	for x in ${OFFICIAL_BENCHMARKS[@]} ${CONTRIB_BENCHMARKS[@]} ; do
+		t="${x}"
+		t="${t//-/_}"
+		t="${t//./_}"
+		t="${t,,}"
+		echo " cr_pgo_trainers_${t}? ( pgo-full )"
+	done
 }
 
 # There is 2 official (perflab) platforms for linux:  linux and linux_rel.
 # ~50 benchmarks used.
 gen_required_use_pgo_profile_linux() { # For CI
 	# See
-# https://github.com/chromium/chromium/blob/92.0.4515.159/tools/perf/core/bot_platforms.py#L311
-# https://github.com/chromium/chromium/blob/92.0.4515.159/tools/perf/core/bot_platforms.py#L226
-# https://github.com/chromium/chromium/blob/92.0.4515.159/tools/perf/core/shard_maps/linux-perf_map.json
+# https://github.com/chromium/chromium/blob/93.0.4577.63/tools/perf/core/bot_platforms.py#L311
+# https://github.com/chromium/chromium/blob/93.0.4577.63/tools/perf/core/bot_platforms.py#L226
+# https://github.com/chromium/chromium/blob/93.0.4577.63/tools/perf/core/shard_maps/linux-perf_map.json
 	local exclude=(
 		blink_perf.display_locking
 		power.mobile
 		v8.runtime_stats.top_25
 	)
-	for x in ${BENCHMARKS_ALL[@]} ; do
+	for x in ${OFFICIAL_BENCHMARKS[@]} ; do
 		t="${x}"
 		t_raw="${x}"
 		t="${t//-/_}"
@@ -603,12 +610,12 @@ gen_required_use_pgo_profile_linux() { # For CI
 # Only 1 benchmark used.
 gen_required_use_pgo_profile_linux_rel() { # For CI release
 	# See
-# https://github.com/chromium/chromium/blob/92.0.4515.159/tools/perf/core/bot_platforms.py#L307
-# https://github.com/chromium/chromium/blob/92.0.4515.159/tools/perf/core/shard_maps/linux-perf-rel_map.json
+# https://github.com/chromium/chromium/blob/93.0.4577.63/tools/perf/core/bot_platforms.py#L307
+# https://github.com/chromium/chromium/blob/93.0.4577.63/tools/perf/core/shard_maps/linux-perf-rel_map.json
 	local whitelist=(
 		system_health.common_desktop
 	)
-	for x in ${BENCHMARKS_ALL[@]} ; do
+	for x in ${OFFICIAL_BENCHMARKS[@]} ; do
 		t="${x}"
 		t_raw="${x}"
 		t="${t//-/_}"
@@ -649,28 +656,39 @@ REQUIRED_USE+=" pgo-full? ( || ( $(gen_pgo_profile_use) ) )"
 # with additional USE flags.
 # The system-ffmpeg comes with aac which is unavoidable.  This is why
 # there is a block with !proprietary-codecs.
+# cfi-icall, cfi-cast requires static linking.  See
+#   https://clang.llvm.org/docs/ControlFlowIntegrity.html#indirect-function-call-checking
+#   https://clang.llvm.org/docs/ControlFlowIntegrity.html#bad-cast-checking
 REQUIRED_USE+="
+	^^ ( ${IUSE_LIBCXX[@]} )
 	^^ ( partitionalloc tcmalloc libcmalloc )
+	!clang? ( !cfi-vcall )
+	!proprietary-codecs? ( !system-ffmpeg !vaapi )
 	amd64? ( !shadowcallstack )
-	!clang? ( !cfi )
-	cfi? ( clang )
-	cfi-full? ( cfi )
-	cfi-icall? ( cfi )
+	bundled-libcxx? ( clang )
+	cfi-vcall? ( clang )
+	cfi-cast? ( cfi-vcall !system-icu !system-ffmpeg )
+	cfi-icall? ( cfi-vcall !system-icu !system-ffmpeg )
 	component-build? ( !suid )
-	libcxx? ( clang )
 	lto-opt? ( clang )
-	official? ( amd64? ( cfi cfi-icall ) partitionalloc ^^ ( pgo pgo-full )
-		pgo-full? (
-			${PGO_PROFILE_LINUX_SET_REL}
-		)
+	official? (
+		^^ ( pgo pgo-full )
+		!system-ffmpeg
+		!system-icu
+		!system-libcxx
+		!system-libstdcxx
+		bundled-libcxx
+		partitionalloc
+		amd64? ( cfi-icall cfi-vcall )
+		pgo-full? ( ${PGO_PROFILE_LINUX_SET_REL} )
 	)
 	partitionalloc? ( !component-build )
 	pgo? ( clang !pgo-full )
 	pgo-full? ( clang !pgo )
 	ppc64? ( !shadowcallstack )
-	!proprietary-codecs? ( !system-ffmpeg !vaapi )
 	screencast? ( wayland )
 	shadowcallstack? ( clang )
+	system-libcxx? ( clang )
 	vaapi? ( proprietary-codecs )
 	video_cards_amdgpu? (
 		!video_cards_amdgpu-pro
@@ -708,7 +726,7 @@ REQUIRED_USE+="
 
 LIBVA_V="2.7"
 COMMON_X_DEPEND="
-	media-libs/mesa:=[gbm,${MULTILIB_USEDEP}]
+	media-libs/mesa:=[gbm(+),${MULTILIB_USEDEP}]
 	x11-libs/libX11:=[${MULTILIB_USEDEP}]
 	x11-libs/libXcomposite:=[${MULTILIB_USEDEP}]
 	x11-libs/libXcursor:=[${MULTILIB_USEDEP}]
@@ -735,7 +753,7 @@ COMMON_DEPEND="
 	>=dev-libs/nss-3.26:=[${MULTILIB_USEDEP}]
 	>=media-libs/alsa-lib-1.0.19:=[${MULTILIB_USEDEP}]
 	media-libs/fontconfig:=[${MULTILIB_USEDEP}]
-	media-libs/freetype:=[${MULTILIB_USEDEP}]
+	>=media-libs/freetype-2.11.0:=[${MULTILIB_USEDEP}]
 	>=media-libs/harfbuzz-2.4.0:0=[icu(-),${MULTILIB_USEDEP}]
 	media-libs/libjpeg-turbo:=[${MULTILIB_USEDEP}]
 	media-libs/libpng:=[${MULTILIB_USEDEP}]
@@ -827,19 +845,19 @@ RDEPEND="${COMMON_DEPEND}
 		system-ffmpeg? ( >=media-video/ffmpeg-${FFMPEG_V}[vaapi,${MULTILIB_USEDEP}] )
 	)
 "
-DEPEND="${COMMON_DEPEND}
-"
+DEPEND="${COMMON_DEPEND}"
 # dev-vcs/git - https://bugs.gentoo.org/593476
 BDEPEND="
 	${PYTHON_DEPS}
+	$(python_gen_any_dep '
+		dev-python/setuptools[${PYTHON_USEDEP}]
+	')
 	|| (
 		>=dev-util/pkgconf-1.3.7[${MULTILIB_USEDEP},pkg-config]
 		>=dev-util/pkgconfig-0.29.2[${MULTILIB_USEDEP}]
 	)
 	>=app-arch/gzip-1.7
-	app-arch/unzip
 	dev-lang/perl
-	dev-lang/python:2.7[xml]
 	>=dev-util/gn-0.1807
 	dev-vcs/git
 	>=dev-util/gperf-3.0.3
@@ -856,7 +874,10 @@ BDEPEND="
 				=sys-devel/clang-runtime-13*[${MULTILIB_USEDEP},compiler-rt,sanitize]
 				>=sys-devel/lld-13
 				=sys-libs/compiler-rt-13*
-				=sys-libs/compiler-rt-sanitizers-13*[cfi?,shadowcallstack?]
+				=sys-libs/compiler-rt-sanitizers-13*[shadowcallstack?]
+				cfi-cast? ( =sys-libs/compiler-rt-sanitizers-13*[cfi] )
+				cfi-icall? ( =sys-libs/compiler-rt-sanitizers-13*[cfi] )
+				cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-13*[cfi] )
 			)
 		)
 		official? (
@@ -865,7 +886,10 @@ BDEPEND="
 			=sys-devel/clang-runtime-13*[${MULTILIB_USEDEP},compiler-rt,sanitize]
 			>=sys-devel/lld-13
 			=sys-libs/compiler-rt-13*
-			=sys-libs/compiler-rt-sanitizers-13*[cfi?,shadowcallstack?]
+			=sys-libs/compiler-rt-sanitizers-13*[shadowcallstack?]
+			cfi-cast? ( =sys-libs/compiler-rt-sanitizers-13*[cfi] )
+			cfi-icall? ( =sys-libs/compiler-rt-sanitizers-13*[cfi] )
+			cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-13*[cfi] )
 		)
 	)
 	js-type-check? ( virtual/jre )
@@ -873,12 +897,12 @@ BDEPEND="
 		sys-apps/dbus:=[${MULTILIB_USEDEP}]
 		sys-apps/grep[pcre]
 		!headless? (
-			!wayland? (
+			!weston? (
 				x11-base/xorg-server[xvfb]
 				x11-misc/xcompmgr
 				x11-wm/openbox
 			)
-			wayland? ( dev-libs/weston )
+			weston? ( dev-libs/weston )
 		)
 		cr_pgo_trainers_memory_desktop? (
 			media-video/ffmpeg[encode]
@@ -914,7 +938,7 @@ BDEPEND="
 
 # Upstream uses llvm:13
 # For the current llvm for this project, see
-#   https://github.com/chromium/chromium/blob/92.0.4515.159/tools/clang/scripts/update.py#L42
+#   https://github.com/chromium/chromium/blob/93.0.4577.63/tools/clang/scripts/update.py#L42
 # Use the same clang for official USE flag because of older llvm bugs which
 #   could result in security weaknesses (explained in the llvm:12 note below).
 # Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -922,19 +946,20 @@ BDEPEND="
 #     https://bugs.llvm.org/show_bug.cgi?id=46258
 #     https://bugs.llvm.org/show_bug.cgi?id=47479
 # To confirm the hash version match for the reported by CR_CLANG_REVISION, see
-#   https://github.com/llvm/llvm-project/blob/d3676d4b/llvm/CMakeLists.txt
+#   https://github.com/llvm/llvm-project/blob/98033fdc/llvm/CMakeLists.txt
 RDEPEND+="
-	libcxx? (
+	system-libcxx? (
 		>=sys-libs/libcxx-13[${MULTILIB_USEDEP}]
 		official? ( >=sys-libs/libcxx-13[${MULTILIB_USEDEP}] )
 	)"
 DEPEND+="
-	libcxx? (
+	system-libcxx? (
 		>=sys-libs/libcxx-13[${MULTILIB_USEDEP}]
 		official? ( >=sys-libs/libcxx-13[${MULTILIB_USEDEP}] )
 	)"
+# [A]
 COMMON_DEPEND="
-	!libcxx? (
+	system-libstdcxx? (
 		app-arch/snappy:=[${MULTILIB_USEDEP}]
 		dev-libs/libxslt:=[${MULTILIB_USEDEP}]
 		>=dev-libs/re2-0.2019.08.01:=[${MULTILIB_USEDEP}]
@@ -945,6 +970,154 @@ COMMON_DEPEND="
 
 RDEPEND+="${COMMON_DEPEND}"
 DEPEND+="${COMMON_DEPEND}"
+
+#
+# This section in the context of SECURITY_DEPENDS is rough draft or in
+# development and may change.  The RDEPEND sections below ensure the
+# transferrance of security policy or security expectations to ebuild-packages.
+
+# exe, .a, .so, get treated with CFI w/o exclusions, noexecstack, full RELRO.
+
+# The first problem with unbundling is the CFI bypass problem.
+# The second problem with unbundling is the lack of PGO support in
+# the ebuilds themselves, causing unmatched performance.
+#
+# These CFI/SSP checks are to ensure that it meets or exceeds upstream security
+# standards or expectations.
+
+# For recommended CFI flags, see
+# https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/sanitizers/BUILD.gn#L196
+# https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/sanitizers/BUILD.gn#L313
+#   full cfi which includes cfi-icall, cfi-cast, cfi-mfcall must be statically linked
+#   for cfi to be effective.  See https://clang.llvm.org/docs/ControlFlowIntegrity.html
+#   with "statically linked" search for details.  This is obviously a licensing problem.
+
+# For fstack-protector SSP details, see
+# See https://github.com/chromium/chromium/blob/93.0.4577.63/build/config/compiler/BUILD.gn#L335
+# https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/BUILD.gn#L1677
+
+# For noexecstack details, see
+# See https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/BUILD.gn#L434
+
+# For Full RELRO details, see
+# See https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/BUILD.gn#L436
+
+#
+# Check supported FFmpeg decoders, encoders, containers in the ebuild-dependency for proper security.
+# Video decoders listed https://github.com/chromium/chromium/blob/92.0.4515.159/media/ffmpeg/ffmpeg_common.cc#L213
+#   https://github.com/chromium/chromium/blob/92.0.4515.159/media/ffmpeg/ffmpeg_common.cc#L189
+# Audio decoders listed https://github.com/chromium/chromium/blob/92.0.4515.159/media/ffmpeg/ffmpeg_common.cc#L133
+#   https://github.com/chromium/chromium/blob/92.0.4515.159/media/ffmpeg/ffmpeg_common.cc#L83
+# Containers https://github.com/chromium/chromium/blob/92.0.4515.159/media/filters/ffmpeg_glue.cc#L137
+# Continers-to-codec support https://github.com/chromium/chromium/blob/92.0.4515.159/media/base/mime_util_internal.cc#L289
+# These are cross referenced with https://github.com/FFmpeg/FFmpeg/blob/master/configure
+#   to find other 2+ deep dependency tree.
+# FFmpeg will autoselect the algorithm with an ambiguious codec ID
+# This means all relevant codecs for that codec ID should be scanned.
+#
+BZIP2_DEPENDS=" app-arch/bzip2[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]"
+OPENH264_DEPENDS=" media-libs/openh264[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}] "
+OPUS_DEPENDS=" media-libs/opus[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,${MULTILIB_USEDEP}] "
+ZLIB_DEPENDS=" sys-libs/zlib[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]"
+FFMPEG_DEPENDS="
+	system-ffmpeg? (
+		${BZIP2_DEPENDS}
+		${OPUS_DEPENDS}
+		${ZLIB_DEPENDS}
+		media-video/ffmpeg[cfi-cast?,cfi-icall?,cfi-vcall?,libcxx,ssp,${MULTILIB_USEDEP}]
+		media-libs/dav1d[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/fdk-aac[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/flac[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/libaom[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/libogg[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/libtheora[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/libvorbis[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/libvpx[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/vo-amrwbenc[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-libs/opencore-amr[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		media-sound/gsm[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		x11-libs/libva[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		x11-libs/libvdpau[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	)
+"
+
+LIBWEBP_DEPENDS="
+	media-libs/giflib[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	media-libs/tiff[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	media-libs/libpng[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	virtual/jpeg[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+"
+
+# check brotli?
+FREETYPE_DEPENDS="
+	${BZIP2_DEPENDS}
+	${ZLIB_DEPENDS}
+	media-libs/harfbuzz[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	media-libs/libpng[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+"
+
+FONTCONFIG_DEPENDS="
+	${FREETYPE_DEPENDS}
+	dev-libs/expat[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	media-libs/fontconfig[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	official? (
+		media-libs/freetype[cfi-cast?,cfi-icall?,cfi-vcall?,cfi-icall-generalize-pointers,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	)
+	!official? (
+		media-libs/freetype[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	)
+"
+
+# flac is required for speech support.
+# These are related to https://github.com/chromium/chromium/tree/93.0.4577.63/build/linux/unbundle
+# and initial attempts by the original ebuild developers.
+# TODO: regroup this list by primary dependencies.
+# Corresponds to [B] in this ebuild.
+UNBUNDLE_DEPENDS="
+	${FFMPEG_DEPENDS}
+	${FONTCONFIG_DEPENDS}
+	${OPUS_DEPENDS}
+	dev-libs/libxml2[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	media-libs/flac[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	media-libs/libjpeg-turbo[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	media-libs/libwebp[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	libcxx? ( sys-libs/libcxx[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}] )
+"
+
+# dev-libs/weston may need it but only used in build time
+WAYLAND_DEPENDS="
+	wayland? (
+		dev-libs/wayland[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+		weston? ( dev-libs/weston[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}] )
+	)
+"
+
+# dev-libs/icu Requires -fsanitize-blacklist=${S}/cfi-exceptions.txt
+# TODO: Add in forked package:
+#
+# cfi-exceptions.txt:
+# # Required by chromium
+# [cfi-icall]
+# src:*/common/*
+#
+# In common COMMON_DEPENDS, search for [A] in ebuild
+NOT_LIBCXX_DEPENDS="
+	dev-libs/libxslt[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	dev-libs/re2[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	app-arch/snappy[cfi-cast?,cfi-icall?,cfi-vcall?,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}]
+	proprietary-codecs? ( ${OPENH264_DEPENDS} )
+	system-icu? ( dev-libs/icu[cfi-cast,cfi-icall,cfi-vcall,full-relro,libcxx,noexecstack,ssp,${MULTILIB_USEDEP}] )
+"
+
+SECURITY_DEPENDS+="
+	${LIBWEBP_DEPENDS}
+	${UNBUNDLE_DEPENDS}
+	${WAYLAND_DEPENDS}
+	${NOT_LIBCXX_DEPENDS}
+"
+
+# Disabled until forked ebuild progress completes
+#RDEPEND+=" ${SECURITY_DEPENDS}"
 
 if ! has chromium_pkg_die ${EBUILD_DEATH_HOOKS} ; then
 	EBUILD_DEATH_HOOKS+=" chromium_pkg_die";
@@ -978,6 +1151,10 @@ If you have one of above packages installed, but don't want to use
 them in Chromium, then add --password-store=basic to CHROMIUM_FLAGS
 in /etc/chromium/default.
 "
+
+python_check_deps() {
+	has_version -b "dev-python/setuptools[${PYTHON_USEDEP}]"
+}
 
 pre_build_checks() {
 	if [[ ${MERGE_TYPE} != binary ]] ; then
@@ -1046,9 +1223,9 @@ pkg_pretend() {
 	pre_build_checks
 }
 
-CR_CLANG_USED="d3676d4b666ead794fc58bbc7e07aa406dcf487a" # Obtained from \
-# https://github.com/chromium/chromium/blob/92.0.4515.159/tools/clang/scripts/update.py#L42
-CR_CLANG_USED_UNIX_TIMESTAMP="1621237229" # Cached.  Use below to obtain this. \
+CR_CLANG_USED="98033fdc50e61273b1d5c77ba5f0f75afe3965c1" # Obtained from \
+# https://github.com/chromium/chromium/blob/93.0.4577.63/tools/clang/scripts/update.py#L42
+CR_CLANG_USED_UNIX_TIMESTAMP="1626129557" # Cached.  Use below to obtain this. \
 # TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 #	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
 CR_CLANG_SLOT="13"
@@ -1201,13 +1378,13 @@ eerror "Detected a old clang/llvm version.  Please re-emerge the clang/LLVM"
 eerror "toolchain by doing the following:"
 eerror
 		for p in ${live_pkgs[@]} ; do
-			if [[ "${p}" == "sys-libs/libcxx" ]] && ! use libcxx ; then
+			if [[ "${p}" == "sys-libs/libcxx" ]] && ! use system-libcxx ; then
 				continue
 			fi
-			if [[ "${p}" == "sys-libs/libcxxabi" ]] && ! use libcxx ; then
+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && ! use system-libcxx ; then
 				continue
 			fi
-			if [[ "${p}" == "sys-libs/libcxxabi" ]] && use libcxx \
+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && use system-libcxx \
 				&& ! has_version "sys-libs/libcxxabi" ; then
 				continue
 			fi
@@ -1271,13 +1448,13 @@ verify_llvm_toolchain() {
 	# The llvm library or llvm-ar doesn't embed the hash info, so scan the /var/db/pkg.
 	if has_version "sys-devel/llvm:${CR_CLANG_SLOT}" ; then
 		for p in ${live_pkgs[@]} ; do
-			if [[ "${p}" == "sys-libs/libcxx" ]] && ! use libcxx ; then
+			if [[ "${p}" == "sys-libs/libcxx" ]] && ! use system-libcxx ; then
 				continue
 			fi
-			if [[ "${p}" == "sys-libs/libcxxabi" ]] && ! use libcxx ; then
+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && ! use system-libcxx ; then
 				continue
 			fi
-			if [[ "${p}" == "sys-libs/libcxxabi" ]] && use libcxx \
+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && use system-libcxx \
 				&& ! has_version "sys-libs/libcxxabi" ; then
 				continue
 			fi
@@ -1339,375 +1516,6 @@ die "${PN} requires llvm:${CR_CLANG_SLOT}"
 	fi
 }
 
-requires_cfi_icall_generalize_pointers() {
-	local x_pkg="${1}"
-	local cfi_icall_generalize_pointers=(
-		media-libs/freetype
-		# dev-db/sqlite also if unbundled
-	)
-
-	local pkg
-	for pkg in ${cfi_icall_generalize_pointers[@]} ; do
-		[[ "${x_pkg}" == "${pkg}" ]] && return 0
-	done
-	return 1
-}
-
-# These replace the internal dependency.
-THIRD_PARTY_PACKAGES=()
-init_third_party_packages() {
-	# List of packages that touch untrusted data
-	# TODO: repackage some of the THIRD_PARTY_PACKAGES packages with PGO.
-	# List based on the intersection between the third_party packages
-	# and the *DEPENDs list.
-	# TODO: recheck for completeness
-	# TODO: check the dependency of the dependency (nested third_party folders)
-	# See also https://github.com/chromium/chromium/tree/92.0.4515.159/build/linux/unbundle
-	THIRD_PARTY_PACKAGES=(
-		dev-libs/expat
-		dev-libs/libxml2
-		media-libs/flac
-		media-libs/fontconfig
-		media-libs/freetype
-		media-libs/harfbuzz
-		media-libs/libjpeg-turbo
-		media-libs/libpng
-		media-libs/libwebp
-		media-libs/opus
-		media-video/ffmpeg
-		sys-libs/zlib
-	)
-
-	if use wayland ; then
-		THIRD_PARTY_PACKAGES+=(
-			dev-libs/wayland
-			dev-libs/weston
-		)
-		# dev-libs/weston may need it but only used in build time
-	fi
-
-	if ! use libcxx ; then
-		THIRD_PARTY_PACKAGES+=(
-			dev-libs/libxslt
-			dev-libs/re2
-			app-arch/snappy
-			media-libs/openh264
-		)
-		use proprietary-codecs \
-			&& THIRD_PARTY_PACKAGES+=( media-libs/openh264 )
-	fi
-	if ! use system-icu ; then
-		THIRD_PARTY_PACKAGES+=(
-			dev-libs/icu
-		)
-	fi
-}
-
-# The first problem with unbundling is the CFI bypass problem.
-# The second problem with unbundling is the lack of PGO support in
-# the ebuilds themselves, causing unmatched performance.
-#
-# These cfi/ssp checks are to ensure that it meets or exceeds upstream security
-# standards or expectations.
-check_dependencies_built_with_cfi() {
-	local cfi_icall_generalize_pointers=(
-		media-libs/freetype
-	)
-	local reported=0
-	# For recommended flags, see
-	# https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/sanitizers/BUILD.gn#L196
-	# https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/sanitizers/BUILD.gn#L313
-	einfo "Checking dependencies for proper CFI protection."
-	# This is not an issue if built and linked internally, but since it is split
-	# the untrusted packages do not get the same protection.
-	local p
-	for p in ${THIRD_PARTY_PACKAGES[@]} ; do
-		if use cfi \
-			&& ls /var/db/pkg/${p}-*/LDFLAGS 2>/dev/null 1>/dev/null ; then
-			for t in "LDFLAGS" "CFLAGS" "CXXFLAGS" ; do
-				if ! ( cat /var/db/pkg/${p}*/${t} \
-					| grep -q -e "-fsanitize=cfi-vcall" ) ; then
-ewarn
-ewarn "${p} is not compiled with CFI which may be used as a possible attack"
-ewarn "surface. Recompile ${p} with -fsanitize=cfi-vcall with a per-package"
-ewarn "${t}."
-ewarn
-					reported=1
-				fi
-
-				if use cfi-icall && ! ( cat /var/db/pkg/${p}*/${t} \
-					| grep -q -e "-fsanitize=cfi-icall" ) ; then
-ewarn
-ewarn "${p} is not compiled with CFI which may be used as a possible attack"
-ewarn "surface. Recompile ${p} with -fsanitize=cfi-icall with a per-package"
-ewarn "${t}."
-ewarn
-					reported=1
-				fi
-				if use cfi-icall \
-					&& requires_cfi_icall_generalize_pointers "${p}" \
-					&& ! ( cat /var/db/pkg/${p}*/${t} \
-					| grep -q -e "-fsanitize-cfi-icall-generalize-pointers" ) ; then
-ewarn
-ewarn "${p} is not compiled with CFI which may be used as a possible attack"
-ewarn "surface.  Recompile ${p} with -fsanitize-cfi-icall-generalize-pointers"
-ewarn "with a per-package ${t}."
-ewarn
-					reported=1
-				fi
-
-				if use cfi-full && ! ( cat /var/db/pkg/${p}*/${t} \
-					| grep -q -e "-fsanitize=cfi-derived-cast" ) ; then
-ewarn
-ewarn "${p} is not compiled with CFI which may be used as a possible attack"
-ewarn "surface.  Recompile ${p} with -fsanitize=cfi-derived-cast with a"
-ewarn "per-package ${t}."
-ewarn
-					reported=1
-				fi
-				if use cfi-full && ! ( cat /var/db/pkg/${p}*/${t} \
-					| grep -q -e "-fsanitize=cfi-unrelated-cast" ) ; then
-ewarn
-ewarn "${p} is not compiled with CFI which may be used as a possible attack"
-ewarn "surface.  Recompile ${p} with -fsanitize=cfi-unrelated-cast with a"
-ewarn "per-package ${t}."
-ewarn
-					reported=1
-				fi
-			done
-		fi
-	done
-
-	if use cfi \
-		&& use system-icu \
-		&& has_version "dev-libs/icu" \
-		&& ! ( cat /var/db/pkg/dev-libs/icu*/CFLAGS \
-			| grep -q -e "-fsanitize-blacklist=" ) ; then
-ewarn
-ewarn "You need to add"
-ewarn
-ewarn "-fsanitize-blacklist=/etc/portage/cfi/${PN}/${PN}-$(ver_cut 1 ${PV}).txt"
-ewarn
-ewarn "to the CFLAGS of dev-libs/icu.  For the rule to disable cfi-icall for a set of"
-ewarn "files see:"
-ewarn
-ewarn "https://github.com/chromium/chromium/blob/92.0.4515.159/tools/cfi/ignores.txt#L131"
-ewarn "https://github.com/chromium/chromium/blob/92.0.4515.159/tools/cfi/ignores.txt#L229"
-ewarn "https://releases.llvm.org/10.0.0/tools/clang/docs/SanitizerSpecialCaseList.html"
-ewarn
-ewarn "The new rule should be:"
-ewarn
-ewarn "  src:*/common/*"
-ewarn
-ewarn "and placed in that file under the [cfi-icall] section."
-ewarn
-		reported=1
-	fi
-
-	if ( use cfi || use official ) && (( ${reported} == 1 )) ; then
-eerror
-eerror "Fix the above CFI issues first, or you may disable the cfi and official"
-eerror "USE flags.  All affected packages must be rebuilt with clang.  All"
-eerror "missing {C,CXX,LD}FLAGSs must be included for that specific package"
-eerror "per-package envvar."
-eerror
-eerror "To set up the per-package package.env, see"
-eerror
-eerror "  https://wiki.gentoo.org/wiki//etc/portage/package.env"
-eerror
-		die
-	fi
-
-	# TODO re-evaluate shadow-call-stack
-}
-
-check_ssp_buffer_size() {
-	if ! ( cat /var/db/pkg/${p}*/${t} \
-		| grep -q -e "--param=ssp-buffer-size=4" ) ; then
-ewarn
-ewarn "Missing --param=ssp-buffer-size=4 for ${p}.  Add it to the per-package"
-ewarn "${t} envvar."
-ewarn
-		ssp_reported=1
-	fi
-}
-
-# Ensure that the unbunded packages meets or exceeds the security expectation.
-# These packages would receive SSP treatment if they remained internal.
-check_dependencies_built_with_ssp() {
-	# Check fstack-protector
-	# See https://github.com/chromium/chromium/blob/93.0.4577.42/build/config/compiler/BUILD.gn#L335
-	# https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/BUILD.gn#L1677
-	local ssp_reported=0
-
-	local already_applied_upstream=(
-		media-libs/openh264
-		media-libs/opus
-	)
-
-	for p in ${THIRD_PARTY_PACKAGES[@]} ; do
-		for t in "CFLAGS" "CXXFLAGS" ; do
-			local skip=0
-			for up in ${already_applied_upstream[@]} ; do
-				[[ "${up}" == "${p}" ]] && skip=1
-			done
-			(( ${skip} == 1 )) && continue
-
-			if ( cat /var/db/pkg/${p}*/${t} \
-				| grep -q -e "-fstack-protector-strong" ) ; then
-				# Meets or exceeds expectations
-				check_ssp_buffer_size
-			elif ( cat /var/db/pkg/${p}*/${t} \
-				| grep -q -e "-fstack-protector-all" ) ; then
-				# Meets or exceeds expectations
-				:;
-			elif ! ( cat /var/db/pkg/${p}*/${t} \
-				| grep -q -e "-fstack-protector" ) ; then
-				check_ssp_buffer_size
-ewarn
-ewarn "Missing -fstack-protector for ${p}.  Add it to the per-package ${t}"
-ewarn "envvar."
-ewarn
-				ssp_reported=1
-			fi
-		done
-	done
-
-	if (( ${ssp_reported} == 1 )) ; then
-eerror
-eerror "Fix the above SSP issues.  Add the above flags to the corresponding"
-eerror "package and rebuild."
-eerror
-eerror "To set up the per-package package.env, see"
-eerror
-eerror "  https://wiki.gentoo.org/wiki//etc/portage/package.env"
-eerror
-		die
-	fi
-}
-
-# Checks for runtime buffer overflow protection.  The check terminates the
-# program before the buffer overflow happens.
-check_dependencies_built_with_fortify_source() {
-	# See https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/BUILD.gn#L1677
-	# We just assume that all THIRD_PARTY_PACKAGES packages do not have it.
-
-	local already_applied_upstream=(
-		dev-libs/libxml2
-	)
-
-	local reported=0
-	for p in ${THIRD_PARTY_PACKAGES[@]} ; do
-		local skip=0
-		for up in ${already_applied_upstream[@]} ; do
-			[[ "${up}" == "${p}" ]] && skip=1
-		done
-		(( ${skip} == 1 )) && continue
-
-		if ! ( bzcat /var/db/pkg/${p}*/environment.bz2 \
-			| grep -E -e "declare -x CPPFLAGS.*-D_FORTIFY_SOURCE=2" ) ; then
-ewarn
-ewarn "Missing -D_FORTIFY_SOURCE=2 for ${p}.  Add it to the per-package"
-ewarn "CPPFLAGS envvar and rebuild the affected package."
-ewarn
-			reported=1
-		fi
-	done
-	if (( ${reported} == 1 )) ; then
-eerror
-eerror "Fix the above unprotected buffer overflow issues first."
-eerror
-eerror "To set up the per-package package.env, see"
-eerror
-eerror "  https://wiki.gentoo.org/wiki//etc/portage/package.env"
-eerror
-		die
-	fi
-}
-
-check_dependencies_built_with_noexecstack() {
-	# See https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/BUILD.gn#L434
-
-	local already_applied_upstream=(
-		media-video/ffmpeg
-	)
-
-	local reported=0
-	for p in ${THIRD_PARTY_PACKAGES[@]} ; do
-		local skip=0
-		for up in ${already_applied_upstream[@]} ; do
-			[[ "${up}" == "${p}" ]] && skip=1
-		done
-		(( ${skip} == 1 )) && continue
-
-		if ! ( bzcat /var/db/pkg/${p}*/LDFLAGS \
-			| grep -F -e "-Wl,-z,noexecstack" ) ; then
-ewarn
-ewarn "Missing -Wl,-z,noexecstack for ${p}.  Add it to the per-package"
-ewarn "LDFLAGS envvar and rebuild the affected package."
-ewarn
-			reported=1
-		fi
-	done
-	if (( ${reported} == 1 )) ; then
-eerror
-eerror "Fix the above missing explicit noexecstack issues first."
-eerror
-eerror "To set up the per-package package.env, see"
-eerror
-eerror "  https://wiki.gentoo.org/wiki//etc/portage/package.env"
-eerror
-		die
-	fi
-}
-
-check_dependencies_built_with_full_relro() {
-	# See https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/BUILD.gn#L436
-
-	local already_applied_upstream=(
-		media-video/ffmpeg
-	)
-
-	local reported=0
-	for p in ${THIRD_PARTY_PACKAGES[@]} ; do
-		local skip=0
-		for up in ${already_applied_upstream[@]} ; do
-			[[ "${up}" == "${p}" ]] && skip=1
-		done
-		(( ${skip} == 1 )) && continue
-
-		if ! ( bzcat /var/db/pkg/${p}*/LDFLAGS \
-			| grep -F -e "-Wl,-z,relro" ) \
-		; then
-ewarn
-ewarn "Missing -Wl,-z,relro for ${p}.  Add it to the per-package LDFLAGS envvar"
-ewarn "and rebuild the affected package."
-ewarn
-			reported=1
-		fi
-		if ! ( bzcat /var/db/pkg/${p}*/LDFLAGS \
-			| grep -F -e "-Wl,-z,now" ) \
-		; then
-ewarn
-ewarn "Missing -Wl,-z,now for ${p}.  Add it to the per-package LDFLAGS envvar"
-ewarn "and rebuild the affected package."
-ewarn
-			reported=1
-		fi
-	done
-	if (( ${reported} == 1 )) ; then
-eerror
-eerror "Fix the above missing explicit full Relocation Read Only (RELRO) issues"
-eerror "first."
-eerror
-eerror "To set up the per-package package.env, see"
-eerror
-eerror "  https://wiki.gentoo.org/wiki//etc/portage/package.env"
-eerror
-		die
-	fi
-}
-
 find_video0() {
 	if [[ -z "${CR_PGO_VIDEO0}" ]] ; then
 eerror
@@ -1763,7 +1571,7 @@ eerror
 
 NABIS=0
 pkg_setup() {
-	einfo "The $(ver_cut 1 ${PV}) series is the Stable channel."
+	einfo "The $(ver_cut 1 ${PV}) series is the stable channel."
 	pre_build_checks
 
 	chromium_suid_sandbox_check_kernel_config
@@ -1794,9 +1602,15 @@ eerror "use vpython and other dependencies in order to generate PGO profiles."
 eerror
 			die
 		fi
+		if use wayland && ! use weston ; then
+ewarn
+ewarn "Weston is required for PGO profile generation but mutually exclusive to"
+ewarn "X windowing system PGO profile generation."
+ewarn
+		fi
 	fi
 
-	if use official || ( use clang && use cfi && use pgo ) ; then
+	if use official || ( use clang && use cfi-vcall && use pgo ) ; then
 		# sys-devel/lld-13 was ~20 mins for v8_context_snapshot_generator
 		# sys-devel/lld-12 was ~4 hrs for v8_context_snapshot_generator
 ewarn
@@ -1843,24 +1657,40 @@ ewarn
 		find_vaapi
 	fi
 
-	init_third_party_packages
-#	if use cfi ; then
-#		check_dependencies_built_with_cfi
-#	fi
-#	check_dependencies_built_with_ssp
-#	case "${ABI}" in
-#		ppc64|s390|s390x|n32|n64|o32)
-#			;;
-#		*)
-#			check_dependencies_built_with_fortify_source
-#			;;
-#	esac
-#	check_dependencies_built_with_noexecstack
-#	check_dependencies_built_with_full_relro
-
 	if use cr_pgo_trainers_media_desktop \
 		|| use cr_pgo_trainers_media_mobile ; then
 		find_video0
+	fi
+
+	if use system-libcxx || use system-libstdcxx ; then
+ewarn
+ewarn "The system's libcxx or libstdcxx may weaken the security.  Consider"
+ewarn "using only the bundled-libcxx instead."
+ewarn
+ewarn "Tradeoffs:"
+ewarn
+ewarn "  libstdc++ (non-hardened):  CET (if supported by CPU, similiar"
+ewarn "    to CFI, forward and backward edge protected); Partial RELRO,"
+ewarn "    NO noexecstack, NO SSP, NO shadow-call-stack with ~18"
+ewarn "    unbundled third party ebuild-packages without CET, without SSP,"
+ewarn "    without Full RELRO by default on the desktop distro profile."
+ewarn
+ewarn "  libstdc++ (hardened):  Partial RELRO, CET (if supported by hardware,"
+ewarn "    equivalent to some CFI, forward and backward edge protected),"
+ewarn "    NO noexecstack, SSP, ~18 unprotected third party packages."
+ewarn
+ewarn "  libc++ (bundled internal):  CFI (vcall, icall; forward edge"
+ewarn "    protected), Full RELRO, noexecstack, SSP, shadow-call-stack (arm64"
+ewarn "    only; backward edge), either ~18 third party packages"
+ewarn "    with same protections on official build or unprotected on developer"
+ewarn "    build."
+ewarn
+ewarn "  libc++ (vanilla external):  NO CFI, NO RELRO, NO noexecstack, NO SSP"
+ewarn "    NO shadow-call-stack, third party unprotected."
+ewarn
+ewarn "  libc++ (vanilla external hardened):  NO CFI, NO RELRO, NO noexecstack,"
+ewarn "    SSP, NO shadow-call-stack, third party unprotected."
+ewarn
 	fi
 
 	for a in $(multilib_get_enabled_abis) ; do
@@ -1878,7 +1708,7 @@ CIPD_CACHE_DIR="${PORTAGE_ACTUAL_DISTDIR:-${DISTDIR}}/${PN}/cipd-cache"
 init_vpython() {
 	export CIPD_CACHE_DIR
 	export PATH="${S}/third_party/depot_tools:${PATH}"
-	# See https://github.com/chromium/chromium/blob/92.0.4515.159/DEPS#L4489
+	# See https://github.com/chromium/chromium/blob/92.0.4577.42/DEPS#L4489
 	addwrite "${PORTAGE_ACTUAL_DISTDIR:-${DISTDIR}}"
 	mkdir -p "${CIPD_CACHE_DIR}" || die
 	addwrite "${CIPD_CACHE_DIR}"
@@ -2104,57 +1934,61 @@ eerror
 	fi
 }
 
+is_generating_credits() {
+	if [[ -n "${GEN_ABOUT_CREDITS}" && "${GEN_ABOUT_CREDITS}" == "1" ]] ; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 src_prepare() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup
 
 	local PATCHES=()
-	if ( ! use clang ) || ( ! use libcxx ) || use arm64 ; then
+	if ( ! use clang ) || use system-libstdcxx ; then
+		# Contains arm64 patches for unknown purpose.
 		# TODO: split GCC only and libstdc++ only.
 		# The patches purpose are not documented well.
-		einfo "Applying gcc & libstdc++ compatibility patches"
+ewarn
+ewarn "Applying GCC & libstdc++ compatibility patches."
+ewarn
 		PATCHES+=( "${WORKDIR}/patches" )
 	fi
+
+	# It's already applied upstream.
+	rm -rf "${WORKDIR}/patches/chromium-93-dawn-raw-string-literal.patch" || die
+	rm -rf "${WORKDIR}/patches/chromium-swiftshader-export.patch" || die
 
 	PATCHES+=(
 		"${WORKDIR}/sandbox-patches/chromium-syscall_broker.patch"
 		"${WORKDIR}/sandbox-patches/chromium-fstatat-crash.patch"
-		"${FILESDIR}/chromium-92-EnumTable-crash.patch"
-		"${FILESDIR}/chromium-92-crashpad-consent.patch"
-		"${FILESDIR}/chromium-freetype-2.11.patch"
+		"${FILESDIR}/chromium-93-EnumTable-crash.patch"
+		"${FILESDIR}/chromium-93-InkDropHost-crash.patch"
 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
 		"${FILESDIR}/chromium-shim_headers.patch"
 	)
 
-	if ! use arm64 ; then
+#	if ! use arm64 ; then
 		einfo "Removing aarch64 only patches"
 		rm "${WORKDIR}/patches/chromium-91-libyuv-aarch64.patch" || die
-		rm "${WORKDIR}/patches/chromium-92-v8-constexpr.patch" || die
-	fi
-
-	if use ppc64 ; then
-		ceapply "${WORKDIR}/${PN}-ppc64le/xxx-ppc64le-libvpx.patch"
-		ceapply "${WORKDIR}/${PN}-ppc64le/xxx-ppc64le-support.patch"
-		ceapply "${WORKDIR}/${PN}-ppc64le/xxx-ppc64le-swiftshader.patch"
-	fi
+#	fi
 
 	if use clang ; then
 		ceapply "${FILESDIR}/${PN}-92-clang-toolchain-1.patch"
 		ceapply "${FILESDIR}/${PN}-92-clang-toolchain-2.patch"
 	fi
 
-	if use arm64 && use shadowcallstack ; then
+#	if use arm64 && use shadowcallstack ; then
 		ceapply "${FILESDIR}/chromium-93-arm64-shadow-call-stack.patch"
-	fi
+#	fi
 
 #	if use pgo-full ; then
 #		ceapply "${FILESDIR}/chromium-92-use-system-gsutil.patch"
 #	fi
 
 	default
-
-	# this patch needs to be applied after gentoo sandbox patchset
-	use ppc64 && ceapply "${WORKDIR}/${PN}-ppc64le/xxx-ppc64le-sandbox_kernel_stat.patch"
 
 	if use cr_pgo_trainers_custom && [[ ! -f "${T}/epatch_user.log" ]] ; then
 eerror
@@ -2181,9 +2015,8 @@ eerror
 	mkdir -p third_party/node/linux/node-linux-x64/bin || die
 	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
 
-	# adjust python interpreter versions
+	# adjust python interpreter version
 	sed -i -e "s|\(^script_executable = \).*|\1\"${EPYTHON}\"|g" .gn || die
-	sed -i -e "s|python2|python2\.7|g" buildtools/linux64/clang-format || die
 
 	# bundled highway library does not support arm64 with GCC
 	if use arm64 ; then
@@ -2215,7 +2048,6 @@ eerror
 		third_party/angle/src/common/third_party/base
 		third_party/angle/src/common/third_party/smhasher
 		third_party/angle/src/common/third_party/xxhash
-		third_party/angle/src/third_party/compiler
 		third_party/angle/src/third_party/libXNVCtrl
 		third_party/angle/src/third_party/trace_event
 		third_party/angle/src/third_party/volk
@@ -2230,8 +2062,8 @@ eerror
 		third_party/catapult
 		third_party/catapult/common/py_vulcanize/third_party/rcssmin
 		third_party/catapult/common/py_vulcanize/third_party/rjsmin
-		third_party/catapult/third_party/beautifulsoup4
-		third_party/catapult/third_party/html5lib-python
+		third_party/catapult/third_party/beautifulsoup4-4.9.3
+		third_party/catapult/third_party/html5lib-1.1
 		third_party/catapult/third_party/polymer
 		third_party/catapult/third_party/six
 		third_party/catapult/tracing/third_party/d3
@@ -2387,6 +2219,7 @@ eerror
 		third_party/tflite/src/third_party/fft2d
 		third_party/tflite-support
 		third_party/ruy
+		third_party/six
 		third_party/ukey2
 		third_party/unrar
 		third_party/usrsctp
@@ -2410,7 +2243,6 @@ eerror
 		third_party/xcbproto
 		third_party/zxcvbn-cpp
 		third_party/zlib/google
-		tools/grit/third_party/six
 		url/third_party/mozilla
 		v8/src/third_party/siphash
 		v8/src/third_party/valgrind
@@ -2424,6 +2256,11 @@ eerror
 		third_party/usb_ids
 		third_party/xdg-utils
 	)
+	if use official || use cfi-icall || use cfi-cast ; then
+		keeplibs+=(
+			third_party/zlib
+		)
+	fi
 	if use pgo-full ; then
 		keeplibs+=(
 			third_party/catapult/third_party/gsutil
@@ -2440,7 +2277,10 @@ eerror
 	if use wayland && ! use headless ; then
 		keeplibs+=( third_party/wayland )
 	fi
-	if use libcxx ; then
+	if ! use system-libstdcxx \
+		|| use cfi-cast \
+		|| use cfi-icall \
+		|| use official ; then
 		keeplibs+=( third_party/libxml )
 		keeplibs+=( third_party/libxslt )
 		keeplibs+=( third_party/re2 )
@@ -2464,17 +2304,21 @@ eerror
 		popd >/dev/null || die
 	fi
 
-	einfo "Unbundling third party internal libraries and packages"
-	# Remove most bundled libraries. Some are still needed.
-	build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
+	if ! is_generating_credits ; then
+		einfo "Unbundling third party internal libraries and packages"
+		# Remove most bundled libraries. Some are still needed.
+		build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
+	fi
 
 	if use js-type-check ; then
 		ln -s "${EPREFIX}"/usr/bin/java third_party/jdk/current/bin/java || die
 	fi
 
-	# bundled eu-strip is for amd64 only and we don't want to pre-stripped binaries
-	mkdir -p buildtools/third_party/eu-strip/bin || die
-	ln -s "${EPREFIX}"/bin/true buildtools/third_party/eu-strip/bin/eu-strip || die
+	if ! is_generating_credits ; then
+		# bundled eu-strip is for amd64 only and we don't want to pre-stripped binaries
+		mkdir -p buildtools/third_party/eu-strip/bin || die
+		ln -s "${EPREFIX}"/bin/true buildtools/third_party/eu-strip/bin/eu-strip || die
+	fi
 
 	if use pgo-full ; then
 		export ASSET_CACHE_REVISION=6 # Bump on every change of output.
@@ -3423,40 +3267,43 @@ _configure_pgx() {
 	# Make sure the build system will use the right tools, bug #340795.
 	tc-export AR CC CXX NM READELF STRIP
 
+	if tc-is-clang && ! use clang ; then
+ewarn
+ewarn "Clang detected but clang USE flag was disabled."
+ewarn
+ewarn "Enable the clang USE flag for clang otherwise disable the clang USE"
+ewarn "flag for gcc."
+ewarn
+		die
+	fi
+
 	if use clang ; then
 		# See build/toolchain/linux/unbundle/BUILD.gn for allowed overridable envvars.
 		# See build/toolchain/gcc_toolchain.gni#L657 for consistency.
-		CC=${chost}-clang
-		CXX=${chost}-clang++
-		AR=llvm-ar # required for LTO
-		NM=llvm-nm
-		READELF=llvm-readelf
-		STRIP=llvm-strip
+		export CC="clang $(get_abi_CFLAGS ${ABI})"
+		export CXX="clang++ $(get_abi_CFLAGS ${ABI})"
+		export AR=llvm-ar # required for LTO
+		export NM=llvm-nm
+		export READELF=llvm-readelf
+		export STRIP=llvm-strip
 		strip-unsupported-flags
 		if ! which llvm-ar 2>/dev/null 1>/dev/null ; then
 			die "llvm-ar is unreachable"
 		fi
+	else
+		einfo "Forcing GCC"
+		export CC="gcc $(get_abi_CFLAGS ${ABI})"
+		export CXX="g++ $(get_abi_CFLAGS ${ABI})"
+		export AR=ar
+		export NM=nm
+		export READELF=readelf
+		export STRIP=strip
+		export LD=ld.bfd
 	fi
 
-	if ! use clang && tc-is-clang ; then
-		if [[ ! ( "${AR}" =~ "llvm-ar" ) ]] ; then
-			einfo "Forcing llvm-ar for LTO"
-			AR=llvm-ar # required for LTO
-			NM=llvm-nm
-			READELF=llvm-readelf
-			STRIP=llvm-strip
-			if ! which llvm-ar 2>/dev/null 1>/dev/null ; then
-				die "llvm-ar is unreachable"
-			fi
-		fi
-	fi
-
-	if tc-is-clang ; then
+	if use clang ; then
 		myconf_gn+=" is_clang=true clang_use_chrome_plugins=false"
 	else
-		if use libcxx ; then
-			die "Compiling with sys-libs/libcxx requires clang."
-		fi
 		myconf_gn+=" is_clang=false"
 	fi
 
@@ -3472,7 +3319,7 @@ _configure_pgx() {
 	fi
 
 # Debug symbols level 2 is still on when official is on even though is_debug=false:
-# See https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/compiler/compiler.gni#L276
+# See https://github.com/chromium/chromium/blob/93.0.4577.63/build/config/compiler/compiler.gni#L276
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
 
@@ -3500,6 +3347,7 @@ _configure_pgx() {
 	# TODO: use_system_sqlite (http://crbug.com/22208).
 
 	# libevent: https://bugs.gentoo.org/593458
+	# [B] all of gn_system_libraries set
 	local gn_system_libraries=(
 		flac
 		fontconfig
@@ -3518,7 +3366,7 @@ _configure_pgx() {
 	if use system-icu ; then
 		gn_system_libraries+=( icu )
 	fi
-	if ! use libcxx ; then
+	if use system-libstdcxx ; then
 		# unbundle only without libc++, because libc++ is not fully ABI compatible with libstdc++
 		gn_system_libraries+=( libxml )
 		gn_system_libraries+=( libxslt )
@@ -3528,7 +3376,25 @@ _configure_pgx() {
 			gn_system_libraries+=( openh264 )
 		fi
 	fi
-	build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
+	if ! use system-libstdcxx \
+		|| use cfi-cast \
+		|| use cfi-icall \
+		|| use official ; then
+		# Unbundling breaks cfi-icall and cfi-cast.
+		# Unbundling weakens the security because it removes
+		# noexecstack, full RELRO, SSP.
+einfo
+einfo "Forcing use of internal libs to maintain upstream security expectations"
+einfo "and requirements."
+einfo
+	else
+		if ! is_generating_credits ; then
+ewarn
+ewarn "Unbundling libs and droping CFI, SSP, noexecstack, Full RELRO."
+ewarn
+			build/linux/unbundle/replace_gn_files.py --system-libraries "${gn_system_libraries[@]}" || die
+		fi
+	fi
 
 	# See dependency logic in third_party/BUILD.gn
 	myconf_gn+=" use_system_harfbuzz=true"
@@ -3551,9 +3417,15 @@ _configure_pgx() {
 	myconf_gn+=" fieldtrial_testing_like_official_build=true"
 
 	# Never use bundled gold binary. Disable gold linker flags for now.
+	myconf_gn+=" use_gold=false use_sysroot=false"
 	# Do not use bundled clang.
 	# Trying to use gold results in linker crash.
-	myconf_gn+=" use_gold=false use_sysroot=false use_custom_libcxx=false"
+	if use official && ( use cfi-cast || use cfi-icall ) || use bundled-libcxx ; then
+		# Must be built as static for cfi-icall, cfi-cast to work properly.
+		myconf_gn+=" use_custom_libcxx=true"
+	else
+		myconf_gn+=" use_custom_libcxx=false"
+	fi
 
 	if use clang || tc-is-clang ; then
 		filter-flags -fuse-ld=*
@@ -3564,6 +3436,9 @@ _configure_pgx() {
 
 	# Disable pseudolocales, only used for testing
 	myconf_gn+=" enable_pseudolocales=false"
+
+	# Disable code formating of generated files
+	myconf_gn+=" blink_enable_generated_code_formatting=false"
 
 	ffmpeg_branding="$(usex proprietary-codecs Chrome Chromium)"
 	myconf_gn+=" proprietary_codecs=$(usex proprietary-codecs true false)"
@@ -3599,7 +3474,7 @@ _configure_pgx() {
 		fi
 	fi
 
-	if use libcxx ; then
+	if use system-libcxx ; then
 		append-flags -stdlib=libc++
 		append-ldflags -stdlib=libc++
 	fi
@@ -3695,9 +3570,6 @@ _configure_pgx() {
 		append-cxxflags -flax-vector-conversions
 	fi
 
-	# highway/libjxl fail on ppc64 without extra patches, disable for now.
-	use ppc64 && myconf_gn+=" enable_jxl_decoder=false"
-
 	# Disable unknown warning message from clang.
 	tc-is-clang && append-flags -Wno-unknown-warning-option
 
@@ -3738,15 +3610,15 @@ _configure_pgx() {
 			tools/generate_shim_headers/generate_shim_headers.py || die
 	fi
 
-# See https://github.com/chromium/chromium/blob/92.0.4515.159/build/config/sanitizers/BUILD.gn#L196
-	if use cfi ; then
+# See https://github.com/chromium/chromium/blob/93.0.4577.63/build/config/sanitizers/BUILD.gn#L196
+	if use cfi-vcall ; then
 		myconf_gn+=" is_cfi=true"
 	else
 		myconf_gn+=" is_cfi=false"
 	fi
 
-# See https://github.com/chromium/chromium/blob/92.0.4515.159/tools/mb/mb_config.pyl#L2950
-	if use cfi-full ; then
+# See https://github.com/chromium/chromium/blob/93.0.4577.63/tools/mb/mb_config.pyl#L2950
+	if use cfi-cast ; then
 		myconf_gn+=" use_cfi_cast=true"
 	else
 		myconf_gn+=" use_cfi_cast=false"
@@ -3763,7 +3635,7 @@ _configure_pgx() {
 	fi
 
 # See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-# See also https://github.com/chromium/chromium/blob/92.0.4515.159/docs/pgo.md
+# See also https://github.com/chromium/chromium/blob/93.0.4577.63/docs/pgo.md
 # profile-instr-use is clang which that file assumes but gcc doesn't have.
 	if use pgo-full ; then
 		myconf_gn+=" chrome_pgo_phase=${PGO_PHASE}"
@@ -3834,14 +3706,15 @@ _build_pgx() {
 }
 
 _run_training_suite() {
-# See also https://github.com/chromium/chromium/blob/92.0.4515.159/docs/pgo.md
-# https://github.com/chromium/chromium/blob/92.0.4515.159/testing/buildbot/generate_buildbot_json.py
+# See also https://github.com/chromium/chromium/blob/93.0.4577.63/docs/pgo.md
+# https://github.com/chromium/chromium/blob/93.0.4577.63/testing/buildbot/generate_buildbot_json.py
 # https://github.com/chromium/chromium/commit/8acfdce99c84fbc35ad259692ac083a9ea18392c
 # tools/perf/contrib/vr_benchmarks
 	export PYTHONPATH=$(_get_pythonpath)
 	einfo "PYTHONPATH=${PYTHONPATH}"
 	local benchmarks_allowed=()
-	for x in ${BENCHMARKS_ALL[@]} ; do
+	# TODO add CONTRIB_BENCHMARKS
+	for x in ${OFFICIAL_BENCHMARKS[@]} ; do
 		t="${x}"
 		t="${t//-/_}"
 		t="${t//./_}"
@@ -3900,68 +3773,21 @@ _start_pgo_training() {
 
 _update_licenses() {
 	# Upstream doesn't package PATENTS files
-	if [[ -n "${CHROMIUM_EBUILD_MAINTAINER}" ]] ; then
+	if [[ -n "${CHROMIUM_EBUILD_MAINTAINER}" \
+		&& -n "${GEN_ABOUT_CREDITS}" \
+		&& "${GEN_ABOUT_CREDITS}" == "1" ]] ; then
 		einfo "Generating license and copyright notice file"
 		eninja -C out/Release about_credits
 		# It should be updated when the major.minor.build.x changes
 		# because of new features.
-		local license_file_name=$(echo "${PN}-${PV}" \
-			| sed -r -e "s|(${PN}-[0-9]+\.[0-9]+\.[0-9]+\.)[0-9]+|\1x|g")
-		local x_license_fingerprint=$(sha512sum \
-			"${BUILD_DIR}/out/Release/gen/components/resources/about_credits.html" \
-                                        | cut -f 1 -d " ")
-		# Check the license fingerprint between point releases.
-		local fp
-		local suffix
-		if use libcxx ; then
-			fp="${LICENSE_FINGERPRINT_LIBCXX}"
-			license_file_name+="-libcxx"
-			suffix="LIBCXX"
-		else
-			fp="${LICENSE_FINGERPRINT_LIBSTDCXX}"
-			license_file_name+="-libstdcxx"
-			suffix="LIBSTDCXX"
-		fi
-		if [[ ! ( "${LICENSE}" =~ "${license_file_name}" ) \
-			|| ! -f "${MY_OVERLAY_DIR}/licenses/${license_file_name}" \
-			|| "${x_license_fingerprint}" != "${fp}" \
-		]] ; then
+		local license_file_name="${PN}-"$(ver_cut 1-3 ${PV})".x"
 einfo
-einfo "Please update the LICENSE variable and add the license file to the"
-einfo "licenses folder.  Copy license file as follows:"
+einfo "Update the license file by doing the following:"
 einfo
 einfo "  \`cp -a ${BUILD_DIR}/out/Release/gen/components/resources/about_credits.html \
 ${MY_OVERLAY_DIR}/licenses/${license_file_name}\`"
 einfo
-einfo "Update the LICENSE_FINGERPRINT_${suffix} to ${x_license_fingerprint}"
-einfo
-			die
-		fi
-	else
-		einfo "Generating license and copyright notice file"
-		eninja -C out/Release about_credits
-		# It should be updated when the major.minor.build.x changes
-		# because of new features.
-		local x_license_fingerprint=$(sha512sum \
-			"${BUILD_DIR}/out/Release/gen/components/resources/about_credits.html" \
-			| cut -f 1 -d " ")
-		# Check the license fingerprint between point releases.
-		# The 93 fingerprints differ from the 92
-		einfo "Verifying about:credits fingerprints"
-		local fp
-		if use libcxx ; then
-			fp="${LICENSE_FINGERPRINT_LIBCXX}"
-		else
-			fp="${LICENSE_FINGERPRINT_LIBSTDCXX}"
-		fi
-		if [[ "${x_license_fingerprint}" != "${fp}" ]] ; then
-einfo
-einfo "The about:credits fingerprints do not match and may dynamically be"
-einfo "generated based on features or dependencies used.  Send an issue report"
-einfo "to the ebuild maintainer.  Report back the USE flags used and the arch."
-einfo
-			die
-		fi
+		die
 	fi
 }
 
@@ -4067,10 +3893,6 @@ multilib_src_compile() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup
 
-	# https://bugs.gentoo.org/717456
-	# don't inherit PYTHONPATH from environment, bug #789021
-	local -x PYTHONPATH="${WORKDIR}/setuptools-44.1.0"
-
 	#"${EPYTHON}" tools/clang/scripts/update.py --force-local-build --gcc-toolchain /usr --skip-checkout --use-system-cmake --without-android || die
 
 	if use pgo-full ; then
@@ -4081,7 +3903,6 @@ multilib_src_compile() {
 		_init_pgo_training
 		_build_pgx
 		_start_pgo_training
-		export PYTHONPATH="${WORKDIR}/setuptools-44.1.0"
 		PGO_PHASE=2
 		_configure_pgx # pgo
 		_build_pgx
@@ -4291,7 +4112,7 @@ pkg_postinst() {
 	readme.gentoo_print_elog
 
 	if use vaapi ; then
-		# It says 3 args:  https://github.com/chromium/chromium/blob/92.0.4515.159/docs/gpu/vaapi.md#vaapi-on-linux
+		# It says 3 args:  https://github.com/chromium/chromium/blob/93.0.4577.63/docs/gpu/vaapi.md#vaapi-on-linux
 		elog "VA-API is disabled by default at runtime.  You have to enable it"
 		elog "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
 		elog "--use-gl=desktop or --use-gl=egl to the CHROMIUM_FLAGS in"
