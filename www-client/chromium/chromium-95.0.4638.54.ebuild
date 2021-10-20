@@ -21,9 +21,9 @@ inherit multilib-minimal
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
-PATCHSET="3"
+PATCHSET="4"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
-CIPD_V="9464003f070813371070f9b8f7c350d87619d145" # in \
+CIPD_V="8e9b0c80860d00dfe951f7ea37d74e210d376c13" # in \
 # third_party/depot_tools/cipd_client_version
 MTD_V="${PV}"
 CTDM_V="${PV}"
@@ -177,10 +177,10 @@ LICENSE_BENCHMARK_WEBSITES="
 # GEN_ABOUT_CREDITS=1 # Uncomment to generate about_credits.html including bundled.
 # SHA512 about_credits.html fingerprint:
 LICENSE_FINGERPRINT="\
-021a432e2cdbdb8965d0567fe0e580652e0e1f5bc9bbbd2509d7cef82462cdb0\
-33ee401ffbe7f123226990ca2bd12fb5d7c0c98efadc0ee4b8f3f33f1b679954"
+44ed73089efaab964695696547e9936c2ed8ad66d894412a1456365cc19a71f3\
+245217f2ca433def6505e3f8203881a5aba41bd87e84a15245e08e3befa98f5d"
 LICENSE="BSD
-	chromium-94.0.4606.x
+	chromium-95.0.4638.x
 	APSL-2
 	Apache-2.0
 	Apache-2.0-with-LLVM-exceptions
@@ -344,7 +344,9 @@ KEYWORDS="~amd64 ~arm64 ~x86"
 # See https://github.com/chromium/chromium/blob/94.0.4606.71/media/gpu/args.gni#L24
 # Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 #   incompatible as a shared lib.
-IUSE="component-build cups cpu_flags_arm_neon -debug +hangouts headless +js-type-check kerberos +official pic +proprietary-codecs pulseaudio screencast selinux +suid system-ffmpeg system-icu system-harfbuzz +vaapi wayland widevine"
+# The suid is built by default upstream but not necessarily used:  \
+#   https://github.com/chromium/chromium/blob/94.0.4588.2/sandbox/linux/BUILD.gn
+IUSE="component-build cups cpu_flags_arm_neon -debug +hangouts headless +js-type-check kerberos +official pic +proprietary-codecs pulseaudio screencast selinux +suid -system-ffmpeg -system-icu -system-harfbuzz +vaapi wayland widevine"
 IUSE+=" weston"
 # What is considered a proprietary codec can be found at:
 #   https://github.com/chromium/chromium/blob/94.0.4606.71/media/filters/BUILD.gn#L160
@@ -670,6 +672,7 @@ REQUIRED_USE+="
 	lto-opt? ( clang )
 	official? (
 		^^ ( pgo pgo-full )
+		!debug
 		!system-ffmpeg
 		!system-harfbuzz
 		!system-icu
@@ -1194,8 +1197,8 @@ pre_build_checks() {
 	fi
 
 	# Check build requirements, bug #541816 and bug #471810 .
-	CHECKREQS_MEMORY="3G"
-	CHECKREQS_DISK_BUILD="8G"
+	CHECKREQS_MEMORY="4G"
+	CHECKREQS_DISK_BUILD="9G"
 	if ( shopt -s extglob; is-flagq '-g?(gdb)?([1-9])' ) ; then
 		if use custom-cflags || use component-build ; then
 			CHECKREQS_DISK_BUILD="25G"
@@ -1221,8 +1224,7 @@ pre_build_checks() {
 # [43744.101600] oom_reaper: reaped process 27154 (ld.lld), now anon-rss:0kB, file-rss:0kB, shmem-rss:0kB
 ewarn
 ewarn "You may need >= 12 GiB of total memory to link ${PN}.  Please add more"
-ewarn "swap space.  You currently have ${total_virtual_mem} GiB of total"
-ewarn "memory."
+ewarn "swap space.  You currently have ${total_virtual_mem} GiB of total memory."
 ewarn
 	else
 einfo "Total memory (RAM + swap) is sufficient (>= 12 GiB)."
@@ -1250,8 +1252,8 @@ pkg_pretend() {
 # The answer to the profdata compatibility is answered in
 # https://clang.llvm.org/docs/SourceBasedCodeCoverage.html#format-compatibility-guarantees
 
-# The profdata (aka indexed profile) version is 7 corresponding to >= llvm 12
-# to main branch (llvm 14) and is after the magic (lprofi - i for index) in the
+# The profdata (aka indexed profile) version is 7 corresponding from >= llvm 12
+# up to main branch (llvm 14) and is after the magic (lprofi - i for index) in the
 # profdata file located in chrome/build/pgo_profiles/*.profdata.
 
 # PGO version compatibility
@@ -1552,7 +1554,16 @@ verify_llvm_toolchain() {
 		done
 		verify_llvm_report_card ${llvm_slot}
 	else
-		LLVM_REPORT_CARDS[${llvm_slot}]="not installed"
+		# For not installed
+		local compiler_rt_sanitizers_args=()
+		[[ "${USE}" =~ "cfi" ]] && compiler_rt_sanitizers_args+=( cfi ubsan )
+		use shadowcallstack && compiler_rt_sanitizers_args+=( shadowcallstack )
+		if (( ${#compiler_rt_sanitizers_args[@]} > 0 )) ; then
+			local args=$(echo "${compiler_rt_sanitizers_args[@]}" | tr " " ",")
+			LLVM_REPORT_CARDS[${llvm_slot}]="emerge -1v clang:${llvm_slot} llvm:${llvm_slot} =clang-runtime-${llvm_slot}*[compiler-rt,sanitize] =sys-libs/compiler-rt-sanitizers-${llvm_slot}*[${args}]\n"
+		else
+			LLVM_REPORT_CARDS[${llvm_slot}]="emerge -1v clang:${llvm_slot} llvm:${llvm_slot}\n"
+		fi
 	fi
 }
 
@@ -1689,11 +1700,9 @@ ewarn
 eerror
 eerror "You must choose a LLVM slot to update properly:"
 eerror
-			for s in $(echo "${LLVM_SLOTS[@]}" | tr " " "\n" | tac) ; do
-				[[ ${LLVM_REPORT_CARDS[${s}]} == "not installed" ]] \
-					&& continue
+			for s in ${slots} ; do
 eerror
-eerror "The LLVM ${s} toolchain needs the following update:"
+eerror "The LLVM ${s} toolchain needs the following update(s):"
 echo -e "${LLVM_REPORT_CARDS[${s}]}"
 			done
 			die
@@ -2011,13 +2020,18 @@ ewarn
 	PATCHES+=(
 		"${FILESDIR}/chromium-93-EnumTable-crash.patch"
 		"${FILESDIR}/chromium-93-InkDropHost-crash.patch"
+		"${FILESDIR}/chromium-95-maldoca-zlib.patch"
+		"${FILESDIR}/chromium-95-eigen-avx-1.patch"
+		"${FILESDIR}/chromium-95-eigen-avx-2.patch"
+		"${FILESDIR}/chromium-95-eigen-avx-3.patch"
+		"${FILESDIR}/chromium-95-harfbuzz-3.patch"
 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
 		"${FILESDIR}/chromium-shim_headers.patch"
 	)
 
 	if ! use arm64 ; then
 		einfo "Removing aarch64 only patches"
-		rm "${WORKDIR}/patches/chromium-91-libyuv-aarch64.patch" || die
+		rm "${WORKDIR}/patches/chromium-95-libyuv-aarch64.patch" || die
 	fi
 
 	if use clang ; then
@@ -2028,6 +2042,8 @@ ewarn
 	if use arm64 && use shadowcallstack ; then
 		ceapply "${FILESDIR}/chromium-94-arm64-shadow-call-stack.patch"
 	fi
+
+	ceapply "${FILESDIR}/chromium-95.0.4638.54-angle-suffix.patch"
 
 	default
 
@@ -2192,6 +2208,9 @@ eerror
 		third_party/lss
 		third_party/lzma_sdk
 		third_party/mako
+		third_party/maldoca
+		third_party/maldoca/src/third_party/tensorflow_protos
+		third_party/maldoca/src/third_party/zlibwrapper
 		third_party/markupsafe
 		third_party/mesa
 		third_party/metrics_proto
@@ -3503,7 +3522,7 @@ ewarn
 	myconf_gn+=" use_kerberos=$(usex kerberos true false)"
 	myconf_gn+=" use_pulseaudio=$(usex pulseaudio true false)"
 	myconf_gn+=" use_vaapi=$(usex vaapi true false)"
-	myconf_gn+=" rtc_use_pipewire=$(usex screencast true false) rtc_pipewire_version=\"0.3\""
+	myconf_gn+=" rtc_use_pipewire=$(usex screencast true false)"
 
 	# TODO: link_pulseaudio=true for GN.
 
@@ -3673,12 +3692,15 @@ ewarn
 			myconf_gn+=" ozone_platform=\"headless\""
 			myconf_gn+=" use_x11=false"
 		else
+			myconf_gn+=" ozone_platform=\"wayland\""
 			myconf_gn+=" ozone_platform_wayland=true"
 			myconf_gn+=" use_system_libdrm=true"
 			myconf_gn+=" use_system_minigbm=true"
 			myconf_gn+=" use_xkbcommon=true"
-			myconf_gn+=" ozone_platform=\"wayland\""
 		fi
+	else
+		myconf_gn+=" ozone_platform=\"x11\""
+		myconf_gn+=" ozone_platform_x11=true"
 	fi
 
 	# Enable official builds
@@ -3984,6 +4006,9 @@ multilib_src_compile() {
 	# Calling this here supports resumption via FEATURES=keepwork
 	python_setup
 
+	# Don't inherit PYTHONPATH from environment, bug #789021, #812689
+	local -x PYTHONPATH=
+
 	#"${EPYTHON}" tools/clang/scripts/update.py --force-local-build --gcc-toolchain /usr --skip-checkout --use-system-cmake --without-android || die
 
 	if use pgo-full ; then
@@ -4111,15 +4136,17 @@ multilib_src_install() {
 	fi
 
 	newexe out/Release/chromedriver chromedriver-${ABI}
-	doexe out/Release/crashpad_handler
+	doexe out/Release/chrome_crashpad_handler
 
+	ozone_auto_session () {
+		use wayland && ! use headless && echo true || echo false
+	}
 	local sedargs=( -e
 			"s:/usr/lib/:/usr/$(get_libdir)/:g;
 			s:chromium-browser-chromium.desktop:chromium-browser-chromium-${ABI}.desktop:g;
-			s:@@OZONE_AUTO_SESSION@@:$(usex wayland true false):g;
-			s:@@FORCE_OZONE_PLATFORM@@:$(usex headless true false):g"
+			s:@@OZONE_AUTO_SESSION@@:$(ozone_auto_session):g"
 	)
-	sed "${sedargs[@]}" "${FILESDIR}/chromium-launcher-r6.sh" > chromium-launcher.sh || die
+	sed "${sedargs[@]}" "${FILESDIR}/chromium-launcher-r7.sh" > chromium-launcher.sh || die
 	newexe chromium-launcher.sh chromium-launcher-${ABI}.sh
 
 	# It is important that we name the target "chromium-browser",
@@ -4156,6 +4183,7 @@ multilib_src_install() {
 
 	doins -r out/Release/locales
 	doins -r out/Release/resources
+	doins -r out/Release/MEIPreload
 
 	if [[ -d out/Release/swiftshader ]] ; then
 		insinto "${CHROMIUM_HOME}/swiftshader"
