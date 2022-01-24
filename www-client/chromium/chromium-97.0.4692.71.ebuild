@@ -1,4 +1,4 @@
-# Copyright 2009-2021 Gentoo Authors
+# Copyright 2009-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Monitor
@@ -16,14 +16,14 @@ CHROMIUM_LANGS="am ar bg bn ca cs da de el en-GB es es-419 et fa fi fil fr gu he
 
 LLVM_MAX_SLOT=14
 LLVM_SLOTS=(13 14)
-inherit check-reqs chromium-2 desktop flag-o-matic llvm multilib ninja-utils pax-utils portability python-any-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
-inherit multilib-minimal
+LLVM_SLOT_OFFICIAL=13
+inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-any-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
+inherit llvm multilib multilib-minimal
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
 PATCHSET="4"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
-PPC64LE_PATCHSET="1"
 CIPD_V="8e9b0c80860d00dfe951f7ea37d74e210d376c13" # in \
 # third_party/depot_tools/cipd_client_version
 MTD_V="${PV}"
@@ -32,7 +32,6 @@ CTDM_V="${PV}"
 SRC_URI="
 	https://commondatastorage.googleapis.com/chromium-browser-official/${P}.tar.xz
 	https://github.com/stha09/chromium-patches/releases/download/${PATCHSET_NAME}/${PATCHSET_NAME}.tar.xz
-	ppc64? ( https://dev.gentoo.org/~gyakovlev/distfiles/${PN}-$(ver_cut 1)-ppc64le-${PPC64LE_PATCHSET}.tar.xz )
 	pgo-full? (
 		amd64? ( https://chrome-infra-packages.appspot.com/client?platform=linux-amd64&version=git_revision:${CIPD_V} -> .cipd_client-amd64-${CIPD_V} )
 		arm64? ( https://chrome-infra-packages.appspot.com/client?platform=linux-arm64&version=git_revision:${CIPD_V} -> .cipd_client-arm64-${CIPD_V} )
@@ -180,10 +179,10 @@ LICENSE_BENCHMARK_WEBSITES="
 # GEN_ABOUT_CREDITS=1 # Uncomment to generate about_credits.html including bundled.
 # SHA512 about_credits.html fingerprint:
 LICENSE_FINGERPRINT="\
-5c573dd14cb9a411d2a85021a0924b8ce39a50f4ab7da07f0a580cd69473e51e\
-0f59ab282f848bb1cf35f000a55e9121469c838c9a371b22cd8eaed5c968e8a0"
+d7c2b28587affae5453b707c99f4ebcb01a7bb97002332d088f7ef3a5530fca2\
+99a4e00aa8bd95a1b7b807c39b0838d8137a04b0740ffa19ded9122393d8cf5b"
 LICENSE="BSD
-	chromium-96.0.4664.x
+	chromium-97.0.4692.x
 	APSL-2
 	Apache-2.0
 	Apache-2.0-with-LLVM-exceptions
@@ -342,9 +341,9 @@ LICENSE="BSD
 #   give the wrong impression that the entire software was released in public
 #   domain.
 SLOT="0/stable"
-KEYWORDS="amd64 arm64 ~x86"
+KEYWORDS="amd64 ~arm64 ~x86"
 # vaapi is enabled by default upstream for some arches \
-# See https://github.com/chromium/chromium/blob/94.0.4606.110/media/gpu/args.gni#L24
+# See https://github.com/chromium/chromium/blob/97.0.4692.71/media/gpu/args.gni#L24
 # Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 #   incompatible as a shared lib.
 # The suid is built by default upstream but not necessarily used:  \
@@ -358,24 +357,24 @@ pic +proprietary-codecs pulseaudio screencast selinux +suid -system-ffmpeg
 -system-icu -system-harfbuzz -system-png +vaapi wayland widevine"
 IUSE+=" weston r0"
 # What is considered a proprietary codec can be found at:
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/media/filters/BUILD.gn#L160
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/media/media_options.gni#L38
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/media/base/supported_types.cc#L203
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/filters/BUILD.gn#L160
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/media_options.gni#L38
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/base/supported_types.cc#L203
 #     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/media/base/supported_types.cc#L284
-# Codec upstream default: https://github.com/chromium/chromium/blob/94.0.4606.110/tools/mb/mb_config_expectations/chromium.linux.json#L89
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/base/supported_types.cc#L284
+# Codec upstream default: https://github.com/chromium/chromium/blob/97.0.4692.71/tools/mb/mb_config_expectations/chromium.linux.json#L89
 IUSE+=" video_cards_amdgpu video_cards_amdgpu-pro video_cards_amdgpu-pro-lts
 video_cards_intel video_cards_iris video_cards_i965 video_cards_nouveau
 video_cards_nvidia video_cards_r600 video_cards_radeonsi" # For VA-API
 IUSE+=" +partitionalloc tcmalloc libcmalloc"
 # For cfi-vcall, cfi-icall defaults status, see \
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/build/config/sanitizers/sanitizers.gni
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/sanitizers/sanitizers.gni
 # For cfi-cast default status, see \
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/build/config/sanitizers/sanitizers.gni#L123
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/sanitizers/sanitizers.gni#L123
 # For pgo default status, see \
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/build/config/compiler/pgo/pgo.gni#L15
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/compiler/pgo/pgo.gni#L15
 # For libcxx default, see \
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/build/config/c++/c++.gni#L14
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/c++/c++.gni#L14
 # For cdm availability see third_party/widevine/cdm/widevine.gni#L28
 IUSE_LIBCXX=( bundled-libcxx system-libcxx system-libstdcxx )
 IUSE+=" ${IUSE_LIBCXX[@]} +bundled-libcxx branch-protection-standard +cfi-vcall
@@ -573,9 +572,9 @@ gen_pgo_profile_required_use() {
 # ~50 benchmarks used.
 gen_required_use_pgo_profile_linux() { # For CI
 	# See
-# https://github.com/chromium/chromium/blob/94.0.4606.110/tools/perf/core/bot_platforms.py#L311
-# https://github.com/chromium/chromium/blob/94.0.4606.110/tools/perf/core/bot_platforms.py#L226
-# https://github.com/chromium/chromium/blob/94.0.4606.110/tools/perf/core/shard_maps/linux-perf_map.json
+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/bot_platforms.py#L311
+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/bot_platforms.py#L226
+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/shard_maps/linux-perf_map.json
 	local exclude=(
 		blink_perf.display_locking
 		power.mobile
@@ -617,8 +616,8 @@ gen_required_use_pgo_profile_linux() { # For CI
 # Only 1 benchmark used.
 gen_required_use_pgo_profile_linux_rel() { # For CI release
 	# See
-# https://github.com/chromium/chromium/blob/94.0.4606.110/tools/perf/core/bot_platforms.py#L307
-# https://github.com/chromium/chromium/blob/94.0.4606.110/tools/perf/core/shard_maps/linux-perf-rel_map.json
+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/bot_platforms.py#L307
+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/shard_maps/linux-perf-rel_map.json
 	local whitelist=(
 		system_health.common_desktop
 	)
@@ -860,6 +859,32 @@ RDEPEND="${COMMON_DEPEND}
 "
 DEPEND="${COMMON_DEPEND}"
 # dev-vcs/git - https://bugs.gentoo.org/593476
+
+gen_bdepend_llvm() {
+	local o_all=""
+	local t=""
+	local o_official=""
+	for s in ${LLVM_SLOTS[@]} ; do
+		t="
+			sys-devel/clang:${s}[${MULTILIB_USEDEP}]
+			sys-devel/llvm:${s}[${MULTILIB_USEDEP}]
+			=sys-devel/clang-runtime-${s}*[${MULTILIB_USEDEP},compiler-rt,sanitize]
+			>=sys-devel/lld-${s}
+			=sys-libs/compiler-rt-${s}*
+			=sys-libs/compiler-rt-sanitizers-${s}*:=[shadowcallstack?]
+			cfi-cast? ( =sys-libs/compiler-rt-sanitizers-${s}*:=[cfi] )
+			cfi-icall? ( =sys-libs/compiler-rt-sanitizers-${s}*:=[cfi] )
+			cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-${s}*:=[cfi] )
+		"
+		o_all+=" ( ${t} ) "
+		(( ${s} == ${LLVM_SLOT_OFFICIAL} )) && o_official=" ${t} "
+	done
+	echo -e "
+		|| ( ${o_all} )
+		official? ( ${o_official} )
+	"
+}
+
 BDEPEND="
 	${PYTHON_DEPS}
 	$(python_gen_any_dep '
@@ -875,43 +900,7 @@ BDEPEND="
 	>=sys-devel/bison-2.4.3
 	sys-devel/flex[${MULTILIB_USEDEP}]
 	>=dev-util/pkgconf-1.3.7[${MULTILIB_USEDEP},pkg-config(+)]
-	clang? (
-		|| (
-			(
-				sys-devel/clang:13[${MULTILIB_USEDEP}]
-				sys-devel/llvm:13[${MULTILIB_USEDEP}]
-				=sys-devel/clang-runtime-13*[${MULTILIB_USEDEP},compiler-rt,sanitize]
-				>=sys-devel/lld-13
-				=sys-libs/compiler-rt-13*
-				=sys-libs/compiler-rt-sanitizers-13*:=[shadowcallstack?]
-				cfi-cast? ( =sys-libs/compiler-rt-sanitizers-13*:=[cfi] )
-				cfi-icall? ( =sys-libs/compiler-rt-sanitizers-13*:=[cfi] )
-				cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-13*:=[cfi] )
-			)
-			(
-				sys-devel/clang:14[${MULTILIB_USEDEP}]
-				sys-devel/llvm:14[${MULTILIB_USEDEP}]
-				=sys-devel/clang-runtime-14*[${MULTILIB_USEDEP},compiler-rt,sanitize]
-				>=sys-devel/lld-14
-				=sys-libs/compiler-rt-14*
-				=sys-libs/compiler-rt-sanitizers-14*:=[shadowcallstack?]
-				cfi-cast? ( =sys-libs/compiler-rt-sanitizers-14*:=[cfi] )
-				cfi-icall? ( =sys-libs/compiler-rt-sanitizers-14*:=[cfi] )
-				cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-14*:=[cfi] )
-			)
-		)
-		official? (
-			sys-devel/clang:13[${MULTILIB_USEDEP}]
-			sys-devel/llvm:13[${MULTILIB_USEDEP}]
-			=sys-devel/clang-runtime-13*[${MULTILIB_USEDEP},compiler-rt,sanitize]
-			>=sys-devel/lld-13
-			=sys-libs/compiler-rt-13*
-			=sys-libs/compiler-rt-sanitizers-13*:=[shadowcallstack?]
-			cfi-cast? ( =sys-libs/compiler-rt-sanitizers-13*:=[cfi] )
-			cfi-icall? ( =sys-libs/compiler-rt-sanitizers-13*:=[cfi] )
-			cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-13*:=[cfi] )
-		)
-	)
+	clang? ( $(gen_bdepend_llvm) )
 	js-type-check? ( virtual/jre )
 	pgo-full? (
 		sys-apps/dbus:=[${MULTILIB_USEDEP}]
@@ -953,7 +942,7 @@ BDEPEND="
 # This is why LLVM13 was set as the minimum and did fix the problem.
 
 # For the current llvm for this project, see
-#   https://github.com/chromium/chromium/blob/94.0.4606.110/tools/clang/scripts/update.py#L42
+#   https://github.com/chromium/chromium/blob/97.0.4692.71/tools/clang/scripts/update.py#L42
 # Use the same clang for official USE flag because of older llvm bugs which
 #   could result in security weaknesses (explained in the llvm:12 note below).
 # Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -964,13 +953,13 @@ BDEPEND="
 #   https://github.com/llvm/llvm-project/blob/98033fdc/llvm/CMakeLists.txt
 RDEPEND+="
 	system-libcxx? (
-		>=sys-libs/libcxx-13[${MULTILIB_USEDEP}]
-		official? ( >=sys-libs/libcxx-13[${MULTILIB_USEDEP}] )
+		>=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}]
+		official? ( >=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
 	)"
 DEPEND+="
 	system-libcxx? (
-		>=sys-libs/libcxx-13[${MULTILIB_USEDEP}]
-		official? ( >=sys-libs/libcxx-13[${MULTILIB_USEDEP}] )
+		>=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}]
+		official? ( >=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
 	)"
 # [A]
 COMMON_DEPEND="
@@ -1015,7 +1004,7 @@ FFMPEG_DEPENDS="
 # Cannot use cfi-icall-generalize-pointers with CFI Cross-DSO but it is used by this package.
 
 # flac is required for speech support.
-# These are related to https://github.com/chromium/chromium/tree/94.0.4606.110/build/linux/unbundle
+# These are related to https://github.com/chromium/chromium/tree/97.0.4692.71/build/linux/unbundle
 # and initial attempts by the original ebuild developers.
 # Corresponds to [B] in this ebuild.
 UNBUNDLE_DEPENDS="
@@ -1025,14 +1014,6 @@ UNBUNDLE_DEPENDS="
 	libcxx? ( sys-libs/libcxx[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}] )
 "
 
-# dev-libs/icu Requires -fsanitize-blacklist=${S}/cfi-exceptions.txt
-# TODO: Add in forked package:
-#
-# cfi-exceptions.txt:
-# # Required by chromium
-# [cfi-icall]
-# src:*/common/*
-#
 # In common COMMON_DEPENDS, search for [A] in ebuild
 # The lack of hardening for openh264 is due to royalty issues (see Wikipedia).
 # We assume only the binary only version.
@@ -1102,8 +1083,8 @@ pre_build_checks() {
 		fi
 		if use clang || tc-is-clang ; then
 			CPP="${CHOST}-clang++ -E"
-			if ! ver_test "$(clang-major-version)" -ge 13 ; then
-				die "At least clang 13 is required"
+			if ! ver_test "$(clang-major-version)" -ge ${LLVM_SLOT_OFFICIAL} ; then
+				die "At least clang ${LLVM_SLOT_OFFICIAL} is required"
 			fi
 		fi
 	fi
@@ -1195,7 +1176,7 @@ pkg_pretend() {
 # The 98033fd is from the CR_CLANG_USED below.
 
 CR_CLANG_USED="98033fdc50e61273b1d5c77ba5f0f75afe3965c1" # Obtained from \
-# https://github.com/chromium/chromium/blob/94.0.4606.110/tools/clang/scripts/update.py#L42
+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/clang/scripts/update.py#L42
 CR_CLANG_USED_UNIX_TIMESTAMP="1626129557" # Cached.  Use below to obtain this. \
 # TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 #	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
@@ -1704,7 +1685,7 @@ libz.so.1
 	)
 
 	# TODO: check dependency n levels deep.
-	# We assume CFI cross DSO.
+	# We assume CFI Cross-DSO.
 	einfo
 	einfo "Evaluating system for possible weaknesses."
 	einfo "Assuming systemwide CFI Cross-DSO."
@@ -1717,8 +1698,9 @@ libz.so.1
 		fi
 		local path
 		path=$(echo "${paths[@]}" | tr " " "\n" | tail -n 1)
-		#einfo "path=${path}"
-		if grep -E -q -e "(__cfi_init|__cfi_check_fail)" "${path}" ; then
+		local real_path=$(realpath "${path}")
+		#einfo "real_path=${real_path}"
+		if readelf -Ws "${real_path}" 2>/dev/null | grep -E -q -e "(cfi_bad_type|cfi_check_fail)" ; then
 			einfo "${f} is CFI protected."
 		else
 			ewarn "${f} is NOT CFI protected."
@@ -1818,6 +1800,12 @@ eerror
 eerror "The LLVM ${s} toolchain needs the following update(s):"
 echo -e "${LLVM_REPORT_CARDS[${s}]}"
 			done
+eerror
+eerror "or remove the official USE flag.  The official use flag strictly"
+eerror "requires LLVM ${LLVM_SLOT_OFFICIAL} and for related packages.  To use a"
+eerror "higher slotted LLVM, use without the official USE flag."
+eerror
+# One reason is possibly for crash reporting.
 			die
 		else
 			export PATH=$(echo "${PATH}" | tr ":" "\n" | sed -e "s|.*llvm/.*||" | uniq \
@@ -2118,389 +2106,11 @@ is_generating_credits() {
 	fi
 }
 
-src_prepare() {
-	# Calling this here supports resumption via FEATURES=keepwork
-	python_setup
-
-	local PATCHES=()
-	if ( ! use clang ) || use system-libstdcxx ; then
-		# Contains arm64 patches for unknown purpose.
-		# TODO: split GCC only and libstdc++ only.
-		# The patches purpose are not documented well.
-ewarn
-ewarn "Applying GCC & libstdc++ compatibility patches."
-ewarn
-		PATCHES+=( "${WORKDIR}/patches" )
-	fi
-
-	PATCHES+=(
-		"${FILESDIR}/chromium-93-InkDropHost-crash.patch"
-		"${FILESDIR}/chromium-96-EnumTable-crash.patch"
-		"${FILESDIR}/chromium-96-freetype-unbundle.patch"
-		"${FILESDIR}/chromium-glibc-2.34.patch"
-		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
-		"${FILESDIR}/chromium-shim_headers.patch"
-	)
-
-	if ! use arm64 ; then
-		einfo "Removing aarch64 only patches"
-		rm "${WORKDIR}/patches/chromium-95-libyuv-aarch64.patch" || die
-	fi
-
-	if use clang ; then
-		if tc-is-clang ; then # Duplicate conditional is for testing reasons
-			# Using gcc with these patches results in this error:
-			# Two or more targets generate the same output:
-			#   lib.unstripped/libEGL.so
-			ceapply "${FILESDIR}/extra-patches/${PN}-92-clang-toolchain-1.patch"
-			ceapply "${FILESDIR}/extra-patches/${PN}-92-clang-toolchain-2.patch"
-		fi
-	fi
-
-	if use arm64 && use shadowcallstack ; then
-		ceapply "${FILESDIR}/extra-patches/chromium-94-arm64-shadow-call-stack.patch"
-	fi
-
-	ceapply "${FILESDIR}/extra-patches/chromium-95.0.4638.54-zlib-selective-simd.patch"
-
-	use ppc64 && PATCHES+=( "${WORKDIR}/${PN}-ppc64le" )
-
-	default
-
-	if use cr_pgo_trainers_custom && [[ ! -f "${T}/epatch_user.log" ]] ; then
-eerror
-eerror "You must supply a per-package patch to use the cr_pgo_trainers_custom"
-eerror "USE flag."
-eerror
-		die
-	fi
-
-	if ( (( ${#PATCHES[@]} > 0 || ${USED_EAPPLY} == 1 )) || [[ -f "${T}/epatch_user.log" ]] ) ; then
-		if use official ; then
-			ewarn
-			ewarn "The use of unofficial patches is not endorsed upstream."
-			ewarn
-		fi
-
-		if use pgo ; then
-			ewarn
-			ewarn "The use of patching can interfere with the pregenerated PGO profile."
-			ewarn
-		fi
-	fi
-
-	mkdir -p third_party/node/linux/node-linux-x64/bin || die
-	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
-
-	# adjust python interpreter version
-	sed -i -e "s|\(^script_executable = \).*|\1\"${EPYTHON}\"|g" .gn || die
-
-	local keeplibs=(
-		base/third_party/cityhash
-		base/third_party/double_conversion
-		base/third_party/dynamic_annotations
-		base/third_party/icu
-		base/third_party/nspr
-		base/third_party/superfasthash
-		base/third_party/symbolize
-		base/third_party/valgrind
-		base/third_party/xdg_mime
-		base/third_party/xdg_user_dirs
-		buildtools/third_party/libc++
-		buildtools/third_party/libc++abi
-		chrome/third_party/mozilla_security_manager
-		courgette/third_party
-		net/third_party/mozilla_security_manager
-		net/third_party/nss
-		net/third_party/quic
-		net/third_party/uri_template
-		third_party/abseil-cpp
-		third_party/angle
-		third_party/angle/src/common/third_party/base
-		third_party/angle/src/common/third_party/smhasher
-		third_party/angle/src/common/third_party/xxhash
-		third_party/angle/src/third_party/libXNVCtrl
-		third_party/angle/src/third_party/trace_event
-		third_party/angle/src/third_party/volk
-		third_party/apple_apsl
-		third_party/axe-core
-		third_party/blink
-		third_party/boringssl
-		third_party/boringssl/src/third_party/fiat
-		third_party/breakpad
-		third_party/breakpad/breakpad/src/third_party/curl
-		third_party/brotli
-		third_party/catapult
-		third_party/catapult/common/py_vulcanize/third_party/rcssmin
-		third_party/catapult/common/py_vulcanize/third_party/rjsmin
-		third_party/catapult/third_party/beautifulsoup4-4.9.3
-		third_party/catapult/third_party/html5lib-1.1
-		third_party/catapult/third_party/polymer
-		third_party/catapult/third_party/six
-		third_party/catapult/tracing/third_party/d3
-		third_party/catapult/tracing/third_party/gl-matrix
-		third_party/catapult/tracing/third_party/jpeg-js
-		third_party/catapult/tracing/third_party/jszip
-		third_party/catapult/tracing/third_party/mannwhitneyu
-		third_party/catapult/tracing/third_party/oboe
-		third_party/catapult/tracing/third_party/pako
-		third_party/ced
-		third_party/cld_3
-		third_party/closure_compiler
-		third_party/crashpad
-		third_party/crashpad/crashpad/third_party/lss
-		third_party/crashpad/crashpad/third_party/zlib
-		third_party/crc32c
-		third_party/cros_system_api
-		third_party/dav1d
-		third_party/dawn
-		third_party/dawn/third_party/khronos
-		third_party/dawn/third_party/tint
-		third_party/depot_tools
-		third_party/devscripts
-		third_party/devtools-frontend
-		third_party/devtools-frontend/src/front_end/third_party/acorn
-		third_party/devtools-frontend/src/front_end/third_party/axe-core
-		third_party/devtools-frontend/src/front_end/third_party/chromium
-		third_party/devtools-frontend/src/front_end/third_party/codemirror
-		third_party/devtools-frontend/src/front_end/third_party/diff
-		third_party/devtools-frontend/src/front_end/third_party/i18n
-		third_party/devtools-frontend/src/front_end/third_party/intl-messageformat
-		third_party/devtools-frontend/src/front_end/third_party/lighthouse
-		third_party/devtools-frontend/src/front_end/third_party/lit-html
-		third_party/devtools-frontend/src/front_end/third_party/lodash-isequal
-		third_party/devtools-frontend/src/front_end/third_party/marked
-		third_party/devtools-frontend/src/front_end/third_party/puppeteer
-		third_party/devtools-frontend/src/front_end/third_party/wasmparser
-		third_party/devtools-frontend/src/test/unittests/front_end/third_party/i18n
-		third_party/devtools-frontend/src/third_party
-		third_party/distributed_point_functions
-		third_party/dom_distiller_js
-		third_party/eigen3
-		third_party/emoji-segmenter
-		third_party/farmhash
-		third_party/fdlibm
-		third_party/fft2d
-		third_party/flatbuffers
-		third_party/freetype
-		third_party/fusejs
-		third_party/highway
-		third_party/libgifcodec
-		third_party/liburlpattern
-		third_party/libzip
-		third_party/gemmlowp
-		third_party/google_input_tools
-		third_party/google_input_tools/third_party/closure_library
-		third_party/google_input_tools/third_party/closure_library/third_party/closure
-		third_party/googletest
-		third_party/hunspell
-		third_party/iccjpeg
-		third_party/inspector_protocol
-		third_party/jinja2
-		third_party/jsoncpp
-		third_party/jstemplate
-		third_party/khronos
-		third_party/leveldatabase
-		third_party/libXNVCtrl
-		third_party/libaddressinput
-		third_party/libaom
-		third_party/libaom/source/libaom/third_party/fastfeat
-		third_party/libaom/source/libaom/third_party/vector
-		third_party/libaom/source/libaom/third_party/x86inc
-		third_party/libavif
-		third_party/libgav1
-		third_party/libjingle
-		third_party/libjxl
-		third_party/libphonenumber
-		third_party/libsecret
-		third_party/libsrtp
-		third_party/libsync
-		third_party/libudev
-		third_party/libva_protected_content
-		third_party/libvpx
-		third_party/libvpx/source/libvpx/third_party/x86inc
-		third_party/libwebm
-		third_party/libx11
-		third_party/libxcb-keysyms
-		third_party/libxml/chromium
-		third_party/libyuv
-		third_party/llvm
-		third_party/lottie
-		third_party/lss
-		third_party/lzma_sdk
-		third_party/mako
-		third_party/maldoca
-		third_party/maldoca/src/third_party/tensorflow_protos
-		third_party/maldoca/src/third_party/zlibwrapper
-		third_party/markupsafe
-		third_party/mesa
-		third_party/metrics_proto
-		third_party/minigbm
-		third_party/modp_b64
-		third_party/nasm
-		third_party/nearby
-		third_party/neon_2_sse
-		third_party/node
-		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
-		third_party/one_euro_filter
-		third_party/opencv
-		third_party/openscreen
-		third_party/openscreen/src/third_party/mozilla
-		third_party/openscreen/src/third_party/tinycbor/src/src
-		third_party/ots
-		third_party/pdfium
-		third_party/pdfium/third_party/agg23
-		third_party/pdfium/third_party/base
-		third_party/pdfium/third_party/bigint
-		third_party/pdfium/third_party/freetype
-		third_party/pdfium/third_party/lcms
-		third_party/pdfium/third_party/libopenjpeg20
-		third_party/pdfium/third_party/libpng16
-		third_party/pdfium/third_party/libtiff
-		third_party/pdfium/third_party/skia_shared
-		third_party/perfetto
-		third_party/perfetto/protos/third_party/chromium
-		third_party/pffft
-		third_party/ply
-		third_party/polymer
-		third_party/private-join-and-compute
-		third_party/private_membership
-		third_party/protobuf
-		third_party/protobuf/third_party/six
-		third_party/pyjson5
-		third_party/qcms
-		third_party/rnnoise
-		third_party/s2cellid
-		third_party/securemessage
-		third_party/shell-encryption
-		third_party/simplejson
-		third_party/skia
-		third_party/skia/include/third_party/skcms
-		third_party/skia/include/third_party/vulkan
-		third_party/skia/third_party/skcms
-		third_party/skia/third_party/vulkan
-		third_party/smhasher
-		third_party/snappy
-		third_party/sqlite
-		third_party/swiftshader
-		third_party/swiftshader/third_party/astc-encoder
-		third_party/swiftshader/third_party/llvm-subzero
-		third_party/swiftshader/third_party/marl
-		third_party/swiftshader/third_party/subzero
-		third_party/swiftshader/third_party/SPIRV-Headers/include/spirv/unified1
-		third_party/tcmalloc
-		third_party/tensorflow-text
-		third_party/tflite
-		third_party/tflite/src/third_party/eigen3
-		third_party/tflite/src/third_party/fft2d
-		third_party/ruy
-		third_party/six
-		third_party/ukey2
-		third_party/unrar
-		third_party/usrsctp
-		third_party/utf
-		third_party/vulkan
-		third_party/web-animations-js
-		third_party/webdriver
-		third_party/webgpu-cts
-		third_party/webrtc
-		third_party/webrtc/common_audio/third_party/ooura
-		third_party/webrtc/common_audio/third_party/spl_sqrt_floor
-		third_party/webrtc/modules/third_party/fft
-		third_party/webrtc/modules/third_party/g711
-		third_party/webrtc/modules/third_party/g722
-		third_party/webrtc/rtc_base/third_party/base64
-		third_party/webrtc/rtc_base/third_party/sigslot
-		third_party/widevine
-		third_party/woff2
-		third_party/wuffs
-		third_party/x11proto
-		third_party/xcbproto
-		third_party/zxcvbn-cpp
-		third_party/zlib/google
-		third_party/zlib
-		url/third_party/mozilla
-		v8/src/third_party/siphash
-		v8/src/third_party/valgrind
-		v8/src/third_party/utf8-decoder
-		v8/third_party/inspector_protocol
-		v8/third_party/v8
-
-		# gyp -> gn leftovers
-		base/third_party/libevent
-		third_party/speech-dispatcher
-		third_party/usb_ids
-		third_party/xdg-utils
-	)
-	# third_party/zlib is already kept but may use system no need split conditional for CFI or official builds.
-	if use pgo-full ; then
-		keeplibs+=(
-			third_party/catapult/third_party/gsutil
-			third_party/catapult/third_party/tsproxy
-			third_party/catapult/third_party/typ
-		)
-	fi
-	if ! use system-ffmpeg ; then
-		keeplibs+=( third_party/ffmpeg third_party/opus )
-	fi
-	if ! use system-icu ; then
-		keeplibs+=( third_party/icu )
-	fi
-	if ! use system-png; then
-		keeplibs+=( third_party/libpng )
-	fi
-	if use system-harfbuzz; then
-		keeplibs+=( third_party/harfbuzz-ng/utils )
-	else
-		keeplibs+=( third_party/harfbuzz-ng )
-	fi
-	if use wayland && ! use headless ; then
-		keeplibs+=( third_party/wayland )
-	fi
-	if ! use system-libstdcxx \
-		|| use cfi-cast \
-		|| use cfi-icall \
-		|| use cfi-vcall \
-		|| use official ; then
-		keeplibs+=( third_party/libxml )
-		keeplibs+=( third_party/libxslt )
-		keeplibs+=( third_party/re2 )
-		keeplibs+=( third_party/snappy )
-		if use proprietary-codecs ; then
-			keeplibs+=( third_party/openh264 )
-		fi
-		if use system-icu ; then
-			keeplibs+=( third_party/icu )
-		fi
-	fi
-	if use arm64 || use ppc64 ; then
-		keeplibs+=( third_party/swiftshader/third_party/llvm-10.0 )
-	fi
-	# we need to generate ppc64 stuff because upstream does not ship it yet
-	# it has to be done before unbundling.
-	if use ppc64 ; then
-		pushd third_party/libvpx >/dev/null || die
-		mkdir -p source/config/linux/ppc64 || die
-		./generate_gni.sh || die
-		popd >/dev/null || die
-	fi
-
-	if ! is_generating_credits ; then
-		einfo "Unbundling third party internal libraries and packages"
-		# Remove most bundled libraries. Some are still needed.
-		build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
-	fi
-
-	if use js-type-check ; then
-		ln -s "${EPREFIX}"/usr/bin/java third_party/jdk/current/bin/java || die
-	fi
-
-	if ! is_generating_credits ; then
-		# bundled eu-strip is for amd64 only and we don't want to pre-stripped binaries
-		mkdir -p buildtools/third_party/eu-strip/bin || die
-		ln -s "${EPREFIX}"/bin/true buildtools/third_party/eu-strip/bin/eu-strip || die
-	fi
-
+gen_full_pgo_assets() {
+	#
+	# The function is used primarily for cr_pgo_trainers_memory_desktop PGO
+	# trainer USE flag.
+	#
 	if use pgo-full ; then
 		export ASSET_CACHE_REVISION=6 # Bump on every change of output.
 		ASSET_CACHE="${PORTAGE_ACTUAL_DISTDIR:-${DISTDIR}}/${PN}/asset-cache"
@@ -2627,8 +2237,8 @@ eerror
 			#	"${S}/tools/perf/page_sets/trivial_sites/trivial_gif.html"
 		fi
 
-		# See also https://chromium.googlesource.com/chromium/src.git/+/refs/tags/94.0.4606.110/media/test/data/#media-test-data
-		# https://chromium.googlesource.com/chromium/src.git/+/refs/tags/94.0.4606.110/tools/perf/page_sets/media_cases.py
+		# See also https://chromium.googlesource.com/chromium/src.git/+/refs/tags/97.0.4692.71/media/test/data/#media-test-data
+		# https://chromium.googlesource.com/chromium/src.git/+/refs/tags/97.0.4692.71/tools/perf/page_sets/media_cases.py
 		if use cr_pgo_trainers_media_desktop \
 			|| use cr_pgo_trainers_media_mobile ; then
 			einfo "Generating missing assets for the media.desktop or media.mobile benchmarks"
@@ -3351,7 +2961,18 @@ eerror
 					| cut -f 1 -d " " > "${ASSET_CACHE}/tulip0.av1.mp4.sha512" || die
 			fi
 		fi
+	fi
+}
 
+gen_full_pgo_external_access_uris() {
+	#
+	# Function just reports URIs used primarily by remote_access_use PGO
+	# trainers below.
+	#
+	# The package doesn't have some web benchmarks but you need to snapshot
+	# a website to PGO train from them.
+	#
+	if use pgo-full ; then
 		for u in ${remote_access_use[@]} ; do
 			# This section is still unfinished
 			# TODO: Still categorizing benchmarks if local copy
@@ -3470,6 +3091,396 @@ ewarn
 			sleep 180
 		fi
 	fi
+}
+
+src_prepare() {
+	# Calling this here supports resumption via FEATURES=keepwork
+	python_setup
+
+	local PATCHES=()
+	if ( ! use clang ) || use system-libstdcxx ; then
+		# Contains arm64 patches for unknown purpose.
+		# TODO: split GCC only and libstdc++ only.
+		# The patches purpose are not documented well.
+ewarn
+ewarn "Applying GCC & libstdc++ compatibility patches."
+ewarn
+		PATCHES+=( "${WORKDIR}/patches" )
+	fi
+
+	PATCHES+=(
+		"${FILESDIR}/chromium-93-InkDropHost-crash.patch"
+		"${FILESDIR}/chromium-96-EnumTable-crash.patch"
+		$(usex arm64 "${FILESDIR}/chromium-97-arm64-mte-clang.patch" "")
+		"${FILESDIR}/chromium-97-fix-tag-dragging.patch"
+		"${FILESDIR}/chromium-97-fix-tag-dragging-i3.patch"
+		$(usex arm64 "${FILESDIR}/chromium-97-arm-tflite-cast.patch" "")
+		"${FILESDIR}/chromium-glibc-2.34.patch"
+		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
+		"${FILESDIR}/chromium-shim_headers.patch"
+	)
+
+	if ! use arm64 ; then
+		einfo "Removing aarch64 only patches"
+		rm "${WORKDIR}/patches/chromium-95-libyuv-aarch64.patch" || die
+	fi
+
+	if use clang ; then
+		if tc-is-clang ; then # Duplicate conditional is for testing reasons
+			# Using gcc with these patches results in this error:
+			# Two or more targets generate the same output:
+			#   lib.unstripped/libEGL.so
+			ceapply "${FILESDIR}/extra-patches/${PN}-92-clang-toolchain-1.patch"
+			ceapply "${FILESDIR}/extra-patches/${PN}-92-clang-toolchain-2.patch"
+		fi
+	fi
+
+	if use arm64 && use shadowcallstack ; then
+		ceapply "${FILESDIR}/extra-patches/chromium-94-arm64-shadow-call-stack.patch"
+	fi
+
+	ceapply "${FILESDIR}/extra-patches/chromium-95.0.4638.54-zlib-selective-simd.patch"
+
+	use ppc64 && PATCHES+=( "${WORKDIR}/${PN}-ppc64le" )
+
+	default
+
+	if use cr_pgo_trainers_custom && [[ ! -f "${T}/epatch_user.log" ]] ; then
+eerror
+eerror "You must supply a per-package patch to use the cr_pgo_trainers_custom"
+eerror "USE flag."
+eerror
+		die
+	fi
+
+	if ( (( ${#PATCHES[@]} > 0 || ${USED_EAPPLY} == 1 )) || [[ -f "${T}/epatch_user.log" ]] ) ; then
+		if use official ; then
+			ewarn
+			ewarn "The use of unofficial patches is not endorsed upstream."
+			ewarn
+		fi
+
+		if use pgo ; then
+			ewarn
+			ewarn "The use of patching can interfere with the pregenerated PGO profile."
+			ewarn
+		fi
+	fi
+
+	mkdir -p third_party/node/linux/node-linux-x64/bin || die
+	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
+
+	# adjust python interpreter version
+	sed -i -e "s|\(^script_executable = \).*|\1\"${EPYTHON}\"|g" .gn || die
+
+	local keeplibs=(
+		base/third_party/cityhash
+		base/third_party/double_conversion
+		base/third_party/dynamic_annotations
+		base/third_party/icu
+		base/third_party/nspr
+		base/third_party/superfasthash
+		base/third_party/symbolize
+		base/third_party/valgrind
+		base/third_party/xdg_mime
+		base/third_party/xdg_user_dirs
+		buildtools/third_party/libc++
+		buildtools/third_party/libc++abi
+		chrome/third_party/mozilla_security_manager
+		courgette/third_party
+		net/third_party/mozilla_security_manager
+		net/third_party/nss
+		net/third_party/quic
+		net/third_party/uri_template
+		third_party/abseil-cpp
+		third_party/angle
+		third_party/angle/src/common/third_party/base
+		third_party/angle/src/common/third_party/smhasher
+		third_party/angle/src/common/third_party/xxhash
+		third_party/angle/src/third_party/libXNVCtrl
+		third_party/angle/src/third_party/trace_event
+		third_party/angle/src/third_party/volk
+		third_party/apple_apsl
+		third_party/axe-core
+		third_party/blink
+		third_party/boringssl
+		third_party/boringssl/src/third_party/fiat
+		third_party/breakpad
+		third_party/breakpad/breakpad/src/third_party/curl
+		third_party/brotli
+		third_party/catapult
+		third_party/catapult/common/py_vulcanize/third_party/rcssmin
+		third_party/catapult/common/py_vulcanize/third_party/rjsmin
+		third_party/catapult/third_party/beautifulsoup4-4.9.3
+		third_party/catapult/third_party/html5lib-1.1
+		third_party/catapult/third_party/polymer
+		third_party/catapult/third_party/six
+		third_party/catapult/tracing/third_party/d3
+		third_party/catapult/tracing/third_party/gl-matrix
+		third_party/catapult/tracing/third_party/jpeg-js
+		third_party/catapult/tracing/third_party/jszip
+		third_party/catapult/tracing/third_party/mannwhitneyu
+		third_party/catapult/tracing/third_party/oboe
+		third_party/catapult/tracing/third_party/pako
+		third_party/ced
+		third_party/cld_3
+		third_party/closure_compiler
+		third_party/crashpad
+		third_party/crashpad/crashpad/third_party/lss
+		third_party/crashpad/crashpad/third_party/zlib
+		third_party/crc32c
+		third_party/cros_system_api
+		third_party/dav1d
+		third_party/dawn
+		third_party/dawn/third_party/khronos
+		third_party/dawn/third_party/tint
+		third_party/depot_tools
+		third_party/devscripts
+		third_party/devtools-frontend
+		third_party/devtools-frontend/src/front_end/third_party/acorn
+		third_party/devtools-frontend/src/front_end/third_party/axe-core
+		third_party/devtools-frontend/src/front_end/third_party/chromium
+		third_party/devtools-frontend/src/front_end/third_party/codemirror
+		third_party/devtools-frontend/src/front_end/third_party/diff
+		third_party/devtools-frontend/src/front_end/third_party/i18n
+		third_party/devtools-frontend/src/front_end/third_party/intl-messageformat
+		third_party/devtools-frontend/src/front_end/third_party/lighthouse
+		third_party/devtools-frontend/src/front_end/third_party/lit-html
+		third_party/devtools-frontend/src/front_end/third_party/lodash-isequal
+		third_party/devtools-frontend/src/front_end/third_party/marked
+		third_party/devtools-frontend/src/front_end/third_party/puppeteer
+		third_party/devtools-frontend/src/front_end/third_party/wasmparser
+		third_party/devtools-frontend/src/test/unittests/front_end/third_party/i18n
+		third_party/devtools-frontend/src/third_party
+		third_party/distributed_point_functions
+		third_party/dom_distiller_js
+		third_party/eigen3
+		third_party/emoji-segmenter
+		third_party/farmhash
+		third_party/fdlibm
+		third_party/fft2d
+		third_party/flatbuffers
+		third_party/freetype
+		third_party/fusejs
+		third_party/highway
+		third_party/libgifcodec
+		third_party/liburlpattern
+		third_party/libzip
+		third_party/gemmlowp
+		third_party/google_input_tools
+		third_party/google_input_tools/third_party/closure_library
+		third_party/google_input_tools/third_party/closure_library/third_party/closure
+		third_party/googletest
+		third_party/hunspell
+		third_party/iccjpeg
+		third_party/inspector_protocol
+		third_party/jinja2
+		third_party/jsoncpp
+		third_party/jstemplate
+		third_party/khronos
+		third_party/leveldatabase
+		third_party/libXNVCtrl
+		third_party/libaddressinput
+		third_party/libaom
+		third_party/libaom/source/libaom/third_party/fastfeat
+		third_party/libaom/source/libaom/third_party/vector
+		third_party/libaom/source/libaom/third_party/x86inc
+		third_party/libavif
+		third_party/libgav1
+		third_party/libjingle
+		third_party/libjxl
+		third_party/libphonenumber
+		third_party/libsecret
+		third_party/libsrtp
+		third_party/libsync
+		third_party/libudev
+		third_party/libva_protected_content
+		third_party/libvpx
+		third_party/libvpx/source/libvpx/third_party/x86inc
+		third_party/libwebm
+		third_party/libx11
+		third_party/libxcb-keysyms
+		third_party/libxml/chromium
+		third_party/libyuv
+		third_party/llvm
+		third_party/lottie
+		third_party/lss
+		third_party/lzma_sdk
+		third_party/mako
+		third_party/maldoca
+		third_party/maldoca/src/third_party/tensorflow_protos
+		third_party/maldoca/src/third_party/zlibwrapper
+		third_party/markupsafe
+		third_party/mesa
+		third_party/metrics_proto
+		third_party/minigbm
+		third_party/modp_b64
+		third_party/nasm
+		third_party/nearby
+		third_party/neon_2_sse
+		third_party/node
+		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
+		third_party/one_euro_filter
+		third_party/opencv
+		third_party/openscreen
+		third_party/openscreen/src/third_party/mozilla
+		third_party/openscreen/src/third_party/tinycbor/src/src
+		third_party/ots
+		third_party/pdfium
+		third_party/pdfium/third_party/agg23
+		third_party/pdfium/third_party/base
+		third_party/pdfium/third_party/bigint
+		third_party/pdfium/third_party/freetype
+		third_party/pdfium/third_party/lcms
+		third_party/pdfium/third_party/libopenjpeg20
+		third_party/pdfium/third_party/libpng16
+		third_party/pdfium/third_party/libtiff
+		third_party/pdfium/third_party/skia_shared
+		third_party/perfetto
+		third_party/perfetto/protos/third_party/chromium
+		third_party/pffft
+		third_party/ply
+		third_party/polymer
+		third_party/private-join-and-compute
+		third_party/private_membership
+		third_party/protobuf
+		third_party/protobuf/third_party/six
+		third_party/pyjson5
+		third_party/qcms
+		third_party/rnnoise
+		third_party/s2cellid
+		third_party/securemessage
+		third_party/shell-encryption
+		third_party/simplejson
+		third_party/skia
+		third_party/skia/include/third_party/skcms
+		third_party/skia/include/third_party/vulkan
+		third_party/skia/third_party/skcms
+		third_party/skia/third_party/vulkan
+		third_party/smhasher
+		third_party/snappy
+		third_party/sqlite
+		third_party/swiftshader
+		third_party/swiftshader/third_party/astc-encoder
+		third_party/swiftshader/third_party/llvm-subzero
+		third_party/swiftshader/third_party/marl
+		third_party/swiftshader/third_party/subzero
+		third_party/swiftshader/third_party/SPIRV-Headers/include/spirv/unified1
+		third_party/tcmalloc
+		third_party/tensorflow-text
+		third_party/tflite
+		third_party/tflite/src/third_party/eigen3
+		third_party/tflite/src/third_party/fft2d
+		third_party/ruy
+		third_party/six
+		third_party/ukey2
+		third_party/unrar
+		third_party/usrsctp
+		third_party/utf
+		third_party/vulkan
+		third_party/web-animations-js
+		third_party/webdriver
+		third_party/webgpu-cts
+		third_party/webrtc
+		third_party/webrtc/common_audio/third_party/ooura
+		third_party/webrtc/common_audio/third_party/spl_sqrt_floor
+		third_party/webrtc/modules/third_party/fft
+		third_party/webrtc/modules/third_party/g711
+		third_party/webrtc/modules/third_party/g722
+		third_party/webrtc/rtc_base/third_party/base64
+		third_party/webrtc/rtc_base/third_party/sigslot
+		third_party/widevine
+		third_party/woff2
+		third_party/wuffs
+		third_party/x11proto
+		third_party/xcbproto
+		third_party/zxcvbn-cpp
+		third_party/zlib/google
+		third_party/zlib
+		url/third_party/mozilla
+		v8/src/third_party/siphash
+		v8/src/third_party/valgrind
+		v8/src/third_party/utf8-decoder
+		v8/third_party/inspector_protocol
+		v8/third_party/v8
+
+		# gyp -> gn leftovers
+		base/third_party/libevent
+		third_party/speech-dispatcher
+		third_party/usb_ids
+		third_party/xdg-utils
+	)
+	# third_party/zlib is already kept but may use system no need split conditional for CFI or official builds.
+	if use pgo-full ; then
+		keeplibs+=(
+			third_party/catapult/third_party/gsutil
+			third_party/catapult/third_party/tsproxy
+			third_party/catapult/third_party/typ
+		)
+	fi
+	if ! use system-ffmpeg ; then
+		keeplibs+=( third_party/ffmpeg third_party/opus )
+	fi
+	if ! use system-icu ; then
+		keeplibs+=( third_party/icu )
+	fi
+	if ! use system-png; then
+		keeplibs+=( third_party/libpng )
+	fi
+	if use system-harfbuzz; then
+		keeplibs+=( third_party/harfbuzz-ng/utils )
+	else
+		keeplibs+=( third_party/harfbuzz-ng )
+	fi
+	if use wayland && ! use headless ; then
+		keeplibs+=( third_party/wayland )
+	fi
+	if ! use system-libstdcxx \
+		|| use cfi-cast \
+		|| use cfi-icall \
+		|| use cfi-vcall \
+		|| use official ; then
+		keeplibs+=( third_party/libxml )
+		keeplibs+=( third_party/libxslt )
+		keeplibs+=( third_party/re2 )
+		keeplibs+=( third_party/snappy )
+		if use proprietary-codecs ; then
+			keeplibs+=( third_party/openh264 )
+		fi
+		if use system-icu ; then
+			keeplibs+=( third_party/icu )
+		fi
+	fi
+	if use arm64 || use ppc64 ; then
+		keeplibs+=( third_party/swiftshader/third_party/llvm-10.0 )
+	fi
+	# we need to generate ppc64 stuff because upstream does not ship it yet
+	# it has to be done before unbundling.
+	if use ppc64 ; then
+		pushd third_party/libvpx >/dev/null || die
+		mkdir -p source/config/linux/ppc64 || die
+		./generate_gni.sh || die
+		popd >/dev/null || die
+	fi
+
+	if ! is_generating_credits ; then
+		einfo "Unbundling third party internal libraries and packages"
+		# Remove most bundled libraries. Some are still needed.
+		build/linux/unbundle/remove_bundled_libraries.py "${keeplibs[@]}" --do-remove || die
+	fi
+
+	if use js-type-check ; then
+		ln -s "${EPREFIX}"/usr/bin/java third_party/jdk/current/bin/java || die
+	fi
+
+	if ! is_generating_credits ; then
+		# bundled eu-strip is for amd64 only and we don't want to pre-stripped binaries
+		mkdir -p buildtools/third_party/eu-strip/bin || die
+		ln -s "${EPREFIX}"/bin/true buildtools/third_party/eu-strip/bin/eu-strip || die
+	fi
+
+	gen_full_pgo_assets
+	gen_full_pgo_external_access_uris
 
 	(( ${NABIS} > 1 )) \
 		&& multilib_copy_sources
@@ -3508,7 +3519,7 @@ ewarn
 		# See build/toolchain/gcc_toolchain.gni#L657 for consistency.
 		export CC="clang $(get_abi_CFLAGS ${ABI})"
 		export CXX="clang++ $(get_abi_CFLAGS ${ABI})"
-		export AR=llvm-ar # required for LTO
+		export AR=llvm-ar # Required for LTO
 		export NM=llvm-nm
 		export READELF=llvm-readelf
 		export STRIP=llvm-strip
@@ -3550,7 +3561,7 @@ ewarn
 	fi
 
 # Debug symbols level 2 is still on when official is on even though is_debug=false:
-# See https://github.com/chromium/chromium/blob/94.0.4606.110/build/config/compiler/compiler.gni#L276
+# See https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/compiler/compiler.gni#L276
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
 
@@ -3717,7 +3728,7 @@ ewarn
 
 		local libcxx_path="/usr/$(get_libdir)/libc++.so.1.0"
 		if [[ -e "${libcxx_path}" ]] \
-			&& ! grep -E -q -e "(__cfi_init|__cfi_check_fail)" "${libcxx_path}" ; then
+			&& ! grep -E -q -e "(cfi_check_fail|cfi_bad_type)" "${libcxx_path}" ; then
 			# If not CFI Cross-DSO mode, then use CFI Basic mode.
 			append-flags -static-libstdc++
 			append-ldflags -static-libstdc++
@@ -3815,12 +3826,6 @@ ewarn
 		popd > /dev/null || die
 	fi
 
-	# Chromium relies on this, but was disabled in >=clang-10, crbug.com/1042470
-	append-cxxflags $(test-flags-CXX -flax-vector-conversions=all)
-
-	# highway/libjxl fail on ppc64 without extra patches, disable for now.
-	use ppc64 && myconf_gn+=" enable_jxl_decoder=false"
-
 	# Disable unknown warning message from clang.
 	tc-is-clang && append-flags -Wno-unknown-warning-option
 
@@ -3864,14 +3869,14 @@ ewarn
 			tools/generate_shim_headers/generate_shim_headers.py || die
 	fi
 
-# See https://github.com/chromium/chromium/blob/94.0.4606.110/build/config/sanitizers/BUILD.gn#L196
+# See https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/sanitizers/BUILD.gn#L196
 	if use cfi-vcall ; then
 		myconf_gn+=" is_cfi=true"
 	else
 		myconf_gn+=" is_cfi=false"
 	fi
 
-# See https://github.com/chromium/chromium/blob/94.0.4606.110/tools/mb/mb_config.pyl#L2950
+# See https://github.com/chromium/chromium/blob/97.0.4692.71/tools/mb/mb_config.pyl#L2950
 	if use cfi-cast ; then
 		myconf_gn+=" use_cfi_cast=true"
 	else
@@ -3918,7 +3923,7 @@ ewarn
 	fi
 
 # See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-# See also https://github.com/chromium/chromium/blob/94.0.4606.110/docs/pgo.md
+# See also https://github.com/chromium/chromium/blob/97.0.4692.71/docs/pgo.md
 # profile-instr-use is clang which that file assumes but gcc doesn't have.
 	if use pgo-full ; then
 		myconf_gn+=" chrome_pgo_phase=${PGO_PHASE}"
@@ -3989,8 +3994,8 @@ _build_pgx() {
 }
 
 _run_training_suite() {
-# See also https://github.com/chromium/chromium/blob/94.0.4606.110/docs/pgo.md
-# https://github.com/chromium/chromium/blob/94.0.4606.110/testing/buildbot/generate_buildbot_json.py
+# See also https://github.com/chromium/chromium/blob/97.0.4692.71/docs/pgo.md
+# https://github.com/chromium/chromium/blob/97.0.4692.71/testing/buildbot/generate_buildbot_json.py
 # https://github.com/chromium/chromium/commit/8acfdce99c84fbc35ad259692ac083a9ea18392c
 # tools/perf/contrib/vr_benchmarks
 	export PYTHONPATH=$(_get_pythonpath)
@@ -4410,7 +4415,7 @@ pkg_postinst() {
 	readme.gentoo_print_elog
 
 	if use vaapi ; then
-		# It says 3 args:  https://github.com/chromium/chromium/blob/94.0.4606.110/docs/gpu/vaapi.md#vaapi-on-linux
+		# It says 3 args:  https://github.com/chromium/chromium/blob/97.0.4692.71/docs/gpu/vaapi.md#vaapi-on-linux
 		elog "VA-API is disabled by default at runtime.  You have to enable it"
 		elog "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
 		elog "--use-gl=desktop or --use-gl=egl to the CHROMIUM_FLAGS in"
