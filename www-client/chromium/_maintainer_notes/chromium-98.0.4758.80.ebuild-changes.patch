@@ -1,5 +1,5 @@
---- chromium-97.0.4692.71.ebuild.orig	2022-01-23 13:13:57.618799854 -0800
-+++ chromium-97.0.4692.71.ebuild	2022-01-23 20:55:03.222349845 -0800
+--- chromium-98.0.4758.80.ebuild.orig	2022-02-02 00:28:29.000000000 -0800
++++ chromium-98.0.4758.80.ebuild	2022-02-02 12:49:57.686298344 -0800
 @@ -1,7 +1,12 @@
  # Copyright 2009-2022 Gentoo Authors
  # Distributed under the terms of the GNU General Public License v2
@@ -14,19 +14,20 @@
  PYTHON_COMPAT=( python3_{8..10} )
  PYTHON_REQ_USE="xml"
  
-@@ -9,99 +14,877 @@ CHROMIUM_LANGS="am ar bg bn ca cs da de
+@@ -9,99 +14,878 @@ CHROMIUM_LANGS="am ar bg bn ca cs da de
  	hi hr hu id it ja kn ko lt lv ml mr ms nb nl pl pt-BR pt-PT ro ru sk sl sr
  	sv sw ta te th tr uk vi zh-CN zh-TW"
  
 +LLVM_MAX_SLOT=14
-+LLVM_SLOTS=(13 14)
-+LLVM_SLOT_OFFICIAL=13
++LLVM_MIN_SLOT=13
++CR_CLANG_SLOT_OFFICIAL=14
++LLVM_SLOTS=(${LLVM_MIN_SLOT} ${LLVM_MAX_SLOT}) # [inclusive, inclusive]
  inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils python-any-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
 +inherit llvm multilib multilib-minimal
  
  DESCRIPTION="Open-source version of Google Chrome web browser"
  HOMEPAGE="https://chromium.org/"
- PATCHSET="4"
+ PATCHSET="5"
  PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
 -SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/${P}.tar.xz
 -	https://github.com/stha09/chromium-patches/releases/download/${PATCHSET_NAME}/${PATCHSET_NAME}.tar.xz"
@@ -186,10 +187,10 @@
 +# GEN_ABOUT_CREDITS=1 # Uncomment to generate about_credits.html including bundled.
 +# SHA512 about_credits.html fingerprint:
 +LICENSE_FINGERPRINT="\
-+d7c2b28587affae5453b707c99f4ebcb01a7bb97002332d088f7ef3a5530fca2\
-+99a4e00aa8bd95a1b7b807c39b0838d8137a04b0740ffa19ded9122393d8cf5b"
++1abb8b21ff1fe5e5ee1bd47c38c380abc60de23ce12158e4d98b0bb45623f41e\
++cf73129e927714f1c4778ff0dcb11bc12d47c69b9e464349098614c8f5b200e3"
 +LICENSE="BSD
-+	chromium-97.0.4692.x
++	chromium-98.0.4758.x
 +	APSL-2
 +	Apache-2.0
 +	Apache-2.0-with-LLVM-exceptions
@@ -348,15 +349,16 @@
 +#   give the wrong impression that the entire software was released in public
 +#   domain.
  SLOT="0/stable"
- KEYWORDS="amd64 ~arm64 ~x86"
+-KEYWORDS="~amd64 ~arm64 ~x86"
 -IUSE="component-build cups cpu_flags_arm_neon debug +hangouts headless +js-type-check kerberos +official pic +proprietary-codecs pulseaudio screencast selinux +suid +system-ffmpeg +system-harfbuzz +system-icu +system-png vaapi wayland widevine"
 -REQUIRED_USE="
++KEYWORDS="amd64 ~arm64 ~x86"
 +# vaapi is enabled by default upstream for some arches \
-+# See https://github.com/chromium/chromium/blob/97.0.4692.71/media/gpu/args.gni#L24
++# See https://github.com/chromium/chromium/blob/98.0.4758.80/media/gpu/args.gni#L24
 +# Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 +#   incompatible as a shared lib.
 +# The suid is built by default upstream but not necessarily used:  \
-+#   https://github.com/chromium/chromium/blob/94.0.4588.2/sandbox/linux/BUILD.gn
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/sandbox/linux/BUILD.gn
 +CPU_FLAGS_ARM=( neon )
 +CPU_FLAGS_X86=( ssse3 sse4_2 )
 +# CFI Basic (.a) mode requires all third party modules built as static.
@@ -366,24 +368,24 @@
 +-system-icu -system-harfbuzz -system-png +vaapi wayland widevine"
 +IUSE+=" weston r0"
 +# What is considered a proprietary codec can be found at:
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/filters/BUILD.gn#L160
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/media_options.gni#L38
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/base/supported_types.cc#L203
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/filters/BUILD.gn#L160
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/media_options.gni#L38
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/base/supported_types.cc#L203
 +#     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/media/base/supported_types.cc#L284
-+# Codec upstream default: https://github.com/chromium/chromium/blob/97.0.4692.71/tools/mb/mb_config_expectations/chromium.linux.json#L89
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/base/supported_types.cc#L284
++# Codec upstream default: https://github.com/chromium/chromium/blob/98.0.4758.80/tools/mb/mb_config_expectations/chromium.linux.json#L89
 +IUSE+=" video_cards_amdgpu video_cards_amdgpu-pro video_cards_amdgpu-pro-lts
 +video_cards_intel video_cards_iris video_cards_i965 video_cards_nouveau
 +video_cards_nvidia video_cards_r600 video_cards_radeonsi" # For VA-API
 +IUSE+=" +partitionalloc tcmalloc libcmalloc"
 +# For cfi-vcall, cfi-icall defaults status, see \
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/sanitizers/sanitizers.gni
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/sanitizers/sanitizers.gni
 +# For cfi-cast default status, see \
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/sanitizers/sanitizers.gni#L123
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/sanitizers/sanitizers.gni#L123
 +# For pgo default status, see \
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/compiler/pgo/pgo.gni#L15
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/compiler/pgo/pgo.gni#L15
 +# For libcxx default, see \
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/c++/c++.gni#L14
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/c++/c++.gni#L14
 +# For cdm availability see third_party/widevine/cdm/widevine.gni#L28
 +IUSE_LIBCXX=( bundled-libcxx system-libcxx system-libstdcxx )
 +IUSE+=" ${IUSE_LIBCXX[@]} +bundled-libcxx branch-protection-standard +cfi-vcall
@@ -581,9 +583,9 @@
 +# ~50 benchmarks used.
 +gen_required_use_pgo_profile_linux() { # For CI
 +	# See
-+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/bot_platforms.py#L311
-+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/bot_platforms.py#L226
-+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/shard_maps/linux-perf_map.json
++# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/bot_platforms.py#L311
++# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/bot_platforms.py#L226
++# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/shard_maps/linux-perf_map.json
 +	local exclude=(
 +		blink_perf.display_locking
 +		power.mobile
@@ -625,8 +627,8 @@
 +# Only 1 benchmark used.
 +gen_required_use_pgo_profile_linux_rel() { # For CI release
 +	# See
-+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/bot_platforms.py#L307
-+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/perf/core/shard_maps/linux-perf-rel_map.json
++# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/bot_platforms.py#L307
++# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/shard_maps/linux-perf-rel_map.json
 +	local whitelist=(
 +		system_health.common_desktop
 +	)
@@ -939,7 +941,7 @@
 +			cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-${s}*:=[cfi] )
 +		"
 +		o_all+=" ( ${t} ) "
-+		(( ${s} == ${LLVM_SLOT_OFFICIAL} )) && o_official=" ${t} "
++		(( ${s} == ${CR_CLANG_SLOT_OFFICIAL} )) && o_official=" ${t} "
 +	done
 +	echo -e "
 +		|| ( ${o_all} )
@@ -950,7 +952,7 @@
  BDEPEND="
  	${PYTHON_DEPS}
  	$(python_gen_any_dep '
-@@ -115,34 +898,147 @@ BDEPEND="
+@@ -115,34 +899,147 @@ BDEPEND="
  	>=dev-util/ninja-1.7.2
  	>=net-libs/nodejs-7.6.0[inspector]
  	>=sys-devel/bison-2.4.3
@@ -1003,7 +1005,7 @@
 +# This is why LLVM13 was set as the minimum and did fix the problem.
 +
 +# For the current llvm for this project, see
-+#   https://github.com/chromium/chromium/blob/97.0.4692.71/tools/clang/scripts/update.py#L42
++#   https://github.com/chromium/chromium/blob/98.0.4758.80/tools/clang/scripts/update.py#L42
 +# Use the same clang for official USE flag because of older llvm bugs which
 +#   could result in security weaknesses (explained in the llvm:12 note below).
 +# Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -1014,13 +1016,13 @@
 +#   https://github.com/llvm/llvm-project/blob/98033fdc/llvm/CMakeLists.txt
 +RDEPEND+="
 +	system-libcxx? (
-+		>=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}]
-+		official? ( >=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
++		>=sys-libs/libcxx-${LLVM_MIN_SLOT}[${MULTILIB_USEDEP}]
++		official? ( >=sys-libs/libcxx-${CR_CLANG_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
 +	)"
 +DEPEND+="
 +	system-libcxx? (
-+		>=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}]
-+		official? ( >=sys-libs/libcxx-${LLVM_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
++		>=sys-libs/libcxx-${LLVM_MIN_SLOT}[${MULTILIB_USEDEP}]
++		official? ( >=sys-libs/libcxx-${CR_CLANG_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
 +	)"
 +# [A]
 +COMMON_DEPEND="
@@ -1082,7 +1084,7 @@
 +# Cannot use cfi-icall-generalize-pointers with CFI Cross-DSO but it is used by this package.
 +
 +# flac is required for speech support.
-+# These are related to https://github.com/chromium/chromium/tree/97.0.4692.71/build/linux/unbundle
++# These are related to https://github.com/chromium/chromium/tree/98.0.4758.80/build/linux/unbundle
 +# and initial attempts by the original ebuild developers.
 +# Corresponds to [B] in this ebuild.
 +UNBUNDLE_DEPENDS="
@@ -1120,7 +1122,7 @@
  	EBUILD_DEATH_HOOKS+=" chromium_pkg_die";
  fi
  
-@@ -180,30 +1076,83 @@ python_check_deps() {
+@@ -180,30 +1077,89 @@ python_check_deps() {
  }
  
  pre_build_checks() {
@@ -1136,13 +1138,19 @@
  			CPP="${CHOST}-clang++ -E"
 -			if ! ver_test "$(clang-major-version)" -ge 12; then
 -				die "At least clang 12 is required"
-+			if ! ver_test "$(clang-major-version)" -ge ${LLVM_SLOT_OFFICIAL} ; then
-+				die "At least clang ${LLVM_SLOT_OFFICIAL} is required"
++			local clang_min
++			if use official ; then
++				clang_min=${CR_CLANG_SLOT_OFFICIAL}
++			else
++				clang_min=${LLVM_MIN_SLOT}
++			fi
++			if ! ver_test "$(clang-major-version)" -ge ${clang_min} ; then
++				die "At least clang ${clang_min} is required"
  			fi
  		fi
  	fi
  
-+	# https://github.com/chromium/chromium/blob/95.0.4638.54/docs/linux/build_instructions.md#system-requirements
++	# https://github.com/chromium/chromium/blob/98.0.4758.80/docs/linux/build_instructions.md#system-requirements
  	# Check build requirements, bug #541816 and bug #471810 .
  	CHECKREQS_MEMORY="4G"
  	CHECKREQS_DISK_BUILD="9G"
@@ -1212,7 +1220,7 @@
  	check-reqs_pkg_setup
  }
  
-@@ -211,37 +1160,2013 @@ pkg_pretend() {
+@@ -211,26 +1167,1973 @@ pkg_pretend() {
  	pre_build_checks
  }
  
@@ -1226,17 +1234,17 @@
 +# PGO version compatibility
 +
 +# Profdata versioning:
-+# https://github.com/llvm/llvm-project/blob/98033fdc50e61273b1d5c77ba5f0f75afe3965c1/llvm/include/llvm/ProfileData/InstrProf.h#L991
++# https://github.com/llvm/llvm-project/blob/37fbf238f4427b651a16956eca1cb0e2ab5cdbfd/llvm/include/llvm/ProfileData/InstrProf.h#L991
 +# LLVM version:
-+# https://github.com/llvm/llvm-project/blob/98033fdc50e61273b1d5c77ba5f0f75afe3965c1/llvm/CMakeLists.txt
-+# The 98033fd is from the CR_CLANG_USED below.
++# https://github.com/llvm/llvm-project/blob/37fbf238f4427b651a16956eca1cb0e2ab5cdbfd/llvm/CMakeLists.txt#L14
++# The 37fbf238 is from the CR_CLANG_USED below.
 +
-+CR_CLANG_USED="98033fdc50e61273b1d5c77ba5f0f75afe3965c1" # Obtained from \
-+# https://github.com/chromium/chromium/blob/97.0.4692.71/tools/clang/scripts/update.py#L42
-+CR_CLANG_USED_UNIX_TIMESTAMP="1626129557" # Cached.  Use below to obtain this. \
++CR_CLANG_USED="37fbf238f4427b651a16956eca1cb0e2ab5cdbfd" # Obtained from \
++# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/clang/scripts/update.py#L42
++CR_CLANG_USED_UNIX_TIMESTAMP="1638856450" # Cached.  Use below to obtain this. \
 +# TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 +#	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
-+CR_CLANG_SLOT="13"
++# Change also CR_CLANG_SLOT_OFFICIAL
 +
 +contains_slotted_major_version() {
 +	# For sys-devel/llvm:x slot style
@@ -1385,7 +1393,7 @@
 +	for x in ${old_triple_slot_packages[@]} ; do
 +		local slot=${x/:*}
 +		if [[ "${arg}" == "${slot}" ]] ; then
-+			LLVM_REPORT_CARDS[${llvm_slot}]+="emerge -1v ${x}\n"
++			LLVM_REPORT_CARDS[${llvm_slot}]+="emerge -1vuDN ${x}\n"
 +		fi
 +	done
 +}
@@ -1408,11 +1416,11 @@
 +			p_=${p_//\//_}
 +			if [[ -z "${llvm_packages_status[${p_}]}" ]] || (( ${llvm_packages_status[${p_}]} == 1 )) ; then
 +				if contains_slotted_major_version "${p}" ; then
-+					LLVM_REPORT_CARDS[${llvm_slot}]+="emerge -1v ${p}:${llvm_slot}\n"
++					LLVM_REPORT_CARDS[${llvm_slot}]+="emerge -1vuDN ${p}:${llvm_slot}\n"
 +				elif contains_slotted_triple_version "${p}" ; then
 +					print_old_live_llvm_multislot_pkgs "${p}" ${llvm_slot}
 +				elif contains_slotted_zero "${p}" ; then
-+					LLVM_REPORT_CARDS[${llvm_slot}]+="emerge -1v ${p}:0\n"
++					LLVM_REPORT_CARDS[${llvm_slot}]+="emerge -1vuDN ${p}:0\n"
 +				fi
 +			fi
 +		done
@@ -1556,9 +1564,9 @@
 +		use shadowcallstack && compiler_rt_sanitizers_args+=( shadowcallstack )
 +		if (( ${#compiler_rt_sanitizers_args[@]} > 0 )) ; then
 +			local args=$(echo "${compiler_rt_sanitizers_args[@]}" | tr " " ",")
-+			LLVM_REPORT_CARDS[${llvm_slot}]="emerge -1v clang:${llvm_slot} llvm:${llvm_slot} =clang-runtime-${llvm_slot}*[compiler-rt,sanitize] =sys-libs/compiler-rt-sanitizers-${llvm_slot}*[${args}]\n"
++			LLVM_REPORT_CARDS[${llvm_slot}]="emerge -1vuDN clang:${llvm_slot} llvm:${llvm_slot} =clang-runtime-${llvm_slot}*[compiler-rt,sanitize] =sys-libs/compiler-rt-sanitizers-${llvm_slot}*[${args}]\n"
 +		else
-+			LLVM_REPORT_CARDS[${llvm_slot}]="emerge -1v clang:${llvm_slot} llvm:${llvm_slot}\n"
++			LLVM_REPORT_CARDS[${llvm_slot}]="emerge -1vuDN clang:${llvm_slot} llvm:${llvm_slot}\n"
 +		fi
 +	fi
 +}
@@ -1628,7 +1636,7 @@
 +	local v
 +	local ver
 +	# The live versions can have different profdata versions over time.
-+	for v in "10.0.1" "11.1.0" "12.0.1" "13.0.0" "13.0.0.9999" "14.0.0.9999" ; do
++	for v in "11.1.0" "12.0.1" "13.0.0" "13.0.1.9999" "14.0.0.9999" ; do
 +		(( $(ver_cut 1 "${v}") != ${LLVM_SLOT} )) && continue
 +		(! has_version "~sys-devel/llvm-${v}" ) && continue
 +		local llvm_version
@@ -1756,7 +1764,7 @@
 +		path=$(echo "${paths[@]}" | tr " " "\n" | tail -n 1)
 +		local real_path=$(realpath "${path}")
 +		#einfo "real_path=${real_path}"
-+		if readelf -Ws "${real_path}" 2>/dev/null | grep -E -q -e "(cfi_bad_type|cfi_check_fail)" ; then
++		if readelf -Ws "${real_path}" 2>/dev/null | grep -E -q -e "(cfi_bad_type|cfi_check_fail|__cfi_init)" ; then
 +			einfo "${f} is CFI protected."
 +		else
 +			ewarn "${f} is NOT CFI protected."
@@ -1838,7 +1846,7 @@
 +		LLVM_SLOT=
 +		local slots
 +		if use official ; then
-+			slots=${CR_CLANG_SLOT}
++			slots=${CR_CLANG_SLOT_OFFICIAL}
 +		else
 +			slots=$(echo "${LLVM_SLOTS[@]}" | tr " " "\n" | tac | tr "\n" " ")
 +		fi
@@ -1859,8 +1867,8 @@
 +			done
 +eerror
 +eerror "or remove the official USE flag.  The official use flag strictly"
-+eerror "requires LLVM ${LLVM_SLOT_OFFICIAL} and for related packages.  To use a"
-+eerror "higher slotted LLVM, use without the official USE flag."
++eerror "requires LLVM ${CR_CLANG_SLOT_OFFICIAL} and for related packages.  To use a"
++eerror "different slotted LLVM, disable the official USE flag."
 +eerror
 +# One reason is possibly for crash reporting.
 +			die
@@ -2294,8 +2302,8 @@
 +			#	"${S}/tools/perf/page_sets/trivial_sites/trivial_gif.html"
 +		fi
 +
-+		# See also https://chromium.googlesource.com/chromium/src.git/+/refs/tags/97.0.4692.71/media/test/data/#media-test-data
-+		# https://chromium.googlesource.com/chromium/src.git/+/refs/tags/97.0.4692.71/tools/perf/page_sets/media_cases.py
++		# See also https://chromium.googlesource.com/chromium/src.git/+/refs/tags/98.0.4758.80/media/test/data/#media-test-data
++		# https://chromium.googlesource.com/chromium/src.git/+/refs/tags/98.0.4758.80/tools/perf/page_sets/media_cases.py
 +		if use cr_pgo_trainers_media_desktop \
 +			|| use cr_pgo_trainers_media_mobile ; then
 +			einfo "Generating missing assets for the media.desktop or media.mobile benchmarks"
@@ -3148,6 +3156,22 @@
 +			sleep 180
 +		fi
 +	fi
++}
++
++verify_clang_commit() {
++	local commit_id=$(grep -r -e "CLANG_REVISION" \
++		"${S}/tools/clang/scripts/update.py" \
++		| head -n 1 \
++		| grep -E -o -e "-g[a-f0-9]+" \
++		| sed -e "s|-g||g")
++	if [[ "${CR_CLANG_USED}" =~ ^"${commit_id}" ]] ; then
++		:;
++	else
++		# Update on every major version of this package.
++		eerror "The LLVM commit is out of date.  Update CR_CLANG_*,"
++		eerror "LLVM_SLOTS, CR_CLANG_SLOT_OFFICIAL variables."
++		die
++	fi
  }
  
  src_prepare() {
@@ -3169,21 +3193,18 @@
 +
 +	PATCHES+=(
  		"${FILESDIR}/chromium-93-InkDropHost-crash.patch"
- 		"${FILESDIR}/chromium-96-EnumTable-crash.patch"
--		"${FILESDIR}/chromium-97-arm64-mte-clang.patch"
-+		$(usex arm64 "${FILESDIR}/chromium-97-arm64-mte-clang.patch" "")
- 		"${FILESDIR}/chromium-97-fix-tag-dragging.patch"
- 		"${FILESDIR}/chromium-97-fix-tag-dragging-i3.patch"
 -		"${FILESDIR}/chromium-97-arm-tflite-cast.patch"
 +		$(usex arm64 "${FILESDIR}/chromium-97-arm-tflite-cast.patch" "")
+ 		"${FILESDIR}/chromium-98-EnumTable-crash.patch"
+ 		"${FILESDIR}/chromium-98-system-libdrm.patch"
  		"${FILESDIR}/chromium-glibc-2.34.patch"
- 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
+@@ -238,8 +3141,53 @@ src_prepare() {
  		"${FILESDIR}/chromium-shim_headers.patch"
  	)
  
 +	if ! use arm64 ; then
-+		einfo "Removing aarch64 only patches"
-+		rm "${WORKDIR}/patches/chromium-95-libyuv-aarch64.patch" || die
++		einfo "Removing arm only patches"
++		rm "${WORKDIR}/patches/chromium-95-libyuv-arm.patch" || die
 +	fi
 +
 +	if use clang ; then
@@ -3231,7 +3252,7 @@
  	mkdir -p third_party/node/linux/node-linux-x64/bin || die
  	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
  
-@@ -471,6 +3396,7 @@ src_prepare() {
+@@ -469,6 +3417,7 @@ src_prepare() {
  		third_party/xcbproto
  		third_party/zxcvbn-cpp
  		third_party/zlib/google
@@ -3239,7 +3260,7 @@
  		url/third_party/mozilla
  		v8/src/third_party/siphash
  		v8/src/third_party/valgrind
-@@ -484,10 +3410,18 @@ src_prepare() {
+@@ -482,10 +3431,18 @@ src_prepare() {
  		third_party/usb_ids
  		third_party/xdg-utils
  	)
@@ -3260,7 +3281,7 @@
  		keeplibs+=( third_party/icu )
  	fi
  	if ! use system-png; then
-@@ -501,12 +3435,19 @@ src_prepare() {
+@@ -499,12 +3456,19 @@ src_prepare() {
  	if use wayland && ! use headless ; then
  		keeplibs+=( third_party/wayland )
  	fi
@@ -3283,7 +3304,7 @@
  			keeplibs+=( third_party/icu )
  		fi
  	fi
-@@ -515,54 +3456,103 @@ src_prepare() {
+@@ -513,54 +3477,104 @@ src_prepare() {
  	fi
  	# we need to generate ppc64 stuff because upstream does not ship it yet
  	# it has to be done before unbundling.
@@ -3317,6 +3338,7 @@
 +		ln -s "${EPREFIX}"/bin/true buildtools/third_party/eu-strip/bin/eu-strip || die
 +	fi
 +
++	#verify_clang_commit
 +	gen_full_pgo_assets
 +	gen_full_pgo_external_access_uris
 +
@@ -3405,16 +3427,16 @@
  		tc-export BUILD_{AR,CC,CXX,NM}
  		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:host\""
  		myconf_gn+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:host\""
-@@ -570,6 +3560,8 @@ src_configure() {
+@@ -568,6 +3582,8 @@ src_configure() {
  		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
  	fi
  
 +# Debug symbols level 2 is still on when official is on even though is_debug=false:
-+# See https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/compiler/compiler.gni#L276
++# See https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/compiler/compiler.gni#L276
  	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
  	myconf_gn+=" is_debug=false"
  
-@@ -585,6 +3577,14 @@ src_configure() {
+@@ -583,6 +3599,14 @@ src_configure() {
  	# Disable nacl, we can't build without pnacl (http://crbug.com/269560).
  	myconf_gn+=" enable_nacl=false"
  
@@ -3429,7 +3451,7 @@
  	# Use system-provided libraries.
  	# TODO: freetype -- remove sources (https://bugs.chromium.org/p/pdfium/issues/detail?id=733).
  	# TODO: use_system_hunspell (upstream changes needed).
-@@ -592,6 +3592,7 @@ src_configure() {
+@@ -590,6 +3614,7 @@ src_configure() {
  	# TODO: use_system_sqlite (http://crbug.com/22208).
  
  	# libevent: https://bugs.gentoo.org/593458
@@ -3437,7 +3459,7 @@
  	local gn_system_libraries=(
  		flac
  		fontconfig
-@@ -603,23 +3604,45 @@ src_configure() {
+@@ -601,23 +3626,45 @@ src_configure() {
  		libwebp
  		zlib
  	)
@@ -3489,7 +3511,7 @@
  
  	# See dependency logic in third_party/BUILD.gn
  	myconf_gn+=" use_system_harfbuzz=$(usex system-harfbuzz true false)"
-@@ -639,15 +3662,25 @@ src_configure() {
+@@ -637,15 +3684,25 @@ src_configure() {
  
  	# TODO: link_pulseaudio=true for GN.
  
@@ -3519,7 +3541,7 @@
  
  	# Disable pseudolocales, only used for testing
  	myconf_gn+=" enable_pseudolocales=false"
-@@ -673,25 +3706,33 @@ src_configure() {
+@@ -671,25 +3728,34 @@ src_configure() {
  	local myarch="$(tc-arch)"
  
  	# Avoid CFLAGS problems, bug #352457, bug #390147.
@@ -3549,15 +3571,16 @@
 +
 +		local libcxx_path="/usr/$(get_libdir)/libc++.so.1.0"
 +		if [[ -e "${libcxx_path}" ]] \
-+			&& ! grep -E -q -e "(__cfi_init|__cfi_check_fail)" "${libcxx_path}" ; then
++			&& ! grep -E -q -e "(__cfi_init)" "${libcxx_path}" ; then
 +			# If not CFI Cross-DSO mode, then use CFI Basic mode.
++			# The below flag is a misnomer.  It also means, link statically to libc++
 +			append-flags -static-libstdc++
 +			append-ldflags -static-libstdc++
 +		fi
  	fi
  
  	if [[ $myarch = amd64 ]] ; then
-@@ -717,6 +3758,42 @@ src_configure() {
+@@ -715,6 +3781,42 @@ src_configure() {
  		die "Failed to determine target arch, got '$myarch'."
  	fi
  
@@ -3600,7 +3623,7 @@
  	# Make sure that -Werror doesn't get added to CFLAGS by the build system.
  	# Depending on GCC version the warnings are different and we don't want
  	# the build to fail because of that.
-@@ -732,10 +3809,10 @@ src_configure() {
+@@ -730,10 +3832,10 @@ src_configure() {
  	# https://bugs.gentoo.org/654216
  	addpredict /dev/dri/ #nowarn
  
@@ -3614,7 +3637,7 @@
  			build_ffmpeg_args+=" --disable-asm"
  		fi
  
-@@ -753,7 +3830,7 @@ src_configure() {
+@@ -751,7 +3853,7 @@ src_configure() {
  	tc-is-clang && append-flags -Wno-unknown-warning-option
  
  	# Explicitly disable ICU data file support for system-icu builds.
@@ -3623,7 +3646,7 @@
  		myconf_gn+=" icu_use_data_file=false"
  	fi
  
-@@ -761,16 +3838,16 @@ src_configure() {
+@@ -759,16 +3861,16 @@ src_configure() {
  	myconf_gn+=" use_ozone=true ozone_auto_platforms=false"
  	myconf_gn+=" ozone_platform_headless=true"
  	myconf_gn+=" ozone_platform_x11=$(usex headless false true)"
@@ -3643,7 +3666,7 @@
  		fi
  	else
  		myconf_gn+=" ozone_platform=\"x11\""
-@@ -778,17 +3855,88 @@ src_configure() {
+@@ -776,17 +3878,90 @@ src_configure() {
  
  	# Enable official builds
  	myconf_gn+=" is_official_build=$(usex official true false)"
@@ -3664,7 +3687,7 @@
 -		# Disable CFI: unsupported for GCC, requires clang+lto+lld
 +	fi
 +
-+# See https://github.com/chromium/chromium/blob/97.0.4692.71/build/config/sanitizers/BUILD.gn#L196
++# See https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/sanitizers/BUILD.gn#L196
 +	if use cfi-vcall ; then
 +		myconf_gn+=" is_cfi=true"
 +	else
@@ -3672,7 +3695,7 @@
 -		# Disable PGO, because profile data is only compatible with >=clang-11
 +	fi
 +
-+# See https://github.com/chromium/chromium/blob/97.0.4692.71/tools/mb/mb_config.pyl#L2950
++# See https://github.com/chromium/chromium/blob/98.0.4758.80/tools/mb/mb_config.pyl#L2950
 +	if use cfi-cast ; then
 +		myconf_gn+=" use_cfi_cast=true"
 +	else
@@ -3719,7 +3742,7 @@
 +	fi
 +
 +# See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-+# See also https://github.com/chromium/chromium/blob/97.0.4692.71/docs/pgo.md
++# See also https://github.com/chromium/chromium/blob/98.0.4758.80/docs/pgo.md
 +# profile-instr-use is clang which that file assumes but gcc doesn't have.
 +	if use pgo-full ; then
 +		myconf_gn+=" chrome_pgo_phase=${PGO_PHASE}"
@@ -3735,30 +3758,32 @@
  		myconf_gn+=" chrome_pgo_phase=0"
 -		# Don't add symbols to build
 -		myconf_gn+=" symbol_level=0"
++		# Kept symbols in build for debug reports for official
++		# myconf_gn+=" symbol_level=0"
  	fi
  
  	einfo "Configuring Chromium..."
-@@ -797,38 +3945,263 @@ src_configure() {
+@@ -795,38 +3970,266 @@ src_configure() {
  	"$@" || die
  }
  
 -src_compile() {
 -	# Final link uses lots of file descriptors.
 -	ulimit -n 2048
+-
+-	# Calling this here supports resumption via FEATURES=keepwork
+-	python_setup
 +_build() {
 +	local ninja_into="${1}"
 +	local target_id="${2}"
 +	local pax_path="${3}"
 +	local file_name=$(basename "${2}")
  
--	# Calling this here supports resumption via FEATURES=keepwork
--	python_setup
+-	# Don't inherit PYTHONPATH from environment, bug #789021, #812689
+-	local -x PYTHONPATH=
 +	einfo "Building ${file_name}"
 +	eninja -C "${ninja_into}" "${target_id}"
  
--	# Don't inherit PYTHONPATH from environment, bug #789021, #812689
--	local -x PYTHONPATH=
--
 -	#"${EPYTHON}" tools/clang/scripts/update.py --force-local-build --gcc-toolchain /usr --skip-checkout --use-system-cmake --without-android || die
 +	if [[ -n "${pax_path}" ]] ; then
 +		pax-mark m "${pax_path}"
@@ -3809,8 +3834,8 @@
 +}
 +
 +_run_training_suite() {
-+# See also https://github.com/chromium/chromium/blob/97.0.4692.71/docs/pgo.md
-+# https://github.com/chromium/chromium/blob/97.0.4692.71/testing/buildbot/generate_buildbot_json.py
++# See also https://github.com/chromium/chromium/blob/98.0.4758.80/docs/pgo.md
++# https://github.com/chromium/chromium/blob/98.0.4758.80/testing/buildbot/generate_buildbot_json.py
 +# https://github.com/chromium/chromium/commit/8acfdce99c84fbc35ad259692ac083a9ea18392c
 +# tools/perf/contrib/vr_benchmarks
 +	export PYTHONPATH=$(_get_pythonpath)
@@ -3889,6 +3914,9 @@
 +einfo
 +einfo "  \`cp -a ${BUILD_DIR}/out/Release/gen/components/resources/about_credits.html \
 +${MY_OVERLAY_DIR}/licenses/${license_file_name}\`"
++einfo
++einfo "LICENSE_FINGERPRINT (with sha512sum) and LICENSE need to be updated also."
++einfo "When you are done updating, comment out GEN_ABOUT_CREDITS."
 +einfo
 +		die
 +	fi
@@ -4020,7 +4048,7 @@
  
  	# Build manpage; bug #684550
  	sed -e 's|@@PACKAGE@@|chromium-browser|g;
-@@ -837,9 +4210,7 @@ src_compile() {
+@@ -835,9 +4238,7 @@ src_compile() {
  		out/Release/chromium-browser.1 || die
  
  	# Build desktop file; bug #706786
@@ -4031,7 +4059,7 @@
  		s|\(^Exec=\)/usr/bin/|\1|g;' \
  		chrome/installer/linux/common/desktop.template > \
  		out/Release/chromium-browser-chromium.desktop || die
-@@ -848,19 +4219,104 @@ src_compile() {
+@@ -846,19 +4247,104 @@ src_compile() {
  	sed -e 's|${ICD_LIBRARY_PATH}|./libvk_swiftshader.so|g' \
  		third_party/swiftshader/src/Vulkan/vk_swiftshader_icd.json.tmpl > \
  		out/Release/vk_swiftshader_icd.json || die
@@ -4139,7 +4167,7 @@
  	doexe out/Release/chrome_crashpad_handler
  
  	ozone_auto_session () {
-@@ -868,18 +4324,22 @@ src_install() {
+@@ -866,18 +4352,22 @@ src_install() {
  	}
  	local sedargs=( -e
  			"s:/usr/lib/:/usr/$(get_libdir)/:g;
@@ -4166,7 +4194,7 @@
  
  	# Allow users to override command-line options, bug #357629.
  	insinto /etc/chromium
-@@ -898,7 +4358,7 @@ src_install() {
+@@ -896,17 +4386,18 @@ src_install() {
  		[[ ${#files[@]} -gt 0 ]] && doins "${files[@]}"
  	)
  
@@ -4175,7 +4203,10 @@
  		doins out/Release/icudtl.dat
  	fi
  
-@@ -909,7 +4369,7 @@ src_install() {
+ 	doins -r out/Release/locales
++	doins -r out/Release/resources
+ 	doins -r out/Release/MEIPreload
+ 
  	# Install vk_swiftshader_icd.json; bug #827861
  	doins out/Release/vk_swiftshader_icd.json
  
@@ -4184,7 +4215,7 @@
  		insinto "${CHROMIUM_HOME}/swiftshader"
  		doins out/Release/swiftshader/*.so
  	fi
-@@ -926,7 +4386,7 @@ src_install() {
+@@ -923,7 +4414,7 @@ src_install() {
  	done
  
  	# Install desktop entry
@@ -4193,7 +4224,7 @@
  
  	# Install GNOME default application entry (bug #303100).
  	insinto /usr/share/gnome-control-center/default-apps
-@@ -937,6 +4397,11 @@ src_install() {
+@@ -934,6 +4425,11 @@ src_install() {
  	dosym chromium-browser.1 /usr/share/man/man1/chromium.1
  
  	readme.gentoo_create_doc
@@ -4205,7 +4236,7 @@
  }
  
  pkg_postrm() {
-@@ -949,15 +4414,103 @@ pkg_postinst() {
+@@ -946,15 +4442,103 @@ pkg_postinst() {
  	xdg_desktop_database_update
  	readme.gentoo_print_elog
  
@@ -4214,7 +4245,7 @@
 -		elog "by adding --enable-features=VaapiVideoDecoder to CHROMIUM_FLAGS"
 -		elog "in /etc/chromium/default."
 +	if use vaapi ; then
-+		# It says 3 args:  https://github.com/chromium/chromium/blob/97.0.4692.71/docs/gpu/vaapi.md#vaapi-on-linux
++		# It says 3 args:  https://github.com/chromium/chromium/blob/98.0.4758.80/docs/gpu/vaapi.md#vaapi-on-linux
 +		elog "VA-API is disabled by default at runtime.  You have to enable it"
 +		elog "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
 +		elog "--use-gl=desktop or --use-gl=egl to the CHROMIUM_FLAGS in"
