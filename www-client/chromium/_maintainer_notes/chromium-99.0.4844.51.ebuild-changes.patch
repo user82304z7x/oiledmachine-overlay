@@ -1,20 +1,18 @@
---- chromium-98.0.4758.102.ebuild.orig	2022-02-19 12:09:08.000000000 -0800
-+++ chromium-98.0.4758.102.ebuild	2022-02-20 01:04:55.862345529 -0800
-@@ -1,7 +1,12 @@
+--- chromium-99.0.4844.51.ebuild.orig	2022-03-05 23:40:00.000000000 -0800
++++ chromium-99.0.4844.51.ebuild	2022-03-11 00:18:22.756428341 -0800
+@@ -1,6 +1,11 @@
  # Copyright 2009-2022 Gentoo Authors
  # Distributed under the terms of the GNU General Public License v2
  
--EAPI=8
 +# Monitor
 +#   https://chromereleases.googleblog.com/search/label/Dev%20updates
 +# for security updates.  They are announced faster than NVD.
 +# See https://omahaproxy.appspot.com/ for the latest linux version
 +
-+EAPI=7
+ EAPI=8
  PYTHON_COMPAT=( python3_{8..10} )
  PYTHON_REQ_USE="xml"
- 
-@@ -9,99 +14,854 @@ CHROMIUM_LANGS="am ar bg bn ca cs da de
+@@ -9,115 +14,878 @@ CHROMIUM_LANGS="am ar bg bn ca cs da de
  	hi hr hu id it ja kn ko lt lv ml mr ms nb nl pl pt-BR pt-PT ro ru sk sl sr
  	sv sw ta te th tr uk vi zh-CN zh-TW"
  
@@ -27,7 +25,7 @@
  
  DESCRIPTION="Open-source version of Google Chrome web browser"
  HOMEPAGE="https://chromium.org/"
- PATCHSET="5"
+ PATCHSET="3"
  PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
 -SRC_URI="https://commondatastorage.googleapis.com/chromium-browser-official/${P}.tar.xz
 -	https://github.com/stha09/chromium-patches/releases/download/${PATCHSET_NAME}/${PATCHSET_NAME}.tar.xz"
@@ -187,10 +185,10 @@
 +# GEN_ABOUT_CREDITS=1 # Uncomment to generate about_credits.html including bundled.
 +# SHA512 about_credits.html fingerprint:
 +LICENSE_FINGERPRINT="\
-+1abb8b21ff1fe5e5ee1bd47c38c380abc60de23ce12158e4d98b0bb45623f41e\
-+cf73129e927714f1c4778ff0dcb11bc12d47c69b9e464349098614c8f5b200e3"
++f0ef3b84a6ab47b692bb98d3e77f97d577f2209ba7f42ed56a8a9abb3b93d165\
++d3a20fb20079abfba7ae86e96d99ef5ec3d86cb4bfc2e490ffb0871198e3a81f"
 +LICENSE="BSD
-+	chromium-98.0.4758.x
++	chromium-99.0.4844.x
 +	APSL-2
 +	Apache-2.0
 +	Apache-2.0-with-LLVM-exceptions
@@ -349,47 +347,48 @@
 +#   give the wrong impression that the entire software was released in public
 +#   domain.
  SLOT="0/stable"
--KEYWORDS="amd64 arm64 ~x86"
--IUSE="component-build cups cpu_flags_arm_neon debug +hangouts headless +js-type-check kerberos +official pic +proprietary-codecs pulseaudio screencast selinux +suid +system-ffmpeg +system-harfbuzz +system-icu +system-png vaapi wayland widevine"
+ KEYWORDS="amd64 arm64 ~x86"
+-IUSE="component-build cups cpu_flags_arm_neon debug gtk4 +hangouts headless +js-type-check kerberos libcxx +official pic +proprietary-codecs pulseaudio screencast selinux +suid +system-ffmpeg +system-harfbuzz +system-icu +system-png vaapi wayland widevine"
 -REQUIRED_USE="
-+KEYWORDS="amd64 ~arm64 ~x86"
+-	component-build? ( !suid !libcxx )
 +# vaapi is enabled by default upstream for some arches \
-+# See https://github.com/chromium/chromium/blob/98.0.4758.80/media/gpu/args.gni#L24
++# See https://github.com/chromium/chromium/blob/99.0.4844.51/media/gpu/args.gni#L24
 +# Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 +#   incompatible as a shared lib.
 +# The suid is built by default upstream but not necessarily used:  \
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/sandbox/linux/BUILD.gn
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/sandbox/linux/BUILD.gn
 +CPU_FLAGS_ARM=( neon )
 +CPU_FLAGS_X86=( ssse3 sse4_2 )
 +# CFI Basic (.a) mode requires all third party modules built as static.
 +IUSE="${CPU_FLAGS_ARM[@]/#/cpu_flags_arm_} ${CPU_FLAGS_X86[@]/#/cpu_flags_x86_}
-+component-build cups -debug +hangouts headless +js-type-check kerberos +official
++component-build cups -debug gtk4 +hangouts headless +js-type-check kerberos +official
 +pic +proprietary-codecs pulseaudio screencast selinux +suid -system-ffmpeg
 +-system-icu -system-harfbuzz -system-png +vaapi wayland widevine"
 +IUSE+=" weston r0"
 +# What is considered a proprietary codec can be found at:
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/filters/BUILD.gn#L160
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/media_options.gni#L38
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/base/supported_types.cc#L203
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/media/filters/BUILD.gn#L160
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/media/media_options.gni#L38
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/media/base/supported_types.cc#L203
 +#     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/media/base/supported_types.cc#L284
-+# Codec upstream default: https://github.com/chromium/chromium/blob/98.0.4758.80/tools/mb/mb_config_expectations/chromium.linux.json#L89
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/media/base/supported_types.cc#L284
++# Codec upstream default: https://github.com/chromium/chromium/blob/99.0.4844.51/tools/mb/mb_config_expectations/chromium.linux.json#L89
 +IUSE+=" video_cards_amdgpu video_cards_intel video_cards_iris
 +video_cards_i965 video_cards_nouveau video_cards_nvidia
 +video_cards_r600 video_cards_radeonsi" # For VA-API
 +IUSE+=" +partitionalloc tcmalloc libcmalloc"
 +# For cfi-vcall, cfi-icall defaults status, see \
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/sanitizers/sanitizers.gni
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/build/config/sanitizers/sanitizers.gni
 +# For cfi-cast default status, see \
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/sanitizers/sanitizers.gni#L123
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/build/config/sanitizers/sanitizers.gni#L123
 +# For pgo default status, see \
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/compiler/pgo/pgo.gni#L15
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/build/config/compiler/pgo/pgo.gni#L15
 +# For libcxx default, see \
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/c++/c++.gni#L14
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/build/config/c++/c++.gni#L14
 +# For cdm availability see third_party/widevine/cdm/widevine.gni#L28
-+IUSE_LIBCXX=( bundled-libcxx system-libcxx system-libstdcxx )
++IUSE_LIBCXX=( bundled-libcxx system-libstdcxx )
 +IUSE+=" ${IUSE_LIBCXX[@]} +bundled-libcxx branch-protection-standard +cfi-vcall
-+cfi-cast +cfi-icall +clang lto-opt +pgo -pgo-full shadowcallstack"
++cfi-cast +cfi-icall +clang +pre-check-llvm +pre-check-vaapi lto-opt +pgo
++-pgo-full shadowcallstack"
 +# perf-opt
 +_ABIS=( abi_x86_32
 +	abi_x86_64
@@ -583,9 +582,9 @@
 +# ~50 benchmarks used.
 +gen_required_use_pgo_profile_linux() { # For CI
 +	# See
-+# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/bot_platforms.py#L311
-+# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/bot_platforms.py#L226
-+# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/shard_maps/linux-perf_map.json
++# https://github.com/chromium/chromium/blob/99.0.4844.51/tools/perf/core/bot_platforms.py#L311
++# https://github.com/chromium/chromium/blob/99.0.4844.51/tools/perf/core/bot_platforms.py#L226
++# https://github.com/chromium/chromium/blob/99.0.4844.51/tools/perf/core/shard_maps/linux-perf_map.json
 +	local exclude=(
 +		blink_perf.display_locking
 +		power.mobile
@@ -627,8 +626,8 @@
 +# Only 1 benchmark used.
 +gen_required_use_pgo_profile_linux_rel() { # For CI release
 +	# See
-+# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/bot_platforms.py#L307
-+# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/perf/core/shard_maps/linux-perf-rel_map.json
++# https://github.com/chromium/chromium/blob/99.0.4844.51/tools/perf/core/bot_platforms.py#L307
++# https://github.com/chromium/chromium/blob/99.0.4844.51/tools/perf/core/shard_maps/linux-perf-rel_map.json
 +	local whitelist=(
 +		system_health.common_desktop
 +	)
@@ -684,10 +683,10 @@
 +	amd64? ( !shadowcallstack )
 +	bundled-libcxx? ( clang )
 +	branch-protection-standard? ( arm64 )
-+	cfi-cast? ( cfi-vcall !system-ffmpeg !system-harfbuzz !system-icu !system-libcxx !system-libstdcxx )
-+	cfi-icall? ( cfi-vcall !system-ffmpeg !system-harfbuzz !system-icu !system-libcxx !system-libstdcxx )
-+	cfi-vcall? ( clang !system-ffmpeg !system-harfbuzz !system-icu !system-libcxx !system-libstdcxx )
- 	component-build? ( !suid )
++	cfi-cast? ( cfi-vcall !system-ffmpeg !system-harfbuzz !system-icu !system-libstdcxx )
++	cfi-icall? ( cfi-vcall !system-ffmpeg !system-harfbuzz !system-icu !system-libstdcxx )
++	cfi-vcall? ( clang !system-ffmpeg !system-harfbuzz !system-icu !system-libstdcxx )
++	component-build? ( !bundled-libcxx !suid )
 +	lto-opt? ( clang )
 +	official? (
 +		^^ ( pgo pgo-full )
@@ -695,7 +694,6 @@
 +		!system-ffmpeg
 +		!system-harfbuzz
 +		!system-icu
-+		!system-libcxx
 +		!system-libstdcxx
 +		bundled-libcxx
 +		partitionalloc
@@ -708,7 +706,6 @@
 +	ppc64? ( !shadowcallstack )
  	screencast? ( wayland )
 +	shadowcallstack? ( clang )
-+	system-libcxx? ( clang )
 +	system-libstdcxx? ( !cfi-cast )
 +	system-libstdcxx? ( !cfi-icall )
 +	system-libstdcxx? ( !cfi-vcall )
@@ -729,130 +726,22 @@
 +	x86? ( !shadowcallstack )
  "
  
-+LIBVA_V="2.7"
- COMMON_X_DEPEND="
--	media-libs/mesa:=[gbm(+)]
--	x11-libs/libX11:=
+-COMMON_X_DEPEND="
+-	x11-libs/gdk-pixbuf:2
 -	x11-libs/libXcomposite:=
 -	x11-libs/libXcursor:=
 -	x11-libs/libXdamage:=
--	x11-libs/libXext:=
 -	x11-libs/libXfixes:=
 -	>=x11-libs/libXi-1.6.0:=
 -	x11-libs/libXrandr:=
 -	x11-libs/libXrender:=
 -	x11-libs/libXtst:=
--	x11-libs/libxcb:=
 -	x11-libs/libxshmfence:=
--	vaapi? ( >=x11-libs/libva-2.7:=[X,drm] )
-+	media-libs/mesa:=[gbm(+),${MULTILIB_USEDEP}]
-+	x11-libs/libX11:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXcomposite:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXcursor:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXdamage:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXext:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXfixes:=[${MULTILIB_USEDEP}]
-+	>=x11-libs/libXi-1.6.0:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXrandr:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXrender:=[${MULTILIB_USEDEP}]
-+	x11-libs/libXtst:=[${MULTILIB_USEDEP}]
-+	x11-libs/libxcb:=[${MULTILIB_USEDEP}]
-+	x11-libs/libxshmfence:=[${MULTILIB_USEDEP}]
-+	vaapi? ( >=x11-libs/libva-${LIBVA_V}:=[X,drm,${MULTILIB_USEDEP}] )
- "
- 
-+FFMPEG_V="4.3"
- COMMON_DEPEND="
--	app-arch/bzip2:=
--	cups? ( >=net-print/cups-1.3.11:= )
--	dev-libs/expat:=
--	dev-libs/glib:2
--	>=dev-libs/libxml2-2.9.4-r3:=[icu]
--	dev-libs/nspr:=
--	>=dev-libs/nss-3.26:=
--	>=media-libs/alsa-lib-1.0.19:=
--	media-libs/fontconfig:=
--	>=media-libs/freetype-2.11.0-r1:=
--	system-harfbuzz? ( >=media-libs/harfbuzz-3:0=[icu(-)] )
--	media-libs/libjpeg-turbo:=
--	system-png? ( media-libs/libpng:=[-apng] )
--	pulseaudio? ( media-sound/pulseaudio:= )
-+	app-arch/bzip2:=[${MULTILIB_USEDEP}]
-+	cups? ( >=net-print/cups-1.3.11:=[${MULTILIB_USEDEP}] )
-+	dev-libs/expat:=[${MULTILIB_USEDEP}]
-+	dev-libs/glib:2[${MULTILIB_USEDEP}]
-+	>=dev-libs/libxml2-2.9.4-r3:=[icu,${MULTILIB_USEDEP}]
-+	dev-libs/nspr:=[${MULTILIB_USEDEP}]
-+	>=dev-libs/nss-3.26:=[${MULTILIB_USEDEP}]
-+	>=media-libs/alsa-lib-1.0.19:=[${MULTILIB_USEDEP}]
-+	media-libs/fontconfig:=[${MULTILIB_USEDEP}]
-+	>=media-libs/freetype-2.11.0-r1:=[${MULTILIB_USEDEP}]
-+	system-harfbuzz? ( >=media-libs/harfbuzz-3:0=[icu(-),${MULTILIB_USEDEP}] )
-+	media-libs/libjpeg-turbo:=[${MULTILIB_USEDEP}]
-+	system-png? ( media-libs/libpng:=[-apng,${MULTILIB_USEDEP}] )
-+	pulseaudio? ( media-sound/pulseaudio:=[${MULTILIB_USEDEP}] )
- 	system-ffmpeg? (
--		>=media-video/ffmpeg-4.3:=
-+		>=media-video/ffmpeg-${FFMPEG_V}:=[${MULTILIB_USEDEP}]
- 		|| (
--			media-video/ffmpeg[-samba]
--			>=net-fs/samba-4.5.10-r1[-debug(-)]
-+			>=media-video/ffmpeg-${FFMPEG_V}:=[-samba,${MULTILIB_USEDEP}]
-+			>=net-fs/samba-4.5.10-r1[-debug(-),${MULTILIB_USEDEP}]
- 		)
--		>=media-libs/opus-1.3.1:=
-+		>=media-libs/opus-1.3.1:=[${MULTILIB_USEDEP}]
- 	)
- 	net-misc/curl[ssl]
--	sys-apps/dbus:=
--	sys-apps/pciutils:=
-+	sys-apps/dbus:=[${MULTILIB_USEDEP}]
-+	sys-apps/pciutils:=[${MULTILIB_USEDEP}]
- 	virtual/udev
--	x11-libs/cairo:=
--	x11-libs/gdk-pixbuf:2
--	x11-libs/libxkbcommon:=
--	x11-libs/pango:=
--	media-libs/flac:=
--	>=media-libs/libwebp-0.4.0:=
--	sys-libs/zlib:=[minizip]
--	kerberos? ( virtual/krb5 )
-+	x11-libs/cairo:=[${MULTILIB_USEDEP}]
-+	x11-libs/gdk-pixbuf:2[${MULTILIB_USEDEP}]
-+	x11-libs/libxkbcommon:=[${MULTILIB_USEDEP}]
-+	x11-libs/pango:=[${MULTILIB_USEDEP}]
-+	media-libs/flac:=[${MULTILIB_USEDEP}]
-+	>=media-libs/libwebp-0.4.0:=[${MULTILIB_USEDEP}]
-+	sys-libs/zlib:=[minizip,${MULTILIB_USEDEP}]
-+	kerberos? ( virtual/krb5[${MULTILIB_USEDEP}] )
- 	!headless? (
- 		${COMMON_X_DEPEND}
--		>=app-accessibility/at-spi2-atk-2.26:2
--		>=app-accessibility/at-spi2-core-2.26:2
--		>=dev-libs/atk-2.26
--		x11-libs/gtk+:3[X]
-+		>=app-accessibility/at-spi2-atk-2.26:2[${MULTILIB_USEDEP}]
-+		>=app-accessibility/at-spi2-core-2.26:2[${MULTILIB_USEDEP}]
-+		>=dev-libs/atk-2.26[${MULTILIB_USEDEP}]
-+		x11-libs/gtk+:3[X,${MULTILIB_USEDEP}]
- 		wayland? (
--			dev-libs/wayland:=
--			screencast? ( media-video/pipewire:= )
--			x11-libs/gtk+:3[wayland,X]
--			x11-libs/libdrm:=
-+			dev-libs/wayland:=[${MULTILIB_USEDEP}]
-+			screencast? ( media-video/pipewire:0/0.3 )
-+			x11-libs/gtk+:3[wayland,X,${MULTILIB_USEDEP}]
-+			x11-libs/libdrm:=[${MULTILIB_USEDEP}]
- 		)
- 	)
- "
- RDEPEND="${COMMON_DEPEND}
- 	x11-misc/xdg-utils
 -	virtual/opengl
-+	virtual/opengl[${MULTILIB_USEDEP}]
- 	virtual/ttf-fonts
- 	selinux? ( sec-policy/selinux-chromium )
++LIBVA_V="2.7"
++FFMPEG_V="4.3"
++
++LIBVA_DEPEND="
 +	vaapi? (
 +		|| (
 +			video_cards_amdgpu? (
@@ -895,11 +784,24 @@
 +		system-ffmpeg? ( >=media-video/ffmpeg-${FFMPEG_V}[vaapi,${MULTILIB_USEDEP}] )
 +	)
  "
--DEPEND="${COMMON_DEPEND}
--"
-+DEPEND="${COMMON_DEPEND}"
- # dev-vcs/git - https://bugs.gentoo.org/593476
-+
+ 
+-COMMON_SNAPSHOT_DEPEND="
+-	system-icu? ( >=dev-libs/icu-69.1:= )
+-	>=dev-libs/libxml2-2.9.4-r3:=[icu]
+-	dev-libs/nspr:=
+-	>=dev-libs/nss-3.26:=
+-	!libcxx? ( >=dev-libs/re2-0.2019.08.01:= )
+-	dev-libs/libxslt:=
+-	media-libs/fontconfig:=
+-	>=media-libs/freetype-2.11.0-r1:=
+-	system-harfbuzz? ( >=media-libs/harfbuzz-3:0=[icu(-)] )
+-	media-libs/libjpeg-turbo:=
+-	system-png? ( media-libs/libpng:=[-apng] )
+-	>=media-libs/libwebp-0.4.0:=
+-	media-libs/mesa:=[gbm(+)]
+-	>=media-libs/openh264-1.6.0:=
+-	sys-libs/zlib:=
+-	x11-libs/libdrm:=
 +gen_bdepend_llvm() {
 +	local o_all=""
 +	local t=""
@@ -925,10 +827,149 @@
 +	"
 +}
 +
++ACOMMON_X_DEPEND="
++	x11-libs/gdk-pixbuf:2[${MULTILIB_USEDEP}]
++	x11-libs/libXcomposite:=[${MULTILIB_USEDEP}]
++	x11-libs/libXcursor:=[${MULTILIB_USEDEP}]
++	x11-libs/libXdamage:=[${MULTILIB_USEDEP}]
++	x11-libs/libXfixes:=[${MULTILIB_USEDEP}]
++	>=x11-libs/libXi-1.6.0:=[${MULTILIB_USEDEP}]
++	x11-libs/libXrandr:=[${MULTILIB_USEDEP}]
++	x11-libs/libXrender:=[${MULTILIB_USEDEP}]
++	x11-libs/libXtst:=[${MULTILIB_USEDEP}]
++	x11-libs/libxshmfence:=[${MULTILIB_USEDEP}]
++	virtual/opengl[${MULTILIB_USEDEP}]
++"
++
++ACOMMON_SNAPSHOT_DEPEND="
++	system-icu? ( >=dev-libs/icu-69.1:=[${MULTILIB_USEDEP}] )
++	>=dev-libs/libxml2-2.9.4-r3:=[icu,${PYTHON_USEDEP}]
++	dev-libs/nspr:=[${MULTILIB_USEDEP}]
++	>=dev-libs/nss-3.26:=[${MULTILIB_USEDEP}]
++	system-libstdcxx? ( >=dev-libs/re2-0.2019.08.01:=[${MULTILIB_USEDEP}] )
++	dev-libs/libxslt:=[${MULTILIB_USEDEP}]
++	media-libs/fontconfig:=[${MULTILIB_USEDEP}]
++	>=media-libs/freetype-2.11.0-r1:=[${MULTILIB_USEDEP}]
++	system-harfbuzz? ( >=media-libs/harfbuzz-3:0=[icu(-),${PYTHON_USEDEP}] )
++	media-libs/libjpeg-turbo:=[${MULTILIB_USEDEP}]
++	system-png? ( media-libs/libpng:=[-apng,${PYTHON_USEDEP}] )
++	>=media-libs/libwebp-0.4.0:=[${MULTILIB_USEDEP}]
++	media-libs/mesa:=[gbm(+),${PYTHON_USEDEP}]
++	proprietary-codecs? ( >=media-libs/openh264-1.6.0:=[${MULTILIB_USEDEP}] )
++	sys-libs/zlib:=[${MULTILIB_USEDEP}]
++	x11-libs/libdrm:=[${MULTILIB_USEDEP}]
+ 	!headless? (
+-		dev-libs/glib:2
+-		>=media-libs/alsa-lib-1.0.19:=
+-		pulseaudio? ( media-sound/pulseaudio:= )
+-		kerberos? ( virtual/krb5 )
+-		vaapi? ( >=x11-libs/libva-2.7:=[X,drm] )
+-		x11-libs/libX11:=
+-		x11-libs/libXext:=
+-		x11-libs/libxcb:=
+-		x11-libs/libxkbcommon:=
++		dev-libs/glib:2[${MULTILIB_USEDEP}]
++		>=media-libs/alsa-lib-1.0.19:=[${MULTILIB_USEDEP}]
++		pulseaudio? ( media-sound/pulseaudio:=[${MULTILIB_USEDEP}] )
++		kerberos? ( virtual/krb5[${MULTILIB_USEDEP}] )
++		vaapi? ( >=x11-libs/libva-${LIBVA_V}:=[X,drm,${PYTHON_USEDEP}] )
++		x11-libs/libX11:=[${MULTILIB_USEDEP}]
++		x11-libs/libXext:=[${MULTILIB_USEDEP}]
++		x11-libs/libxcb:=[${MULTILIB_USEDEP}]
++		x11-libs/libxkbcommon:=[${MULTILIB_USEDEP}]
+ 		wayland? (
+-			dev-libs/wayland:=
+-			screencast? ( media-video/pipewire:= )
++			dev-libs/wayland:=[${MULTILIB_USEDEP}]
++			screencast? ( media-video/pipewire:=[${MULTILIB_USEDEP}] )
+ 		)
+ 	)
+ "
+ 
+-COMMON_DEPEND="
++ACOMMON_DEPEND="
+ 	${COMMON_SNAPSHOT_DEPEND}
+-	app-arch/bzip2:=
+-	dev-libs/expat:=
++	${LIBVA_DEPEND}
++	app-arch/bzip2:=[${MULTILIB_USEDEP}]
++	dev-libs/expat:=[${MULTILIB_USEDEP}]
+ 	system-ffmpeg? (
+-		>=media-video/ffmpeg-4.3:=
++		>=media-video/ffmpeg-${FFMPEG_V}:=[${MULTILIB_USEDEP}]
+ 		|| (
+-			media-video/ffmpeg[-samba]
+-			>=net-fs/samba-4.5.10-r1[-debug(-)]
++			>=media-video/ffmpeg-${FFMPEG_V}[-samba,${PYTHON_USEDEP}]
++			>=net-fs/samba-4.5.10-r1[-debug(-),${PYTHON_USEDEP}]
+ 		)
+-		>=media-libs/opus-1.3.1:=
++		>=media-libs/opus-1.3.1:=[${MULTILIB_USEDEP}]
+ 	)
+-	net-misc/curl[ssl]
+-	sys-apps/dbus:=
+-	media-libs/flac:=
+-	sys-libs/zlib:=[minizip]
++	net-misc/curl[ssl,${PYTHON_USEDEP}]
++	sys-apps/dbus:=[${MULTILIB_USEDEP}]
++	media-libs/flac:=[${MULTILIB_USEDEP}]
++	sys-libs/zlib:=[minizip,${PYTHON_USEDEP}]
+ 	!headless? (
+ 		${COMMON_X_DEPEND}
+-		>=app-accessibility/at-spi2-atk-2.26:2
+-		>=app-accessibility/at-spi2-core-2.26:2
+-		>=dev-libs/atk-2.26
+-		cups? ( >=net-print/cups-1.3.11:= )
+-		sys-apps/pciutils:=
+-		virtual/udev
+-		x11-libs/cairo:=
+-		x11-libs/pango:=
++		>=app-accessibility/at-spi2-atk-2.26:2[${MULTILIB_USEDEP}]
++		>=app-accessibility/at-spi2-core-2.26:2[${MULTILIB_USEDEP}]
++		>=dev-libs/atk-2.26[${MULTILIB_USEDEP}]
++		cups? ( >=net-print/cups-1.3.11:=[${MULTILIB_USEDEP}] )
++		sys-apps/pciutils:=[${MULTILIB_USEDEP}]
++		|| (
++			>=sys-fs/udev-217[${MULTILIB_USEDEP}]
++			>=sys-fs/eudev-2.1.1[${MULTILIB_USEDEP}]
++			>=sys-apps/systemd-217[${MULTILIB_USEDEP}]
++		)
++		x11-libs/cairo:=[${MULTILIB_USEDEP}]
++		x11-libs/pango:=[${MULTILIB_USEDEP}]
+ 	)
+ "
+-RDEPEND="${COMMON_DEPEND}
++ARDEPEND="${COMMON_DEPEND}
+ 	!headless? (
+ 		|| (
+-			x11-libs/gtk+:3[X,wayland?]
+-			gui-libs/gtk:4[X,wayland?]
++			x11-libs/gtk+:3[X,wayland?,${PYTHON_USEDEP}]
++			gui-libs/gtk:4[X,wayland?,${PYTHON_USEDEP}]
+ 		)
+ 	)
+ 	x11-misc/xdg-utils
+ 	virtual/ttf-fonts
+ 	selinux? ( sec-policy/selinux-chromium )
+ "
+-DEPEND="${COMMON_DEPEND}
++ADEPEND="${COMMON_DEPEND}
+ 	!headless? (
+-		gtk4? ( gui-libs/gtk:4[X,wayland?] )
+-		!gtk4? ( x11-libs/gtk+:3[X,wayland?] )
++		gtk4? ( gui-libs/gtk:4[X,wayland?,${PYTHON_USEDEP}] )
++		!gtk4? ( x11-libs/gtk+:3[X,wayland?,${PYTHON_USEDEP}] )
+ 	)
+ "
  BDEPEND="
- 	${PYTHON_DEPS}
- 	$(python_gen_any_dep '
-@@ -115,34 +875,147 @@ BDEPEND="
+@@ -127,26 +895,84 @@ BDEPEND="
+ 		dev-python/setuptools[${PYTHON_USEDEP}]
+ 	')
+ 	>=app-arch/gzip-1.7
+-	libcxx? ( >=sys-devel/clang-12 )
+ 	dev-lang/perl
+ 	>=dev-util/gn-0.1807
+ 	>=dev-util/gperf-3.0.3
  	>=dev-util/ninja-1.7.2
  	>=net-libs/nodejs-7.6.0[inspector]
  	>=sys-devel/bison-2.4.3
@@ -970,18 +1011,21 @@
 +	)
 +	vaapi? ( media-video/libva-utils )
  "
-+# pgo related:  dev-python/requests is python3 but testing/scripts/run_performance_tests.py is python2
  
 -# These are intended for ebuild maintainer use to force clang if GCC is broken.
 -: ${CHROMIUM_FORCE_CLANG=no}
--: ${CHROMIUM_FORCE_LIBCXX=no}
++# pgo related:  dev-python/requests is python3 but testing/scripts/run_performance_tests.py is python2
+ 
+-if [[ ${CHROMIUM_FORCE_CLANG} == yes ]]; then
+-	BDEPEND+=" >=sys-devel/clang-12"
+-fi
 +# Upstream uses llvm:13
 +# When CFI + PGO + official was tested, it didn't work well with LLVM12.  Error noted in
 +# https://github.com/orsonteodoro/oiledmachine-overlay/blob/f0c13049dc89f068370511b4664f7fb111df2d3a/www-client/chromium/bug_notes
 +# This is why LLVM13 was set as the minimum and did fix the problem.
 +
 +# For the current llvm for this project, see
-+#   https://github.com/chromium/chromium/blob/98.0.4758.80/tools/clang/scripts/update.py#L42
++#   https://github.com/chromium/chromium/blob/99.0.4844.51/tools/clang/scripts/update.py#L42
 +# Use the same clang for official USE flag because of older llvm bugs which
 +#   could result in security weaknesses (explained in the llvm:12 note below).
 +# Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -990,46 +1034,7 @@
 +#     https://bugs.llvm.org/show_bug.cgi?id=47479
 +# To confirm the hash version match for the reported by CR_CLANG_REVISION, see
 +#   https://github.com/llvm/llvm-project/blob/98033fdc/llvm/CMakeLists.txt
-+RDEPEND+="
-+	system-libcxx? (
-+		>=sys-libs/libcxx-${LLVM_MIN_SLOT}[${MULTILIB_USEDEP}]
-+		official? ( >=sys-libs/libcxx-${CR_CLANG_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
-+	)"
-+DEPEND+="
-+	system-libcxx? (
-+		>=sys-libs/libcxx-${LLVM_MIN_SLOT}[${MULTILIB_USEDEP}]
-+		official? ( >=sys-libs/libcxx-${CR_CLANG_SLOT_OFFICIAL}[${MULTILIB_USEDEP}] )
-+	)"
-+# [A]
-+COMMON_DEPEND="
-+	system-libstdcxx? (
-+		app-arch/snappy:=[${MULTILIB_USEDEP}]
-+		dev-libs/libxslt:=[${MULTILIB_USEDEP}]
-+		>=dev-libs/re2-0.2019.08.01:=[${MULTILIB_USEDEP}]
-+		proprietary-codecs? ( >=media-libs/openh264-1.6.0:=[${MULTILIB_USEDEP}] )
-+		system-icu? ( >=dev-libs/icu-69.1:=[${MULTILIB_USEDEP}] )
-+	)
-+"
- 
--if [[ ${CHROMIUM_FORCE_CLANG} == yes ]]; then
--	BDEPEND+=" >=sys-devel/clang-12"
--fi
-+RDEPEND+="${COMMON_DEPEND}"
-+DEPEND+="${COMMON_DEPEND}"
- 
--if [[ ${CHROMIUM_FORCE_LIBCXX} == yes ]]; then
--	RDEPEND+=" >=sys-libs/libcxx-12"
--	DEPEND+=" >=sys-libs/libcxx-12"
--else
--	COMMON_DEPEND="
--		dev-libs/libxslt:=
--		>=dev-libs/re2-0.2019.08.01:=
--		>=media-libs/openh264-1.6.0:=
--		system-icu? ( >=dev-libs/icu-69.1:= )
--	"
--	RDEPEND+="${COMMON_DEPEND}"
--	DEPEND+="${COMMON_DEPEND}"
--fi
++
 +# The preference now is CFI Cross-DSO if one prefers unbundled libs.
 +# CFI Cross-DSO is preferred to reduce duplicate pages at the cost of some
 +# security usually cfi-icall.  This is why CFI Basic mode (.a) is preferred
@@ -1045,60 +1050,13 @@
 +# Some require CFI flags because they support both CFI Cross-DSO mode (.so) and
 +# CFI Basic mode (.a).  Some should have the CFI flag so that CFI packages
 +# are properly prioritized in *DEPENDs to avoid missing symbols problems.
-+
-+# [D]
-+FFMPEG_DEPENDS="
-+	system-ffmpeg? (
-+		media-video/ffmpeg[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}]
-+		media-libs/flac[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}]
-+		media-libs/libaom[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}]
-+		media-libs/libvpx[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}]
-+	)
-+"
  
 -if ! has chromium_pkg_die ${EBUILD_DEATH_HOOKS}; then
-+# Cannot use cfi-icall-generalize-pointers with CFI Cross-DSO but it is used by this package.
-+
-+# flac is required for speech support.
-+# These are related to https://github.com/chromium/chromium/tree/98.0.4758.80/build/linux/unbundle
-+# and initial attempts by the original ebuild developers.
-+# Corresponds to [B] in this ebuild.
-+UNBUNDLE_DEPENDS="
-+	${FFMPEG_DEPENDS}
-+	media-libs/flac[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}]
-+	media-libs/libjpeg-turbo[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}]
-+	libcxx? ( sys-libs/libcxx[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}] )
-+"
-+
-+# In common COMMON_DEPENDS, search for [A] in ebuild
-+# The lack of hardening for openh264 is due to royalty issues (see Wikipedia).
-+# We assume only the binary only version.
-+SYSTEM_LIBXCXX_DEPENDS="
-+	system-icu? ( dev-libs/icu[cfi-cast?,cfi-cross-dso,cfi-icall?,cfi-vcall?,clang,hardened,libcxx,${MULTILIB_USEDEP}] )
-+"
-+
-+SECURITY_DEPENDS_COMMON="
-+	system-libcxx? (
-+		${SYSTEM_LIBXCXX_DEPENDS}
-+		${UNBUNDLE_DEPENDS}
-+	)
-+"
-+
-+SECURITY_DEPENDS+="
-+	official? ( ${SECURITY_DEPENDS_COMMON} )
-+	cfi-cast? ( ${SECURITY_DEPENDS_COMMON} )
-+	cfi-icall? ( ${SECURITY_DEPENDS_COMMON} )
-+	cfi-vcall? ( ${SECURITY_DEPENDS_COMMON} )
-+"
-+
-+# Disabled until forked ebuild progress completes
-+#RDEPEND+=" ${SECURITY_DEPENDS}"
-+
 +if ! has chromium_pkg_die ${EBUILD_DEATH_HOOKS} ; then
  	EBUILD_DEATH_HOOKS+=" chromium_pkg_die";
  fi
  
-@@ -180,30 +1053,89 @@ python_check_deps() {
+@@ -184,32 +1010,90 @@ python_check_deps() {
  }
  
  pre_build_checks() {
@@ -1109,9 +1067,10 @@
 +		if tc-is-gcc && ! ver_test "$(gcc-version)" -ge 9.2 ; then
  			die "At least gcc 9.2 is required"
  		fi
--		if [[ ${CHROMIUM_FORCE_CLANG} == yes ]] || tc-is-clang; then
+-		if [[ ${CHROMIUM_FORCE_CLANG} == yes ]] || tc-is-clang || use libcxx; then
 +		if use clang || tc-is-clang ; then
- 			CPP="${CHOST}-clang++ -E"
+ 			tc-is-cross-compiler && CPP=${CBUILD}-clang++ || CPP=${CHOST}-clang++
+ 			CPP+=" -E"
 -			if ! ver_test "$(clang-major-version)" -ge 12; then
 -				die "At least clang 12 is required"
 +			local clang_min
@@ -1126,10 +1085,11 @@
  		fi
  	fi
  
-+	# https://github.com/chromium/chromium/blob/98.0.4758.80/docs/linux/build_instructions.md#system-requirements
++	# https://github.com/chromium/chromium/blob/99.0.4844.51/docs/linux/build_instructions.md#system-requirements
  	# Check build requirements, bug #541816 and bug #471810 .
  	CHECKREQS_MEMORY="4G"
  	CHECKREQS_DISK_BUILD="9G"
+-	tc-is-cross-compiler && CHECKREQS_DISK_BUILD="12G"
 -	if ( shopt -s extglob; is-flagq '-g?(gdb)?([1-9])' ); then
 -		if use custom-cflags || use component-build; then
 +	if ( shopt -s extglob; is-flagq '-g?(gdb)?([1-9])' ) ; then
@@ -1196,8 +1156,8 @@
  	check-reqs_pkg_setup
  }
  
-@@ -211,26 +1143,2053 @@ pkg_pretend() {
- 	pre_build_checks
+@@ -224,26 +1108,2036 @@ pkg_pretend() {
+ 	fi
  }
  
 +# The answer to the profdata compatibility is answered in
@@ -1210,9 +1170,9 @@
 +# PGO version compatibility
 +
 +# Profdata versioning:
-+# https://github.com/llvm/llvm-project/blob/37fbf238f4427b651a16956eca1cb0e2ab5cdbfd/llvm/include/llvm/ProfileData/InstrProf.h#L991
++# https://github.com/llvm/llvm-project/blob/c4b45eeb44fdc49d1b6199f242082268f8c017d0/llvm/include/llvm/ProfileData/InstrProf.h#L991
 +# LLVM version:
-+# https://github.com/llvm/llvm-project/blob/37fbf238f4427b651a16956eca1cb0e2ab5cdbfd/llvm/CMakeLists.txt#L14
++# https://github.com/llvm/llvm-project/blob/c4b45eeb44fdc49d1b6199f242082268f8c017d0/llvm/CMakeLists.txt#L14
 +# The 37fbf238 is from the CR_CLANG_USED below.
 +
 +# Breaks PGO with non Linux platforms
@@ -1220,9 +1180,9 @@
 +CR_CLANG_USED_UNIX_TIMESTAMP_13="1626129557"
 +
 +# LLVM 14
-+CR_CLANG_USED="37fbf238f4427b651a16956eca1cb0e2ab5cdbfd" # Obtained from \
-+# https://github.com/chromium/chromium/blob/98.0.4758.80/tools/clang/scripts/update.py#L42
-+CR_CLANG_USED_UNIX_TIMESTAMP="1638856450" # Cached.  Use below to obtain this. \
++CR_CLANG_USED="c4b45eeb44fdc49d1b6199f242082268f8c017d0" # Obtained from \
++# https://github.com/chromium/chromium/blob/99.0.4844.51/tools/clang/scripts/update.py#L42
++CR_CLANG_USED_UNIX_TIMESTAMP="1639762552" # Cached.  Use below to obtain this. \
 +# TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 +#	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
 +# Change also CR_CLANG_SLOT_OFFICIAL
@@ -1258,8 +1218,6 @@
 +contains_slotted_zero() {
 +	# For sys-devel/llvm:0 slot style
 +	local live_pkgs_=(
-+		sys-libs/libcxx
-+		sys-libs/libcxxabi
 +		sys-libs/libomp
 +		sys-devel/lld
 +	)
@@ -1364,7 +1322,7 @@
 +		fi
 +		timestamp_type=0
 +	else
-+		einfo "Using LLVM_TIMESTAMP"
++		#einfo "Using LLVM_TIMESTAMP"
 +		root_pkg_timestamp="${LLVM_TIMESTAMP}"
 +		timestamp_type=1
 +	fi
@@ -1428,16 +1386,6 @@
 +	local llvm_slot=${1}
 +	if (( ${needs_emerge} == 1 )) ; then
 +		for p in ${live_pkgs[@]} ; do
-+			if [[ "${p}" == "sys-libs/libcxx" ]] && ! use system-libcxx ; then
-+				continue
-+			fi
-+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && ! use system-libcxx ; then
-+				continue
-+			fi
-+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && use system-libcxx \
-+				&& ! has_version "sys-libs/libcxxabi" ; then
-+				continue
-+			fi
 +			local p_=${p//-/_}
 +			p_=${p_//\//_}
 +			if [[ -z "${llvm_packages_status[${p_}]}" ]] || (( ${llvm_packages_status[${p_}]} == 1 )) ; then
@@ -1477,14 +1425,10 @@
 +	# sys-libs/compiler-rt-sanitizers:x.y.z
 +	# sys-libs/libomp:0
 +	# sys-devel/lld:0
-+	# sys-libs/libcxx:0
-+	# sys-libs/libcxxabi:0
 +	local live_pkgs=(
 +		# Do not change the order!
 +		sys-devel/llvm
 +		sys-libs/libomp
-+		sys-libs/libcxxabi
-+		sys-libs/libcxx
 +		sys-devel/lld
 +		sys-devel/clang
 +		sys-libs/compiler-rt
@@ -1509,17 +1453,6 @@
 +	# The llvm library or llvm-ar doesn't embed the hash info, so scan the /var/db/pkg.
 +	if has_version "sys-devel/llvm:${llvm_slot}" ; then
 +		for p in ${live_pkgs[@]} ; do
-+			if [[ "${p}" == "sys-libs/libcxx" ]] && ! use system-libcxx ; then
-+				continue
-+			fi
-+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && ! use system-libcxx ; then
-+				continue
-+			fi
-+			if [[ "${p}" == "sys-libs/libcxxabi" ]] && use system-libcxx \
-+				&& ! has_version "sys-libs/libcxxabi" ; then
-+				continue
-+			fi
-+
 +			# Check each of the live packages that use llvm.org
 +			# eclass.  Especially for forgetful types.
 +
@@ -1871,23 +1804,31 @@
 +		# No LLVM multi version bug here.
 +		# Cr will still work if Mesa slot is lower and Cr is built with
 +		# a higher version.
-+		unset LLVM_REPORT_CARDS
-+		for s in ${LLVM_SLOTS[@]} ; do
-+			verify_llvm_toolchain ${s}
-+		done
-+		LLVM_SLOT=
-+		local slots
-+		if use official ; then
-+			slots=${CR_CLANG_SLOT_OFFICIAL}
-+		else
-+			slots=$(echo "${LLVM_SLOTS[@]}" | tr " " "\n" | tac | tr "\n" " ")
-+		fi
-+		for s in ${slots} ; do
-+			if [[ ${LLVM_REPORT_CARDS[${s}]} == "pass" ]] ; then
-+				export LLVM_SLOT=${s}
-+				break
++		if use pre-check-llvm ; then
++			unset LLVM_REPORT_CARDS
++			for s in ${LLVM_SLOTS[@]} ; do
++				verify_llvm_toolchain ${s}
++			done
++			LLVM_SLOT=
++			local slots
++			if use official ; then
++				slots=${CR_CLANG_SLOT_OFFICIAL}
++			else
++				slots=$(echo "${LLVM_SLOTS[@]}" | tr " " "\n" | tac | tr "\n" " ")
 +			fi
-+		done
++			for s in ${slots} ; do
++				if [[ ${LLVM_REPORT_CARDS[${s}]} == "pass" ]] ; then
++					export LLVM_SLOT=${s}
++					break
++				fi
++			done
++		else
++			if use official ; then
++				LLVM_SLOT=14
++			else
++				LLVM_SLOT=$(ver_cut 1 $(best_version "sys-devel/clang" | sed -e "sys-devel/clang-"))
++			fi
++		fi
 +		if [[ -z "${LLVM_SLOT}" ]] ; then
 +eerror
 +eerror "You must choose a LLVM slot to update properly:"
@@ -1969,9 +1910,9 @@
 +		find_video0
 +	fi
 +
-+	if use system-libcxx || use system-libstdcxx ; then
++	if use system-libstdcxx ; then
 +ewarn
-+ewarn "The system's libcxx or libstdcxx may weaken the security.  Consider"
++ewarn "The system's libstdcxx may weaken the security.  Consider"
 +ewarn "using only the bundled-libcxx instead."
 +ewarn
 +	fi
@@ -2079,6 +2020,7 @@
 +
 +DRM_RENDER_NODE=
 +find_vaapi() {
++	use pre-check-vaapi || return
 +	if use vaapi && [[ -n "${CR_DRM_RENDER_NODE}" ]] ; then
 +		einfo "User VA-API override"
 +		# Per-package envvar overridable
@@ -2358,8 +2300,8 @@
 +			#	"${S}/tools/perf/page_sets/trivial_sites/trivial_gif.html"
 +		fi
 +
-+		# See also https://chromium.googlesource.com/chromium/src.git/+/refs/tags/98.0.4758.80/media/test/data/#media-test-data
-+		# https://chromium.googlesource.com/chromium/src.git/+/refs/tags/98.0.4758.80/tools/perf/page_sets/media_cases.py
++		# See also https://chromium.googlesource.com/chromium/src.git/+/refs/tags/99.0.4844.51/media/test/data/#media-test-data
++		# https://chromium.googlesource.com/chromium/src.git/+/refs/tags/99.0.4844.51/tools/perf/page_sets/media_cases.py
 +		if use cr_pgo_trainers_media_desktop \
 +			|| use cr_pgo_trainers_media_mobile ; then
 +			einfo "Generating missing assets for the media.desktop or media.mobile benchmarks"
@@ -3215,6 +3157,7 @@
 +}
 +
 +verify_clang_commit() {
++	use pre-check-llvm || return
 +	local commit_id=$(grep -r -e "CLANG_REVISION" \
 +		"${S}/tools/clang/scripts/update.py" \
 +		| head -n 1 \
@@ -3254,15 +3197,10 @@
  		"${FILESDIR}/chromium-98-EnumTable-crash.patch"
  		"${FILESDIR}/chromium-98-system-libdrm.patch"
  		"${FILESDIR}/chromium-98-gtk4-build.patch"
-@@ -239,8 +3198,51 @@ src_prepare() {
- 		"${FILESDIR}/chromium-shim_headers.patch"
+@@ -253,8 +3147,46 @@ src_prepare() {
+ 		"${FILESDIR}/chromium-cross-compile.patch"
  	)
  
-+	if ! use arm64 ; then
-+		einfo "Removing arm only patches"
-+		rm "${WORKDIR}/patches/chromium-95-libyuv-arm.patch" || die
-+	fi
-+
 +	if use clang ; then
 +		if tc-is-clang ; then # Duplicate conditional is for testing reasons
 +			# Using gcc with these patches results in this error:
@@ -3306,7 +3244,7 @@
  	mkdir -p third_party/node/linux/node-linux-x64/bin || die
  	ln -s "${EPREFIX}"/usr/bin/node third_party/node/linux/node-linux-x64/bin/node || die
  
-@@ -470,6 +3472,7 @@ src_prepare() {
+@@ -485,6 +3417,7 @@ src_prepare() {
  		third_party/xcbproto
  		third_party/zxcvbn-cpp
  		third_party/zlib/google
@@ -3314,7 +3252,7 @@
  		url/third_party/mozilla
  		v8/src/third_party/siphash
  		v8/src/third_party/valgrind
-@@ -483,10 +3486,18 @@ src_prepare() {
+@@ -498,18 +3431,26 @@ src_prepare() {
  		third_party/usb_ids
  		third_party/xdg-utils
  	)
@@ -3335,31 +3273,37 @@
  		keeplibs+=( third_party/icu )
  	fi
  	if ! use system-png; then
-@@ -500,12 +3511,19 @@ src_prepare() {
- 	if use wayland && ! use headless ; then
- 		keeplibs+=( third_party/wayland )
+ 		keeplibs+=( third_party/libpng )
  	fi
--	if [[ ${CHROMIUM_FORCE_LIBCXX} == yes ]]; then
+-	if use libcxx; then
+-		keeplibs+=( third_party/re2 )
+-	fi
++	# For re2 see ! use system-libstdcxx conditional below
++	#
++	#
+ 	if use system-harfbuzz; then
+ 		keeplibs+=( third_party/harfbuzz-ng/utils )
+ 	else
+@@ -521,9 +3462,25 @@ src_prepare() {
+ 	if use arm64 || use ppc64 ; then
+ 		keeplibs+=( third_party/swiftshader/third_party/llvm-10.0 )
+ 	fi
 +	if ! use system-libstdcxx \
 +		|| use cfi-cast \
 +		|| use cfi-icall \
 +		|| use cfi-vcall \
 +		|| use official ; then
- 		keeplibs+=( third_party/libxml )
- 		keeplibs+=( third_party/libxslt )
--		keeplibs+=( third_party/openh264 )
- 		keeplibs+=( third_party/re2 )
--		if use system-icu; then
++		keeplibs+=( third_party/libxml )
++		keeplibs+=( third_party/libxslt )
++		keeplibs+=( third_party/re2 )
 +		#keeplibs+=( third_party/snappy )
 +		if use proprietary-codecs ; then
 +			keeplibs+=( third_party/openh264 )
 +		fi
 +		if use system-icu ; then
- 			keeplibs+=( third_party/icu )
- 		fi
- 	fi
-@@ -514,7 +3532,7 @@ src_prepare() {
- 	fi
++			keeplibs+=( third_party/icu )
++		fi
++	fi
  	# we need to generate ppc64 stuff because upstream does not ship it yet
  	# it has to be done before unbundling.
 -	if use ppc64; then
@@ -3367,7 +3311,7 @@
  		pushd third_party/libvpx >/dev/null || die
  		mkdir -p source/config/linux/ppc64 || die
  		# requires git and clang, bug #832803
-@@ -524,47 +3542,103 @@ src_prepare() {
+@@ -533,42 +3490,99 @@ src_prepare() {
  		popd >/dev/null || die
  	fi
  
@@ -3431,19 +3375,27 @@
 +		die
 +	fi
  
--	if [[ ${CHROMIUM_FORCE_CLANG} == yes ]] && ! tc-is-clang; then
--		# Force clang since gcc is pretty broken at the moment.
--		CC=${CHOST}-clang
--		CXX=${CHOST}-clang++
--		strip-unsupported-flags
+-	if { [[ ${CHROMIUM_FORCE_CLANG} == yes ]] || use libcxx; } && ! tc-is-clang; then
+-		# Force clang since gcc is either broken or build is using libcxx.
 +	# Final CC selected
 +	if use clang ; then
 +		# See build/toolchain/linux/unbundle/BUILD.gn for allowed overridable envvars.
 +		# See build/toolchain/gcc_toolchain.gni#L657 for consistency.
-+		if [[ -n ${FORCE_LLVM_SLOT} ]] ; then
+ 		if tc-is-cross-compiler; then
+-			CC="${CBUILD}-clang -target ${CHOST} --sysroot ${ESYSROOT}"
+-			CXX="${CBUILD}-clang++ -target ${CHOST} --sysroot ${ESYSROOT}"
+-			BUILD_CC=${CBUILD}-clang
+-			BUILD_CXX=${CBUILD}-clang++
++			export CC="${CBUILD}-clang -target ${CHOST} --sysroot ${ESYSROOT}"
++			export CXX="${CBUILD}-clang++ -target ${CHOST} --sysroot ${ESYSROOT}"
++			export BUILD_CC=${CBUILD}-clang
++			export BUILD_CXX=${CBUILD}-clang++
++		elif [[ -n ${FORCE_LLVM_SLOT} ]] ; then
 +			export CC="clang-${FORCE_LLVM_SLOT} $(get_abi_CFLAGS ${ABI})"
 +			export CXX="clang++-${FORCE_LLVM_SLOT} $(get_abi_CFLAGS ${ABI})"
-+		else
+ 		else
+-			CC=${CHOST}-clang
+-			CXX=${CHOST}-clang++
 +			export CC="clang-${LLVM_SLOT} $(get_abi_CFLAGS ${ABI})"
 +			export CXX="clang++-${LLVM_SLOT} $(get_abi_CFLAGS ${ABI})"
 +		fi
@@ -3453,7 +3405,8 @@
 +		export STRIP=llvm-strip
 +		if ! which llvm-ar 2>/dev/null 1>/dev/null ; then
 +			die "llvm-ar is unreachable"
-+		fi
+ 		fi
+-		strip-unsupported-flags
 +	else
 +		einfo "Forcing GCC"
 +		export CC="gcc $(get_abi_CFLAGS ${ABI})"
@@ -3471,16 +3424,12 @@
 +		'-f*sanitize*' \
 +		'-f*visibility*'
  
--	if tc-is-clang; then
+-	if tc-is-clang || use libcxx; then
 +	if use clang ; then
  		myconf_gn+=" is_clang=true clang_use_chrome_plugins=false"
  	else
--		if [[ ${CHROMIUM_FORCE_LIBCXX} == yes ]]; then
--			die "Compiling with sys-libs/libcxx requires clang."
--		fi
  		myconf_gn+=" is_clang=false"
- 	fi
- 
+@@ -577,7 +3591,7 @@ src_configure() {
  	# Define a custom toolchain for GN
  	myconf_gn+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
  
@@ -3489,16 +3438,16 @@
  		tc-export BUILD_{AR,CC,CXX,NM}
  		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:host\""
  		myconf_gn+=" v8_snapshot_toolchain=\"//build/toolchain/linux/unbundle:host\""
-@@ -572,6 +3646,8 @@ src_configure() {
+@@ -597,6 +3611,8 @@ src_configure() {
  		myconf_gn+=" host_toolchain=\"//build/toolchain/linux/unbundle:default\""
  	fi
  
 +# Debug symbols level 2 is still on when official is on even though is_debug=false:
-+# See https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/compiler/compiler.gni#L276
++# See https://github.com/chromium/chromium/blob/99.0.4844.51/build/config/compiler/compiler.gni#L276
  	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
  	myconf_gn+=" is_debug=false"
  
-@@ -587,6 +3663,14 @@ src_configure() {
+@@ -612,6 +3628,14 @@ src_configure() {
  	# Disable nacl, we can't build without pnacl (http://crbug.com/269560).
  	myconf_gn+=" enable_nacl=false"
  
@@ -3513,7 +3462,7 @@
  	# Use system-provided libraries.
  	# TODO: freetype -- remove sources (https://bugs.chromium.org/p/pdfium/issues/detail?id=733).
  	# TODO: use_system_hunspell (upstream changes needed).
-@@ -594,6 +3678,7 @@ src_configure() {
+@@ -619,6 +3643,7 @@ src_configure() {
  	# TODO: use_system_sqlite (http://crbug.com/22208).
  
  	# libevent: https://bugs.gentoo.org/593458
@@ -3521,8 +3470,16 @@
  	local gn_system_libraries=(
  		flac
  		fontconfig
-@@ -605,23 +3690,45 @@ src_configure() {
+@@ -628,25 +3653,51 @@ src_configure() {
+ 		libdrm
+ 		libjpeg
  		libwebp
+-		libxml
+-		libxslt
+-		openh264
++		# moved in use system-libstdcxx cond
++		# moved in use system-libstdcxx cond
++		# moved in use system-libstdcxx cond
  		zlib
  	)
 -	if use system-ffmpeg; then
@@ -3537,12 +3494,13 @@
 +	if use system-png ; then
  		gn_system_libraries+=( libpng )
  	fi
--	if [[ ${CHROMIUM_FORCE_LIBCXX} != yes ]]; then
+-	# re2 library interface relies on std::string and std::vector
+-	if ! use libcxx; then
 +	if use system-libstdcxx ; then
- 		# unbundle only without libc++, because libc++ is not fully ABI compatible with libstdc++
- 		gn_system_libraries+=( libxml )
- 		gn_system_libraries+=( libxslt )
--		gn_system_libraries+=( openh264 )
++		# unbundle only without libc++, because libc++ is not fully ABI compatible with libstdc++
++		gn_system_libraries+=( libxml )
++		gn_system_libraries+=( libxslt )
++		# re2 library interface relies on std::string and std::vector
  		gn_system_libraries+=( re2 )
 +		if use proprietary-codecs ; then
 +			gn_system_libraries+=( openh264 )
@@ -3573,7 +3531,7 @@
  
  	# See dependency logic in third_party/BUILD.gn
  	myconf_gn+=" use_system_harfbuzz=$(usex system-harfbuzz true false)"
-@@ -641,15 +3748,25 @@ src_configure() {
+@@ -676,16 +3727,25 @@ src_configure() {
  
  	# TODO: link_pulseaudio=true for GN.
  
@@ -3584,7 +3542,8 @@
 +	myconf_gn+=" use_gold=false use_sysroot=false"
  	# Do not use bundled clang.
  	# Trying to use gold results in linker crash.
--	myconf_gn+=" use_gold=false use_sysroot=false use_custom_libcxx=false"
+-	myconf_gn+=" use_gold=false use_sysroot=false"
+-	myconf_gn+=" use_custom_libcxx=$(usex libcxx true false)"
 +	if use official && ( use cfi-cast || use cfi-icall || use cfi-vcall ) || use bundled-libcxx ; then
 +		# If you didn't do systemwide CFI Cross-DSO, it must be static.
 +		myconf_gn+=" use_custom_libcxx=true"
@@ -3603,7 +3562,7 @@
  
  	# Disable pseudolocales, only used for testing
  	myconf_gn+=" enable_pseudolocales=false"
-@@ -675,25 +3792,34 @@ src_configure() {
+@@ -711,18 +3771,18 @@ src_configure() {
  	local myarch="$(tc-arch)"
  
  	# Avoid CFLAGS problems, bug #352457, bug #390147.
@@ -3625,24 +3584,7 @@
  			filter-flags -mno-mmx -mno-sse2 -mno-ssse3 -mno-sse4.1 -mno-avx -mno-avx2 -mno-fma -mno-fma4
  		fi
  	fi
- 
--	if [[ ${CHROMIUM_FORCE_LIBCXX} == yes ]]; then
-+	if use system-libcxx ; then
- 		append-flags -stdlib=libc++
- 		append-ldflags -stdlib=libc++
-+
-+		local libcxx_path="/usr/$(get_libdir)/libc++.so.1.0"
-+		if [[ -e "${libcxx_path}" ]] \
-+			&& ! grep -E -q -e "(__cfi_init)" "${libcxx_path}" ; then
-+			# If not CFI Cross-DSO mode, then use CFI Basic mode.
-+			# The below flag is a misnomer.  It also means, link statically to libc++
-+			append-flags -static-libstdc++
-+			append-ldflags -static-libstdc++
-+		fi
- 	fi
- 
- 	if [[ $myarch = amd64 ]] ; then
-@@ -719,6 +3845,42 @@ src_configure() {
+@@ -750,6 +3810,42 @@ src_configure() {
  		die "Failed to determine target arch, got '$myarch'."
  	fi
  
@@ -3685,7 +3627,7 @@
  	# Make sure that -Werror doesn't get added to CFLAGS by the build system.
  	# Depending on GCC version the warnings are different and we don't want
  	# the build to fail because of that.
-@@ -734,10 +3896,10 @@ src_configure() {
+@@ -765,10 +3861,10 @@ src_configure() {
  	# https://bugs.gentoo.org/654216
  	addpredict /dev/dri/ #nowarn
  
@@ -3699,16 +3641,7 @@
  			build_ffmpeg_args+=" --disable-asm"
  		fi
  
-@@ -755,7 +3917,7 @@ src_configure() {
- 	tc-is-clang && append-flags -Wno-unknown-warning-option
- 
- 	# Explicitly disable ICU data file support for system-icu builds.
--	if use system-icu; then
-+	if use system-icu ; then
- 		myconf_gn+=" icu_use_data_file=false"
- 	fi
- 
-@@ -763,16 +3925,16 @@ src_configure() {
+@@ -800,10 +3896,11 @@ src_configure() {
  	myconf_gn+=" use_ozone=true ozone_auto_platforms=false"
  	myconf_gn+=" ozone_platform_headless=true"
  	myconf_gn+=" ozone_platform_x11=$(usex headless false true)"
@@ -3717,18 +3650,12 @@
 +	if use wayland || use headless ; then
 +		if use headless ; then
  			myconf_gn+=" ozone_platform=\"headless\""
- 			myconf_gn+=" use_x11=false"
- 		else
-+			myconf_gn+=" ozone_platform=\"wayland\""
- 			myconf_gn+=" ozone_platform_wayland=true"
- 			myconf_gn+=" use_system_libdrm=true"
- 			myconf_gn+=" use_system_minigbm=true"
- 			myconf_gn+=" use_xkbcommon=true"
--			myconf_gn+=" ozone_platform=\"wayland\""
- 		fi
- 	else
- 		myconf_gn+=" ozone_platform=\"x11\""
-@@ -780,17 +3942,90 @@ src_configure() {
+ 			myconf_gn+=" use_xkbcommon=false use_gtk=false"
++			myconf_gn+=" use_x11=false"
+ 			myconf_gn+=" use_glib=false use_gio=false"
+ 			myconf_gn+=" use_pangocairo=false use_alsa=false"
+ 			myconf_gn+=" use_libpci=false use_udev=false"
+@@ -822,17 +3919,90 @@ src_configure() {
  
  	# Enable official builds
  	myconf_gn+=" is_official_build=$(usex official true false)"
@@ -3749,7 +3676,7 @@
 -		# Disable CFI: unsupported for GCC, requires clang+lto+lld
 +	fi
 +
-+# See https://github.com/chromium/chromium/blob/98.0.4758.80/build/config/sanitizers/BUILD.gn#L196
++# See https://github.com/chromium/chromium/blob/99.0.4844.51/build/config/sanitizers/BUILD.gn#L196
 +	if use cfi-vcall ; then
 +		myconf_gn+=" is_cfi=true"
 +	else
@@ -3757,7 +3684,7 @@
 -		# Disable PGO, because profile data is only compatible with >=clang-11
 +	fi
 +
-+# See https://github.com/chromium/chromium/blob/98.0.4758.80/tools/mb/mb_config.pyl#L2950
++# See https://github.com/chromium/chromium/blob/99.0.4844.51/tools/mb/mb_config.pyl#L2950
 +	if use cfi-cast ; then
 +		myconf_gn+=" use_cfi_cast=true"
 +	else
@@ -3804,7 +3731,7 @@
 +	fi
 +
 +# See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-+# See also https://github.com/chromium/chromium/blob/98.0.4758.80/docs/pgo.md
++# See also https://github.com/chromium/chromium/blob/99.0.4844.51/docs/pgo.md
 +# profile-instr-use is clang which that file assumes but gcc doesn't have.
 +	if use pgo-full ; then
 +		myconf_gn+=" chrome_pgo_phase=${PGO_PHASE}"
@@ -3825,7 +3752,7 @@
  	fi
  
  	einfo "Configuring Chromium..."
-@@ -799,38 +4034,266 @@ src_configure() {
+@@ -841,38 +4011,266 @@ src_configure() {
  	"$@" || die
  }
  
@@ -3896,8 +3823,8 @@
 +}
 +
 +_run_training_suite() {
-+# See also https://github.com/chromium/chromium/blob/98.0.4758.80/docs/pgo.md
-+# https://github.com/chromium/chromium/blob/98.0.4758.80/testing/buildbot/generate_buildbot_json.py
++# See also https://github.com/chromium/chromium/blob/99.0.4844.51/docs/pgo.md
++# https://github.com/chromium/chromium/blob/99.0.4844.51/testing/buildbot/generate_buildbot_json.py
 +# https://github.com/chromium/chromium/commit/8acfdce99c84fbc35ad259692ac083a9ea18392c
 +# tools/perf/contrib/vr_benchmarks
 +	export PYTHONPATH=$(_get_pythonpath)
@@ -4110,7 +4037,7 @@
  
  	# Build manpage; bug #684550
  	sed -e 's|@@PACKAGE@@|chromium-browser|g;
-@@ -839,9 +4302,7 @@ src_compile() {
+@@ -881,9 +4279,7 @@ src_compile() {
  		out/Release/chromium-browser.1 || die
  
  	# Build desktop file; bug #706786
@@ -4121,7 +4048,7 @@
  		s|\(^Exec=\)/usr/bin/|\1|g;' \
  		chrome/installer/linux/common/desktop.template > \
  		out/Release/chromium-browser-chromium.desktop || die
-@@ -850,19 +4311,104 @@ src_compile() {
+@@ -892,19 +4288,104 @@ src_compile() {
  	sed -e 's|${ICD_LIBRARY_PATH}|./libvk_swiftshader.so|g' \
  		third_party/swiftshader/src/Vulkan/vk_swiftshader_icd.json.tmpl > \
  		out/Release/vk_swiftshader_icd.json || die
@@ -4163,9 +4090,8 @@
 +		| head -n ${length} > \
 +		"${T}/${dl}/${license_name}" || die
 +	dodoc "${T}/${dl}/${license_name}"
- }
- 
--src_install() {
++}
++
 +# @FUNCTION: _install_licenses
 +# @DESCRIPTION:
 +# Installs licenses and copyright notices from packages and other internal
@@ -4206,8 +4132,9 @@
 +	# calls here.
 +
 +	touch "${T}/.copied_licenses"
-+}
-+
+ }
+ 
+-src_install() {
 +multilib_src_install() {
 +	if (( ${NABIS} == 1 )) ; then
 +		export BUILD_DIR="${S}"
@@ -4229,7 +4156,7 @@
  	doexe out/Release/chrome_crashpad_handler
  
  	ozone_auto_session () {
-@@ -870,18 +4416,22 @@ src_install() {
+@@ -912,18 +4393,22 @@ src_install() {
  	}
  	local sedargs=( -e
  			"s:/usr/lib/:/usr/$(get_libdir)/:g;
@@ -4256,16 +4183,7 @@
  
  	# Allow users to override command-line options, bug #357629.
  	insinto /etc/chromium
-@@ -900,7 +4450,7 @@ src_install() {
- 		[[ ${#files[@]} -gt 0 ]] && doins "${files[@]}"
- 	)
- 
--	if ! use system-icu; then
-+	if ! use system-icu ; then
- 		doins out/Release/icudtl.dat
- 	fi
- 
-@@ -910,7 +4460,7 @@ src_install() {
+@@ -952,7 +4437,7 @@ src_install() {
  	# Install vk_swiftshader_icd.json; bug #827861
  	doins out/Release/vk_swiftshader_icd.json
  
@@ -4274,7 +4192,7 @@
  		insinto "${CHROMIUM_HOME}/swiftshader"
  		doins out/Release/swiftshader/*.so
  	fi
-@@ -927,7 +4477,7 @@ src_install() {
+@@ -969,7 +4454,7 @@ src_install() {
  	done
  
  	# Install desktop entry
@@ -4283,7 +4201,7 @@
  
  	# Install GNOME default application entry (bug #303100).
  	insinto /usr/share/gnome-control-center/default-apps
-@@ -938,6 +4488,11 @@ src_install() {
+@@ -980,6 +4465,11 @@ src_install() {
  	dosym chromium-browser.1 /usr/share/man/man1/chromium.1
  
  	readme.gentoo_create_doc
@@ -4295,94 +4213,100 @@
  }
  
  pkg_postrm() {
-@@ -950,15 +4505,97 @@ pkg_postinst() {
- 	xdg_desktop_database_update
+@@ -993,15 +4483,84 @@ pkg_postinst() {
  	readme.gentoo_print_elog
  
--	if use vaapi; then
--		elog "VA-API is disabled by default at runtime. You have to enable it"
--		elog "by adding --enable-features=VaapiVideoDecoder to CHROMIUM_FLAGS"
--		elog "in /etc/chromium/default."
-+	if use vaapi ; then
-+		# It says 3 args:  https://github.com/chromium/chromium/blob/98.0.4758.80/docs/gpu/vaapi.md#vaapi-on-linux
-+		elog "VA-API is disabled by default at runtime.  You have to enable it"
-+		elog "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
-+		elog "--use-gl=desktop or --use-gl=egl to the CHROMIUM_FLAGS in"
-+		elog "/etc/chromium/default."
+ 	if ! use headless; then
+-		if use vaapi; then
+-			elog "VA-API is disabled by default at runtime. You have to enable it"
+-			elog "by adding --enable-features=VaapiVideoDecoder to CHROMIUM_FLAGS"
+-			elog "in /etc/chromium/default."
++		if use vaapi ; then
++			# It says 3 args:  https://github.com/chromium/chromium/blob/99.0.4844.51/docs/gpu/vaapi.md#vaapi-on-linux
++			elog "VA-API is disabled by default at runtime.  You have to enable it"
++			elog "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
++			elog "--use-gl=desktop or --use-gl=egl to the CHROMIUM_FLAGS in"
++			elog "/etc/chromium/default."
 +
-+		if has_version "x11-libs/libva-intel-driver" ; then
-+			ewarn
-+			ewarn "x11-libs/libva-intel-driver is the older vaapi driver but intended for"
-+			ewarn "select hardware.  See also x11-libs/libva-intel-media-driver package"
-+			ewarn "to access more VA-API accelerated encoders if driver support overlaps."
-+			ewarn
-+		fi
++			if has_version "x11-libs/libva-intel-driver" ; then
++				ewarn
++				ewarn "x11-libs/libva-intel-driver is the older vaapi driver but intended for"
++				ewarn "select hardware.  See also x11-libs/libva-intel-media-driver package"
++				ewarn "to access more VA-API accelerated encoders if driver support overlaps."
++				ewarn
++			fi
 +
-+		if use video_cards_intel || use video_cards_i965 || use video_cards_iris ; then
++			if use video_cards_intel || use video_cards_i965 || use video_cards_iris ; then
++				einfo
++				einfo "Intel Quick Sync Video is required for hardware accelerated H.264 VA-API"
++				einfo "encode."
++				einfo
++				einfo "For hardware support, see the AVC row at"
++				einfo "https://en.wikipedia.org/wiki/Intel_Quick_Sync_Video#Hardware_decoding_and_encoding"
++				einfo
++				einfo "Driver ebuild packages for their corresponding hardware can be found at:"
++				einfo
++				einfo "x11-libs/libva-intel-driver:"
++				einfo "https://github.com/intel/intel-vaapi-driver/blob/master/README"
++				einfo
++				einfo "x11-libs/libva-intel-media-driver:"
++				einfo "https://github.com/intel/media-driver#decodingencoding-features"
++				einfo
++			fi
++			if use video_cards_amdgpu \
++				|| use video_cards_r600 \
++				|| use video_cards_radeonsi ; then
++				einfo
++				einfo "You need VCE (Video Code Engine) or VCN (Video Core Next) for"
++				einfo "hardware accelerated H.264 VA-API encode."
++				einfo
++				einfo "For details see https://en.wikipedia.org/wiki/Video_Coding_Engine#Feature_overview"
++				einfo "or https://www.x.org/wiki/RadeonFeature/"
++				einfo
++				einfo "The r600 driver only supports ARUBA for VCE encode."
++				einfo "For newer hardware, try a newer free driver like"
++				einfo "the radeonsi driver or closed drivers."
++				einfo
++			fi
++			if use video_cards_nouveau ; then
++				einfo
++				einfo "For details see, https://nouveau.freedesktop.org/VideoAcceleration.html"
++				einfo "Reconsider using the official driver instead."
++				einfo
++			fi
 +			einfo
-+			einfo "Intel Quick Sync Video is required for hardware accelerated H.264 VA-API"
-+			einfo "encode."
++			einfo "Some drivers may require firmware for proper VA-API support."
 +			einfo
-+			einfo "For hardware support, see the AVC row at"
-+			einfo "https://en.wikipedia.org/wiki/Intel_Quick_Sync_Video#Hardware_decoding_and_encoding"
++			einfo "The user must be part of the video group to use VA-API support."
++			# Because it touches /dev/dri/renderD128
 +			einfo
-+			einfo "Driver ebuild packages for their corresponding hardware can be found at:"
++			einfo "The LIBVA_DRIVER_NAME envvar may need to be changed if both open"
++			einfo "and closed drivers are installed to one of the following"
 +			einfo
-+			einfo "x11-libs/libva-intel-driver:"
-+			einfo "https://github.com/intel/intel-vaapi-driver/blob/master/README"
++			has_version "x11-libs/libva-intel-driver" \
++				&& einfo "  LIBVA_DRIVER_NAME=\"i965\""
++			has_version "x11-libs/libva-intel-media-driver" \
++				&& einfo "  LIBVA_DRIVER_NAME=\"iHD\""
++			use video_cards_r600 \
++				&& einfo "  LIBVA_DRIVER_NAME=\"r600\""
++			( use video_cards_radeonsi || use video_cards_amdgpu ) \
++				&& einfo "  LIBVA_DRIVER_NAME=\"radeonsi\""
 +			einfo
-+			einfo "x11-libs/libva-intel-media-driver:"
-+			einfo "https://github.com/intel/media-driver#decodingencoding-features"
++			einfo "to your ~/.bashrc or ~/.xinitrc and relogging."
 +			einfo
-+		fi
-+		if use video_cards_amdgpu \
-+			|| use video_cards_r600 \
-+			|| use video_cards_radeonsi ; then
-+			einfo
-+			einfo "You need VCE (Video Code Engine) or VCN (Video Core Next) for"
-+			einfo "hardware accelerated H.264 VA-API encode."
-+			einfo
-+			einfo "For details see https://en.wikipedia.org/wiki/Video_Coding_Engine#Feature_overview"
-+			einfo "or https://www.x.org/wiki/RadeonFeature/"
-+			einfo
-+			einfo "The r600 driver only supports ARUBA for VCE encode."
-+			einfo "For newer hardware, try a newer free driver like"
-+			einfo "the radeonsi driver or closed drivers."
-+			einfo
-+		fi
-+		if use video_cards_nouveau ; then
-+			einfo
-+			einfo "For details see, https://nouveau.freedesktop.org/VideoAcceleration.html"
-+			einfo "Reconsider using the official driver instead."
-+			einfo
-+		fi
-+		einfo
-+		einfo "Some drivers may require firmware for proper VA-API support."
-+		einfo
-+		einfo "The user must be part of the video group to use VA-API support."
-+		# Because it touches /dev/dri/renderD128
-+		einfo
-+		einfo "The LIBVA_DRIVER_NAME envvar may need to be changed if both open"
-+		einfo "and closed drivers are installed to one of the following"
-+		einfo
-+		has_version "x11-libs/libva-intel-driver" \
-+			&& einfo "  LIBVA_DRIVER_NAME=\"i965\""
-+		has_version "x11-libs/libva-intel-media-driver" \
-+			&& einfo "  LIBVA_DRIVER_NAME=\"iHD\""
-+		use video_cards_r600 \
-+			&& einfo "  LIBVA_DRIVER_NAME=\"r600\""
-+		( use video_cards_radeonsi || use video_cards_amdgpu ) \
-+			&& einfo "  LIBVA_DRIVER_NAME=\"radeonsi\""
-+		einfo
-+		einfo "to your ~/.bashrc or ~/.xinitrc and relogging."
-+		einfo
- 	fi
--	if use screencast; then
-+	if use screencast ; then
- 		elog "Screencast is disabled by default at runtime. Either enable it"
- 		elog "by navigating to chrome://flags/#enable-webrtc-pipewire-capturer"
- 		elog "inside Chromium or add --enable-webrtc-pipewire-capturer"
- 		elog "to CHROMIUM_FLAGS in /etc/chromium/default."
+ 		fi
+-		if use screencast; then
++		if use screencast ; then
+ 			elog "Screencast is disabled by default at runtime. Either enable it"
+ 			elog "by navigating to chrome://flags/#enable-webrtc-pipewire-capturer"
+-			elog "inside Chromium or add --enable-features=WebRTCPipeWireCapturer"
++			elog "inside Chromium or add --enable-webrtc-pipewire-capturer"
+ 			elog "to CHROMIUM_FLAGS in /etc/chromium/default."
+ 		fi
+ 		if use gtk4; then
+@@ -1010,4 +4569,17 @@ pkg_postinst() {
+ 			elog "to CHROMIUM_FLAGS in /etc/chromium/default."
+ 		fi
  	fi
 +
 +	einfo
