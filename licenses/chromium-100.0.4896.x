@@ -6,110 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <title>Credits</title>
 <link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
-<style>
-html {
-  --google-blue-50: rgb(232, 240, 254);
-  --google-blue-300: rgb(138, 180, 248);
-  --google-blue-600: rgb(26, 115, 232);
-  --google-blue-900: rgb(23, 78, 166);
-  --google-grey-200: rgb(232, 234, 237);
-  --google-grey-800: rgb(60, 64, 67);
-  --google-grey-900: rgb(32, 33, 36);
-
-  --interactive-color: var(--google-blue-600);
-  --primary-color: var(--google-grey-900);
-
-  --product-background: var(--google-blue-50);
-  --product-text-color: var(--google-blue-900);
-
-  background: white;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    --interactive-color: var(--google-blue-300);
-    --primary-color: var(--google-grey-200);
-
-    --product-background: var(--google-grey-800);
-    --product-text-color: var(--google-grey-200);
-
-    background: var(--google-grey-900);
-  }
-}
-
-body {
-  color: var(--primary-color);
-  font-size: 84%;
-  max-width: 1020px;
-}
-a {
-  color: var(--interactive-color);
-}
-.page-title {
-  font-size: 164%;
-  font-weight: bold;
-}
-.product {
-  background-color: var(--product-background);
-  color: var(--product-text-color);
-  border-radius: 5px;
-  margin-top: 16px;
-  overflow: auto;
-  padding: 2px;
-}
-.product .title {
-  float: left;
-  font-size: 110%;
-  font-weight: bold;
-  margin: 3px;
-}
-.product .homepage {
-  color: var(--interactive-color);
-  float: right;
-  margin: 3px;
-  text-align: right;
-}
-.product .homepage::before {
-  content: " - ";
-}
-.product .show {
-  color: var(--interactive-color);
-  float: right;
-  margin: 3px;
-  text-align: right;
-  text-decoration: underline;
-}
-.licence {
-  border-radius: 3px;
-  clear: both;
-  display: none;
-  padding: 16px;
-}
-.licence h3 {
-  margin-top: 0;
-}
-.licence pre {
-  white-space: pre-wrap;
-}
-.dialog #print-link,
-.dialog .homepage {
-  display: none;
-}
-input + label + div {
-  display: none;
-}
-input + label::after {
-  content: "show license";
-  cursor: pointer;
-}
-input:checked + label + div {
-  display: block;
-}
-input:checked + label::after {
-  content: "hide license";
-  cursor: pointer;
-}
-</style>
+<link rel="stylesheet" href="chrome://credits/credits.css">
 </head>
 <body>
 <span class="page-title" style="float:left;">Credits</span>
@@ -9034,222 +8931,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Open Source Project - Settings App</span>
-<span class="homepage"><a href="https://android.googlesource.com/platform/packages/apps/Settings/">homepage</a></span>
-<input type="checkbox" hidden id="24">
-<label class="show" for="24" tabindex="0"></label>
-<div class="licence">
-<pre>
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-   1. Definitions.
-
-      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      &quot;control&quot; means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      &quot;Source&quot; form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      &quot;Object&quot; form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      &quot;Work&quot; shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      &quot;Contribution&quot; shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
-
-      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-
-   APPENDIX: How to apply the Apache License to your work.
-
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
-      replaced with your own identifying information. (Don&#x27;t include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same &quot;printed page&quot; as the copyright notice for easier
-      identification within third-party archives.
-
-   Copyright [yyyy] [name of copyright owner]
-
-   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-</pre>
-</div>
-</div>
-
-<div class="product">
 <span class="title">Android SDK</span>
 <span class="homepage"><a href="http://developer.android.com/sdk/index.html">homepage</a></span>
-<input type="checkbox" hidden id="25">
-<label class="show" for="25" tabindex="0"></label>
+<input type="checkbox" hidden id="24">
+<label class="show" for="24" tabindex="0"></label>
 <div class="licence">
 <pre>Notice for all the files in this folder.
 ------------------------------------------------------------
@@ -9475,6 +9160,218 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Android Support AnimatedVectorDrawable</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
+<input type="checkbox" hidden id="25">
+<label class="show" for="25" tabindex="0"></label>
+<div class="licence">
+<pre>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre>
+</div>
+</div>
+
+<div class="product">
+<span class="title">Android Support CardView v7</span>
+<span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="26">
 <label class="show" for="26" tabindex="0"></label>
 <div class="licence">
@@ -9685,7 +9582,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support CardView v7</span>
+<span class="title">Android Support Library Annotations</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="27">
 <label class="show" for="27" tabindex="0"></label>
@@ -9897,7 +9794,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Annotations</span>
+<span class="title">Android Support Library Async Layout Inflater</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="28">
 <label class="show" for="28" tabindex="0"></label>
@@ -10109,7 +10006,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Async Layout Inflater</span>
+<span class="title">Android Support Library collections</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="29">
 <label class="show" for="29" tabindex="0"></label>
@@ -10321,7 +10218,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library collections</span>
+<span class="title">Android Support Library compat</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="30">
 <label class="show" for="30" tabindex="0"></label>
@@ -10533,7 +10430,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library compat</span>
+<span class="title">Android Support Library Coordinator Layout</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="31">
 <label class="show" for="31" tabindex="0"></label>
@@ -10745,7 +10642,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Coordinator Layout</span>
+<span class="title">Android Support Library core UI</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="32">
 <label class="show" for="32" tabindex="0"></label>
@@ -10957,7 +10854,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library core UI</span>
+<span class="title">Android Support Library core utils</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="33">
 <label class="show" for="33" tabindex="0"></label>
@@ -11169,7 +11066,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library core utils</span>
+<span class="title">Android Support Library Cursor Adapter</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="34">
 <label class="show" for="34" tabindex="0"></label>
@@ -11381,7 +11278,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Cursor Adapter</span>
+<span class="title">Android Support Library Custom View</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="35">
 <label class="show" for="35" tabindex="0"></label>
@@ -11593,7 +11490,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Custom View</span>
+<span class="title">Android Support Library Document File</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="36">
 <label class="show" for="36" tabindex="0"></label>
@@ -11805,7 +11702,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Document File</span>
+<span class="title">Android Support Library Drawer Layout</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="37">
 <label class="show" for="37" tabindex="0"></label>
@@ -12017,7 +11914,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Drawer Layout</span>
+<span class="title">Android Support Library fragment</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="38">
 <label class="show" for="38" tabindex="0"></label>
@@ -12229,7 +12126,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library fragment</span>
+<span class="title">Android Support Library Interpolators</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="39">
 <label class="show" for="39" tabindex="0"></label>
@@ -12441,7 +12338,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Interpolators</span>
+<span class="title">Android Support Library loader</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="40">
 <label class="show" for="40" tabindex="0"></label>
@@ -12653,7 +12550,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library loader</span>
+<span class="title">Android Support Library Local Broadcast Manager</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="41">
 <label class="show" for="41" tabindex="0"></label>
@@ -12865,7 +12762,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Local Broadcast Manager</span>
+<span class="title">Android Support Library media compat</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="42">
 <label class="show" for="42" tabindex="0"></label>
@@ -13077,7 +12974,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library media compat</span>
+<span class="title">Android Support Library Print</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="43">
 <label class="show" for="43" tabindex="0"></label>
@@ -13289,7 +13186,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Print</span>
+<span class="title">Android Support Library Sliding Pane Layout</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="44">
 <label class="show" for="44" tabindex="0"></label>
@@ -13501,7 +13398,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library Sliding Pane Layout</span>
+<span class="title">Android Support Library v4</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="45">
 <label class="show" for="45" tabindex="0"></label>
@@ -13713,7 +13610,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library v4</span>
+<span class="title">Android Support Library View Pager</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="46">
 <label class="show" for="46" tabindex="0"></label>
@@ -13925,7 +13822,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support Library View Pager</span>
+<span class="title">Android Support RecyclerView v7</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="47">
 <label class="show" for="47" tabindex="0"></label>
@@ -14137,7 +14034,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support RecyclerView v7</span>
+<span class="title">Android Support VectorDrawable</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
 <input type="checkbox" hidden id="48">
 <label class="show" for="48" tabindex="0"></label>
@@ -14349,222 +14246,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Android Support VectorDrawable</span>
-<span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
-<input type="checkbox" hidden id="49">
-<label class="show" for="49" tabindex="0"></label>
-<div class="licence">
-<pre>
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-   1. Definitions.
-
-      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      &quot;control&quot; means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      &quot;Source&quot; form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      &quot;Object&quot; form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      &quot;Work&quot; shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      &quot;Contribution&quot; shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
-
-      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-
-   APPENDIX: How to apply the Apache License to your work.
-
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
-      replaced with your own identifying information. (Don&#x27;t include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same &quot;printed page&quot; as the copyright notice for easier
-      identification within third-party archives.
-
-   Copyright [yyyy] [name of copyright owner]
-
-   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-</pre>
-</div>
-</div>
-
-<div class="product">
 <span class="title">Android System SDK</span>
 <span class="homepage"><a href="https://android.googlesource.com/platform/frameworks/base">homepage</a></span>
-<input type="checkbox" hidden id="50">
-<label class="show" for="50" tabindex="0"></label>
+<input type="checkbox" hidden id="49">
+<label class="show" for="49" tabindex="0"></label>
 <div class="licence">
 <pre>GNU General Public License, version 2,
 with the Classpath Exception
@@ -14923,8 +14608,8 @@ exception as provided by Oracle in the LICENSE file that accompanied this code.&
 <div class="product">
 <span class="title">Android Transition Support Library</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
-<input type="checkbox" hidden id="51">
-<label class="show" for="51" tabindex="0"></label>
+<input type="checkbox" hidden id="50">
+<label class="show" for="50" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -15135,8 +14820,8 @@ exception as provided by Oracle in the LICENSE file that accompanied this code.&
 <div class="product">
 <span class="title">Animal Sniffer Annotations</span>
 <span class="homepage"><a href="http://www.mojohaus.org/animal-sniffer/animal-sniffer-annotations/">homepage</a></span>
-<input type="checkbox" hidden id="52">
-<label class="show" for="52" tabindex="0"></label>
+<input type="checkbox" hidden id="51">
+<label class="show" for="51" tabindex="0"></label>
 <div class="licence">
 <pre>The MIT License
 
@@ -15166,8 +14851,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">ARCore SDK</span>
 <span class="homepage"><a href="https://github.com/google-ar/arcore-android-sdk">homepage</a></span>
-<input type="checkbox" hidden id="53">
-<label class="show" for="53" tabindex="0"></label>
+<input type="checkbox" hidden id="52">
+<label class="show" for="52" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2017, Google Inc.
 Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -15334,8 +15019,8 @@ END OF TERMS AND CONDITIONS
 <div class="product">
 <span class="title">ARCore SDK client library for Chrome</span>
 <span class="homepage"><a href="https://developers.google.com/ar/develop/java/enable-arcore#dependencies">homepage</a></span>
-<input type="checkbox" hidden id="54">
-<label class="show" for="54" tabindex="0"></label>
+<input type="checkbox" hidden id="53">
+<label class="show" for="53" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -15546,8 +15231,8 @@ END OF TERMS AND CONDITIONS
 <div class="product">
 <span class="title">ARM_NEON_2_x86_SSE</span>
 <span class="homepage"><a href="https://github.com/intel/ARM_NEON_2_x86_SSE">homepage</a></span>
-<input type="checkbox" hidden id="55">
-<label class="show" for="55" tabindex="0"></label>
+<input type="checkbox" hidden id="54">
+<label class="show" for="54" tabindex="0"></label>
 <div class="licence">
 <pre>created by Victoria Zhislina, the Senior Application Engineer, Intel Corporation,  victoria.zhislina@intel.com
 
@@ -15585,8 +15270,8 @@ the use of this software, even if advised of the possibility of such damage.
 <div class="product">
 <span class="title">AXE-CORE Accessibility Audit</span>
 <span class="homepage"><a href="https://github.com/dequelabs/axe-core/">homepage</a></span>
-<input type="checkbox" hidden id="56">
-<label class="show" for="56" tabindex="0"></label>
+<input type="checkbox" hidden id="55">
+<label class="show" for="55" tabindex="0"></label>
 <div class="licence">
 <pre>Mozilla Public License, version 2.0
 
@@ -15957,8 +15642,8 @@ Exhibit B - &quot;Incompatible With Secondary Licenses&quot; Notice
 <div class="product">
 <span class="title">Blackmagic DeckLink SDK - Mac</span>
 <span class="homepage"><a href="http://software.blackmagicdesign.com/DeckLink/v10.7/Blackmagic_DeckLink_SDK_10.7.zip">homepage</a></span>
-<input type="checkbox" hidden id="57">
-<label class="show" for="57" tabindex="0"></label>
+<input type="checkbox" hidden id="56">
+<label class="show" for="56" tabindex="0"></label>
 <div class="licence">
 <pre>Extracted from mac/include/DeckLinkAPI.h:
 
@@ -15992,8 +15677,8 @@ Exhibit B - &quot;Incompatible With Secondary Licenses&quot; Notice
 <div class="product">
 <span class="title">blink HTMLTokenizer</span>
 <span class="homepage"><a href="http://www.chromium.org/blink">homepage</a></span>
-<input type="checkbox" hidden id="58">
-<label class="show" for="58" tabindex="0"></label>
+<input type="checkbox" hidden id="57">
+<label class="show" for="57" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (C) 2008 Apple Inc. All Rights Reserved.
 Copyright (C) 2009 Torch Mobile, Inc. http://www.torchmobile.com/
@@ -16026,8 +15711,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">BoringSSL</span>
 <span class="homepage"><a href="https://boringssl.googlesource.com/boringssl">homepage</a></span>
-<input type="checkbox" hidden id="59">
-<label class="show" for="59" tabindex="0"></label>
+<input type="checkbox" hidden id="58">
+<label class="show" for="58" tabindex="0"></label>
 <div class="licence">
 <pre>BoringSSL is a fork of OpenSSL. As such, large parts of it fall under OpenSSL
 licensing. Files that are completely new have a Google copyright and an ISC
@@ -16287,8 +15972,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Braille Translation Library</span>
 <span class="homepage"><a href="https://github.com/liblouis/liblouis">homepage</a></span>
-<input type="checkbox" hidden id="60">
-<label class="show" for="60" tabindex="0"></label>
+<input type="checkbox" hidden id="59">
+<label class="show" for="59" tabindex="0"></label>
 <div class="licence">
 <pre>(Copied from src/liblouis/liblouis.h.in)
 
@@ -16324,8 +16009,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Breakpad, An open-source multi-platform crash reporting system</span>
 <span class="homepage"><a href="https://chromium.googlesource.com/breakpad/breakpad">homepage</a></span>
-<input type="checkbox" hidden id="61">
-<label class="show" for="61" tabindex="0"></label>
+<input type="checkbox" hidden id="60">
+<label class="show" for="60" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2006, Google Inc.
 All rights reserved.
@@ -16422,8 +16107,8 @@ the License.
 <div class="product">
 <span class="title">Brotli</span>
 <span class="homepage"><a href="https://github.com/google/brotli">homepage</a></span>
-<input type="checkbox" hidden id="62">
-<label class="show" for="62" tabindex="0"></label>
+<input type="checkbox" hidden id="61">
+<label class="show" for="61" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2009, 2010, 2013-2016 by the Brotli Authors.
 
@@ -16451,8 +16136,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">BSDiff</span>
 <span class="homepage"><a href="http://www.daemonology.net/bsdiff/">homepage</a></span>
-<input type="checkbox" hidden id="63">
-<label class="show" for="63" tabindex="0"></label>
+<input type="checkbox" hidden id="62">
+<label class="show" for="62" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2003-2005 Colin Percival
 All rights reserved
@@ -16484,8 +16169,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">bsdiff</span>
 <span class="homepage"><a href="http://www.daemonology.net/bsdiff/">homepage</a></span>
-<input type="checkbox" hidden id="64">
-<label class="show" for="64" tabindex="0"></label>
+<input type="checkbox" hidden id="63">
+<label class="show" for="63" tabindex="0"></label>
 <div class="licence">
 <pre>BSD Protection License
 February 2002
@@ -16615,8 +16300,8 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION, AND MODIFICATION
 <div class="product">
 <span class="title">bspatch</span>
 <span class="homepage"><a href="http://lxr.mozilla.org/mozilla/source/toolkit/mozapps/update/src/updater/">homepage</a></span>
-<input type="checkbox" hidden id="65">
-<label class="show" for="65" tabindex="0"></label>
+<input type="checkbox" hidden id="64">
+<label class="show" for="64" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2003,2004 Colin Percival
 All rights reserved
@@ -16648,8 +16333,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">C++ port of zxcvbn, an advanced password strength estimation library.</span>
 <span class="homepage"><a href="https://github.com/rianhunter/zxcvbn-cpp">homepage</a></span>
-<input type="checkbox" hidden id="66">
-<label class="show" for="66" tabindex="0"></label>
+<input type="checkbox" hidden id="65">
+<label class="show" for="65" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2016 Rian Hunter
 Copyright (c) 2012-2016 Dan Wheeler and Dropbox, Inc.
@@ -16679,8 +16364,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <div class="product">
 <span class="title">CastCore Publics</span>
 <span class="homepage"><a href="https://chromium.googlesource.com/cast_core/public">homepage</a></span>
-<input type="checkbox" hidden id="67">
-<label class="show" for="67" tabindex="0"></label>
+<input type="checkbox" hidden id="66">
+<label class="show" for="66" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -16890,8 +16575,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <div class="product">
 <span class="title">Checker Qual</span>
 <span class="homepage"><a href="https://checkerframework.org">homepage</a></span>
-<input type="checkbox" hidden id="68">
-<label class="show" for="68" tabindex="0"></label>
+<input type="checkbox" hidden id="67">
+<label class="show" for="67" tabindex="0"></label>
 <div class="licence">
 <pre>The Checker Framework
 Copyright 2004-present by the Checker Framework developers
@@ -17313,8 +16998,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">ChromeVox</span>
 <span class="homepage"><a href="http://code.google.com/p/google-axs-chrome/">homepage</a></span>
-<input type="checkbox" hidden id="69">
-<label class="show" for="69" tabindex="0"></label>
+<input type="checkbox" hidden id="68">
+<label class="show" for="68" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright 2013 Google Inc.
 //
@@ -17336,8 +17021,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Chromium OS system API</span>
 <span class="homepage"><a href="http://www.chromium.org/chromium-os">homepage</a></span>
-<input type="checkbox" hidden id="70">
-<label class="show" for="70" tabindex="0"></label>
+<input type="checkbox" hidden id="69">
+<label class="show" for="69" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright (c) 2006-2009 The Chromium OS Authors. All rights reserved.
 //
@@ -17373,8 +17058,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">CityHash</span>
 <span class="homepage"><a href="https://github.com/google/cityhash">homepage</a></span>
-<input type="checkbox" hidden id="71">
-<label class="show" for="71" tabindex="0"></label>
+<input type="checkbox" hidden id="70">
+<label class="show" for="70" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright (c) 2011 Google, Inc.
 //
@@ -17402,8 +17087,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Closure compiler</span>
 <span class="homepage"><a href="http://github.com/google/closure-compiler">homepage</a></span>
-<input type="checkbox" hidden id="72">
-<label class="show" for="72" tabindex="0"></label>
+<input type="checkbox" hidden id="71">
+<label class="show" for="71" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -17614,8 +17299,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Closure compiler NPM</span>
 <span class="homepage"><a href="https://github.com/google/closure-compiler-npm">homepage</a></span>
-<input type="checkbox" hidden id="73">
-<label class="show" for="73" tabindex="0"></label>
+<input type="checkbox" hidden id="72">
+<label class="show" for="72" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -17826,8 +17511,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Cocoa extension code from Camino</span>
 <span class="homepage"><a href="http://caminobrowser.org/">homepage</a></span>
-<input type="checkbox" hidden id="74">
-<label class="show" for="74" tabindex="0"></label>
+<input type="checkbox" hidden id="73">
+<label class="show" for="73" tabindex="0"></label>
 <div class="licence">
 <pre>/* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -17871,8 +17556,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">CodeMirror 5</span>
 <span class="homepage"><a href="https://github.com/codemirror/CodeMirror/">homepage</a></span>
-<input type="checkbox" hidden id="75">
-<label class="show" for="75" tabindex="0"></label>
+<input type="checkbox" hidden id="74">
+<label class="show" for="74" tabindex="0"></label>
 <div class="licence">
 <pre>MIT License
 
@@ -17902,8 +17587,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">CodeMirror 6</span>
 <span class="homepage"><a href="https://github.com/codemirror/CodeMirror.next/">homepage</a></span>
-<input type="checkbox" hidden id="76">
-<label class="show" for="76" tabindex="0"></label>
+<input type="checkbox" hidden id="75">
+<label class="show" for="75" tabindex="0"></label>
 <div class="licence">
 <pre>MIT License
 
@@ -17933,8 +17618,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Compact Encoding Detection</span>
 <span class="homepage"><a href="https://github.com/google/compact_enc_det">homepage</a></span>
-<input type="checkbox" hidden id="77">
-<label class="show" for="77" tabindex="0"></label>
+<input type="checkbox" hidden id="76">
+<label class="show" for="76" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright (c) 2010 The Chromium Authors. All rights reserved.
 //
@@ -17970,8 +17655,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Compact Language Detector v3</span>
 <span class="homepage"><a href="https://github.com/google/cld3">homepage</a></span>
-<input type="checkbox" hidden id="78">
-<label class="show" for="78" tabindex="0"></label>
+<input type="checkbox" hidden id="77">
+<label class="show" for="77" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2016 Google Inc.  All rights reserved.
 
@@ -18183,8 +17868,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">core</span>
 <span class="homepage"><a href="https://developers.google.com/android/guides/setup">homepage</a></span>
-<input type="checkbox" hidden id="79">
-<label class="show" for="79" tabindex="0"></label>
+<input type="checkbox" hidden id="78">
+<label class="show" for="78" tabindex="0"></label>
 <div class="licence">
 <pre>Terms and conditions
 
@@ -18340,8 +18025,8 @@ December 9, 2016
 <div class="product">
 <span class="title">Crashpad</span>
 <span class="homepage"><a href="https://crashpad.chromium.org/">homepage</a></span>
-<input type="checkbox" hidden id="80">
-<label class="show" for="80" tabindex="0"></label>
+<input type="checkbox" hidden id="79">
+<label class="show" for="79" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -18552,8 +18237,8 @@ December 9, 2016
 <div class="product">
 <span class="title">CRC32C</span>
 <span class="homepage"><a href="https://github.com/google/crc32c">homepage</a></span>
-<input type="checkbox" hidden id="81">
-<label class="show" for="81" tabindex="0"></label>
+<input type="checkbox" hidden id="80">
+<label class="show" for="80" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2017, The CRC32C Authors.
 
@@ -18590,8 +18275,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">d3</span>
 <span class="homepage"><a href="https://github.com/d3/d3">homepage</a></span>
-<input type="checkbox" hidden id="82">
-<label class="show" for="82" tabindex="0"></label>
+<input type="checkbox" hidden id="81">
+<label class="show" for="81" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2010-2017 Mike Bostock
 All rights reserved.
@@ -18627,8 +18312,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">D8 configuration to desugar desugar_jdk_libs</span>
 <span class="homepage"><a href="http://r8.googlesource.com/r8">homepage</a></span>
-<input type="checkbox" hidden id="83">
-<label class="show" for="83" tabindex="0"></label>
+<input type="checkbox" hidden id="82">
+<label class="show" for="82" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2016, the R8 project authors.
 All rights reserved.
@@ -18664,8 +18349,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Dagger</span>
 <span class="homepage"><a href="https://github.com/google/dagger">homepage</a></span>
-<input type="checkbox" hidden id="84">
-<label class="show" for="84" tabindex="0"></label>
+<input type="checkbox" hidden id="83">
+<label class="show" for="83" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -18876,8 +18561,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Darwin</span>
 <span class="homepage"><a href="http://www.opensource.apple.com/">homepage</a></span>
-<input type="checkbox" hidden id="85">
-<label class="show" for="85" tabindex="0"></label>
+<input type="checkbox" hidden id="84">
+<label class="show" for="84" tabindex="0"></label>
 <div class="licence">
 <pre>APPLE PUBLIC SOURCE LICENSE Version 2.0 -  August 6, 2003
 
@@ -19213,8 +18898,8 @@ governing rights and limitations under the License.&quot;
 <div class="product">
 <span class="title">dav1d is an AV1 decoder :)</span>
 <span class="homepage"><a href="https://code.videolan.org/videolan/dav1d">homepage</a></span>
-<input type="checkbox" hidden id="86">
-<label class="show" for="86" tabindex="0"></label>
+<input type="checkbox" hidden id="85">
+<label class="show" for="85" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright © 2018, VideoLAN and dav1d authors
 All rights reserved.
@@ -19246,8 +18931,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Dawn</span>
 <span class="homepage"><a href="https://dawn.googlesource.com/dawn">homepage</a></span>
-<input type="checkbox" hidden id="87">
-<label class="show" for="87" tabindex="0"></label>
+<input type="checkbox" hidden id="86">
+<label class="show" for="86" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -19491,8 +19176,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Devtools-Frontend</span>
 <span class="homepage"><a href="https://chromium.googlesource.com/devtools/devtools-frontend">homepage</a></span>
-<input type="checkbox" hidden id="88">
-<label class="show" for="88" tabindex="0"></label>
+<input type="checkbox" hidden id="87">
+<label class="show" for="87" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright 2014 The Chromium Authors. All rights reserved.
 //
@@ -19528,8 +19213,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">divsufsort</span>
 <span class="homepage"><a href="https://github.com/y-256/libdivsufsort">homepage</a></span>
-<input type="checkbox" hidden id="89">
-<label class="show" for="89" tabindex="0"></label>
+<input type="checkbox" hidden id="88">
+<label class="show" for="88" tabindex="0"></label>
 <div class="licence">
 <pre>The MIT License (MIT)
 
@@ -19559,8 +19244,8 @@ SOFTWARE.
 <div class="product">
 <span class="title">dom-distiller-js</span>
 <span class="homepage"><a href="https://github.com/chromium/dom-distiller">homepage</a></span>
-<input type="checkbox" hidden id="90">
-<label class="show" for="90" tabindex="0"></label>
+<input type="checkbox" hidden id="89">
+<label class="show" for="89" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2014 The Chromium Authors. All rights reserved.
 
@@ -19666,8 +19351,8 @@ END OF TERMS AND CONDITIONS
 <div class="product">
 <span class="title">dynamic annotations</span>
 <span class="homepage"><a href="http://code.google.com/p/data-race-test/wiki/DynamicAnnotations">homepage</a></span>
-<input type="checkbox" hidden id="91">
-<label class="show" for="91" tabindex="0"></label>
+<input type="checkbox" hidden id="90">
+<label class="show" for="90" tabindex="0"></label>
 <div class="licence">
 <pre>/* Copyright (c) 2008-2009, Google Inc.
  * All rights reserved.
@@ -19704,8 +19389,8 @@ END OF TERMS AND CONDITIONS
 <div class="product">
 <span class="title">EasyList</span>
 <span class="homepage"><a href="https://easylist.to/easylist/easylist.txt">homepage</a></span>
-<input type="checkbox" hidden id="92">
-<label class="show" for="92" tabindex="0"></label>
+<input type="checkbox" hidden id="91">
+<label class="show" for="91" tabindex="0"></label>
 <div class="licence">
 <pre>EasyList Repository Licences
 
@@ -20097,8 +19782,8 @@ Creative Commons Notice
 <div class="product">
 <span class="title">Eigen</span>
 <span class="homepage"><a href="http://eigen.tuxfamily.org/">homepage</a></span>
-<input type="checkbox" hidden id="93">
-<label class="show" for="93" tabindex="0"></label>
+<input type="checkbox" hidden id="92">
+<label class="show" for="92" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -20309,8 +19994,8 @@ Creative Commons Notice
 <div class="product">
 <span class="title">Emoji Segmenter</span>
 <span class="homepage"><a href="https://github.com/googlei18n/emoji-segmenter">homepage</a></span>
-<input type="checkbox" hidden id="94">
-<label class="show" for="94" tabindex="0"></label>
+<input type="checkbox" hidden id="93">
+<label class="show" for="93" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -20521,8 +20206,8 @@ Creative Commons Notice
 <div class="product">
 <span class="title">emoji-metadata</span>
 <span class="homepage"><a href="https://github.com/googlefonts/emoji-metadata">homepage</a></span>
-<input type="checkbox" hidden id="95">
-<label class="show" for="95" tabindex="0"></label>
+<input type="checkbox" hidden id="94">
+<label class="show" for="94" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -20733,8 +20418,8 @@ Creative Commons Notice
 <div class="product">
 <span class="title">error-prone annotations</span>
 <span class="homepage"><a href="https://errorprone.info/">homepage</a></span>
-<input type="checkbox" hidden id="96">
-<label class="show" for="96" tabindex="0"></label>
+<input type="checkbox" hidden id="95">
+<label class="show" for="95" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -20945,8 +20630,8 @@ Creative Commons Notice
 <div class="product">
 <span class="title">etc1</span>
 <span class="homepage"><a href="https://source.android.com/">homepage</a></span>
-<input type="checkbox" hidden id="97">
-<label class="show" for="97" tabindex="0"></label>
+<input type="checkbox" hidden id="96">
+<label class="show" for="96" tabindex="0"></label>
 <div class="licence">
 <pre>/*
  * Copyright (C) 2009 The Android Open Source Project
@@ -20969,8 +20654,8 @@ Creative Commons Notice
 <div class="product">
 <span class="title">Expat XML Parser</span>
 <span class="homepage"><a href="https://github.com/libexpat/libexpat">homepage</a></span>
-<input type="checkbox" hidden id="98">
-<label class="show" for="98" tabindex="0"></label>
+<input type="checkbox" hidden id="97">
+<label class="show" for="97" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 1998-2000 Thai Open Source Software Center Ltd and Clark Cooper
 Copyright (c) 2001-2019 Expat maintainers
@@ -21000,8 +20685,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <div class="product">
 <span class="title">FarmHash</span>
 <span class="homepage"><a href="https://github.com/google/farmhash">homepage</a></span>
-<input type="checkbox" hidden id="99">
-<label class="show" for="99" tabindex="0"></label>
+<input type="checkbox" hidden id="98">
+<label class="show" for="98" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright (c) 2014 Google, Inc.
 //
@@ -21029,8 +20714,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <div class="product">
 <span class="title">fdlibm</span>
 <span class="homepage"><a href="http://www.netlib.org/fdlibm/">homepage</a></span>
-<input type="checkbox" hidden id="100">
-<label class="show" for="100" tabindex="0"></label>
+<input type="checkbox" hidden id="99">
+<label class="show" for="99" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (C) 1993-2004 by Sun Microsystems, Inc. All rights reserved.
 
@@ -21045,8 +20730,8 @@ is preserved.
 <div class="product">
 <span class="title">ffmpeg</span>
 <span class="homepage"><a href="http://ffmpeg.org/">homepage</a></span>
-<input type="checkbox" hidden id="101">
-<label class="show" for="101" tabindex="0"></label>
+<input type="checkbox" hidden id="100">
+<label class="show" for="100" tabindex="0"></label>
 <div class="licence">
 <pre># License
 
@@ -21383,6 +21068,31 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+********************************************************************************
+
+libavutil/x86/x86inc.asm
+
+x86inc.asm: x264asm abstraction layer
+
+ Copyright (C) 2005-2018 x264 project
+
+ Authors: Loren Merritt &lt;lorenm@u.washington.edu&gt;
+          Henrik Gramner &lt;henrik@gramner.com&gt;
+          Anton Mitrofanov &lt;BugMaster@narod.ru&gt;
+          Fiona Glaser &lt;fiona@x264.com&gt;
+
+ Permission to use, copy, modify, and/or distribute this software for any
+ purpose with or without fee is hereby granted, provided that the above
+ copyright notice and this permission notice appear in all copies.
+
+ THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ********************************************************************************
 
@@ -22064,8 +21774,8 @@ That&#x27;s all there is to it!</pre>
 <div class="product">
 <span class="title">Fiat-Crypto: Synthesizing Correct-by-Construction Code for Cryptographic Primitives</span>
 <span class="homepage"><a href="https://github.com/mit-plv/fiat-crypto">homepage</a></span>
-<input type="checkbox" hidden id="102">
-<label class="show" for="102" tabindex="0"></label>
+<input type="checkbox" hidden id="101">
+<label class="show" for="101" tabindex="0"></label>
 <div class="licence">
 <pre>The MIT License (MIT)
 
@@ -22096,8 +21806,8 @@ SOFTWARE.
 <div class="product">
 <span class="title">FideltyFX Single Pass Downsampler</span>
 <span class="homepage"><a href="https://github.com/GPUOpen-Effects/FidelityFX-SPD">homepage</a></span>
-<input type="checkbox" hidden id="103">
-<label class="show" for="103" tabindex="0"></label>
+<input type="checkbox" hidden id="102">
+<label class="show" for="102" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2020 Advanced Micro Devices, Inc. All rights reserved.
 
@@ -22124,6 +21834,218 @@ THE SOFTWARE.</pre>
 <div class="product">
 <span class="title">FindBugs-jsr305</span>
 <span class="homepage"><a href="http://findbugs.sourceforge.net/">homepage</a></span>
+<input type="checkbox" hidden id="103">
+<label class="show" for="103" tabindex="0"></label>
+<div class="licence">
+<pre>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre>
+</div>
+</div>
+
+<div class="product">
+<span class="title">firebase-annotations</span>
+<span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
 <input type="checkbox" hidden id="104">
 <label class="show" for="104" tabindex="0"></label>
 <div class="licence">
@@ -22334,7 +22256,7 @@ THE SOFTWARE.</pre>
 </div>
 
 <div class="product">
-<span class="title">firebase-annotations</span>
+<span class="title">firebase-common</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
 <input type="checkbox" hidden id="105">
 <label class="show" for="105" tabindex="0"></label>
@@ -22546,7 +22468,7 @@ THE SOFTWARE.</pre>
 </div>
 
 <div class="product">
-<span class="title">firebase-common</span>
+<span class="title">firebase-components</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
 <input type="checkbox" hidden id="106">
 <label class="show" for="106" tabindex="0"></label>
@@ -22758,7 +22680,7 @@ THE SOFTWARE.</pre>
 </div>
 
 <div class="product">
-<span class="title">firebase-components</span>
+<span class="title">firebase-encoders</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
 <input type="checkbox" hidden id="107">
 <label class="show" for="107" tabindex="0"></label>
@@ -22970,7 +22892,7 @@ THE SOFTWARE.</pre>
 </div>
 
 <div class="product">
-<span class="title">firebase-encoders</span>
+<span class="title">firebase-encoders-json</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
 <input type="checkbox" hidden id="108">
 <label class="show" for="108" tabindex="0"></label>
@@ -23182,222 +23104,10 @@ THE SOFTWARE.</pre>
 </div>
 
 <div class="product">
-<span class="title">firebase-encoders-json</span>
+<span class="title">firebase-iid</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
 <input type="checkbox" hidden id="109">
 <label class="show" for="109" tabindex="0"></label>
-<div class="licence">
-<pre>
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-   1. Definitions.
-
-      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      &quot;control&quot; means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      &quot;Source&quot; form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      &quot;Object&quot; form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      &quot;Work&quot; shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      &quot;Contribution&quot; shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
-
-      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-
-   APPENDIX: How to apply the Apache License to your work.
-
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
-      replaced with your own identifying information. (Don&#x27;t include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same &quot;printed page&quot; as the copyright notice for easier
-      identification within third-party archives.
-
-   Copyright [yyyy] [name of copyright owner]
-
-   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-</pre>
-</div>
-</div>
-
-<div class="product">
-<span class="title">firebase-iid</span>
-<span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
-<input type="checkbox" hidden id="110">
-<label class="show" for="110" tabindex="0"></label>
 <div class="licence">
 <pre>Terms and conditions
 
@@ -26297,8 +26007,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">firebase-iid-interop</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
-<input type="checkbox" hidden id="111">
-<label class="show" for="111" tabindex="0"></label>
+<input type="checkbox" hidden id="110">
+<label class="show" for="110" tabindex="0"></label>
 <div class="licence">
 <pre>Terms and conditions
 
@@ -27348,8 +27058,8 @@ flatbuffers:
 <div class="product">
 <span class="title">firebase-installations</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
-<input type="checkbox" hidden id="112">
-<label class="show" for="112" tabindex="0"></label>
+<input type="checkbox" hidden id="111">
+<label class="show" for="111" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -27560,8 +27270,8 @@ flatbuffers:
 <div class="product">
 <span class="title">firebase-installations-interop</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
-<input type="checkbox" hidden id="113">
-<label class="show" for="113" tabindex="0"></label>
+<input type="checkbox" hidden id="112">
+<label class="show" for="112" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -27772,8 +27482,8 @@ flatbuffers:
 <div class="product">
 <span class="title">firebase-measurement-connector</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
-<input type="checkbox" hidden id="114">
-<label class="show" for="114" tabindex="0"></label>
+<input type="checkbox" hidden id="113">
+<label class="show" for="113" tabindex="0"></label>
 <div class="licence">
 <pre>Terms and conditions
 
@@ -28823,8 +28533,8 @@ flatbuffers:
 <div class="product">
 <span class="title">firebase-messaging</span>
 <span class="homepage"><a href="https://firebase.google.com">homepage</a></span>
-<input type="checkbox" hidden id="115">
-<label class="show" for="115" tabindex="0"></label>
+<input type="checkbox" hidden id="114">
+<label class="show" for="114" tabindex="0"></label>
 <div class="licence">
 <pre>Terms and conditions
 
@@ -31930,8 +31640,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">flac</span>
 <span class="homepage"><a href="http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz">homepage</a></span>
-<input type="checkbox" hidden id="116">
-<label class="show" for="116" tabindex="0"></label>
+<input type="checkbox" hidden id="115">
+<label class="show" for="115" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (C) 2000-2009  Josh Coalson
 Copyright (C) 2011-2014  Xiph.Org Foundation
@@ -31969,8 +31679,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">FlatBuffers</span>
 <span class="homepage"><a href="https://github.com/google/flatbuffers">homepage</a></span>
-<input type="checkbox" hidden id="117">
-<label class="show" for="117" tabindex="0"></label>
+<input type="checkbox" hidden id="116">
+<label class="show" for="116" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -32181,8 +31891,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">FlatBuffers Java API</span>
 <span class="homepage"><a href="https://github.com/google/flatbuffers">homepage</a></span>
-<input type="checkbox" hidden id="118">
-<label class="show" for="118" tabindex="0"></label>
+<input type="checkbox" hidden id="117">
+<label class="show" for="117" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -32393,8 +32103,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">flex</span>
 <span class="homepage"><a href="https://github.com/westes/flex">homepage</a></span>
-<input type="checkbox" hidden id="119">
-<label class="show" for="119" tabindex="0"></label>
+<input type="checkbox" hidden id="118">
+<label class="show" for="118" tabindex="0"></label>
 <div class="licence">
 <pre>Flex carries the copyright used for BSD software, slightly modified
 because it originated at the Lawrence Berkeley (not Livermore!) Laboratory,
@@ -32445,8 +32155,8 @@ for them, you are not even bound by the above copyright.
 <div class="product">
 <span class="title">fontconfig</span>
 <span class="homepage"><a href="http://www.freedesktop.org/wiki/Software/fontconfig/">homepage</a></span>
-<input type="checkbox" hidden id="120">
-<label class="show" for="120" tabindex="0"></label>
+<input type="checkbox" hidden id="119">
+<label class="show" for="119" tabindex="0"></label>
 <div class="licence">
 <pre>fontconfig/COPYING
 
@@ -32483,8 +32193,8 @@ PERFORMANCE OF THIS SOFTWARE.
 <div class="product">
 <span class="title">FP16</span>
 <span class="homepage"><a href="https://github.com/Maratyszcza/FP16">homepage</a></span>
-<input type="checkbox" hidden id="121">
-<label class="show" for="121" tabindex="0"></label>
+<input type="checkbox" hidden id="120">
+<label class="show" for="120" tabindex="0"></label>
 <div class="licence">
 <pre>The MIT License (MIT)
 
@@ -32505,8 +32215,8 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 <div class="product">
 <span class="title">FreeType</span>
 <span class="homepage"><a href="http://www.freetype.org/">homepage</a></span>
-<input type="checkbox" hidden id="122">
-<label class="show" for="122" tabindex="0"></label>
+<input type="checkbox" hidden id="121">
+<label class="show" for="121" tabindex="0"></label>
 <div class="licence">
 <pre>                    The FreeType Project LICENSE
                     ----------------------------
@@ -32684,8 +32394,8 @@ Legal Terms
 <div class="product">
 <span class="title">Fuse.js</span>
 <span class="homepage"><a href="https://fusejs.io">homepage</a></span>
-<input type="checkbox" hidden id="123">
-<label class="show" for="123" tabindex="0"></label>
+<input type="checkbox" hidden id="122">
+<label class="show" for="122" tabindex="0"></label>
 <div class="licence">
 <pre>                                 Apache License
                            Version 2.0, January 2004
@@ -32895,8 +32605,8 @@ Legal Terms
 <div class="product">
 <span class="title">gemmlowp</span>
 <span class="homepage"><a href="https://github.com/google/gemmlowp">homepage</a></span>
-<input type="checkbox" hidden id="124">
-<label class="show" for="124" tabindex="0"></label>
+<input type="checkbox" hidden id="123">
+<label class="show" for="123" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -33107,8 +32817,8 @@ Legal Terms
 <div class="product">
 <span class="title">GifPlayer Animated GIF Library</span>
 <span class="homepage"><a href="http://android-gifview.googlecode.com/svn/!svn/bc/8/trunk/">homepage</a></span>
-<input type="checkbox" hidden id="125">
-<label class="show" for="125" tabindex="0"></label>
+<input type="checkbox" hidden id="124">
+<label class="show" for="124" tabindex="0"></label>
 <div class="licence">
 <pre>                                 Apache License
                            Version 2.0, January 2004
@@ -33318,8 +33028,8 @@ Legal Terms
 <div class="product">
 <span class="title">Google Closure Library</span>
 <span class="homepage"><a href="https://github.com/google/closure-library">homepage</a></span>
-<input type="checkbox" hidden id="126">
-<label class="show" for="126" tabindex="0"></label>
+<input type="checkbox" hidden id="125">
+<label class="show" for="125" tabindex="0"></label>
 <div class="licence">
 <pre>                                 Apache License
                            Version 2.0, January 2004
@@ -33504,8 +33214,8 @@ Legal Terms
 <div class="product">
 <span class="title">Google Double Conversion</span>
 <span class="homepage"><a href="https://github.com/google/double-conversion">homepage</a></span>
-<input type="checkbox" hidden id="127">
-<label class="show" for="127" tabindex="0"></label>
+<input type="checkbox" hidden id="126">
+<label class="show" for="126" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2006-2011, the V8 project authors. All rights reserved.
 Redistribution and use in source and binary forms, with or without
@@ -33540,8 +33250,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Google Input Tools</span>
 <span class="homepage"><a href="https://github.com/googlei18n/google-input-tools.git">homepage</a></span>
-<input type="checkbox" hidden id="128">
-<label class="show" for="128" tabindex="0"></label>
+<input type="checkbox" hidden id="127">
+<label class="show" for="127" tabindex="0"></label>
 <div class="licence">
 <pre>                                 Apache License
                            Version 2.0, January 2004
@@ -33750,8 +33460,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Google Toolbox for Mac</span>
 <span class="homepage"><a href="https://github.com/google/google-toolbox-for-mac">homepage</a></span>
-<input type="checkbox" hidden id="129">
-<label class="show" for="129" tabindex="0"></label>
+<input type="checkbox" hidden id="128">
+<label class="show" for="128" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -33962,8 +33672,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Google Trust Services Recommended Roots</span>
 <span class="homepage"><a href="https://pki.goog/roots.pem">homepage</a></span>
-<input type="checkbox" hidden id="130">
-<label class="show" for="130" tabindex="0"></label>
+<input type="checkbox" hidden id="129">
+<label class="show" for="129" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright 2015 The Chromium Authors. All rights reserved.
 //
@@ -33999,8 +33709,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">google-glog&#x27;s symbolization library</span>
 <span class="homepage"><a href="https://github.com/google/glog">homepage</a></span>
-<input type="checkbox" hidden id="131">
-<label class="show" for="131" tabindex="0"></label>
+<input type="checkbox" hidden id="130">
+<label class="show" for="130" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright (c) 2006, Google Inc.
 // All rights reserved.
@@ -34037,8 +33747,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">google-jstemplate</span>
 <span class="homepage"><a href="http://code.google.com/p/google-jstemplate/">homepage</a></span>
-<input type="checkbox" hidden id="132">
-<label class="show" for="132" tabindex="0"></label>
+<input type="checkbox" hidden id="131">
+<label class="show" for="131" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -34249,6 +33959,218 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">grpc</span>
 <span class="homepage"><a href="https://github.com/grpc/grpc">homepage</a></span>
+<input type="checkbox" hidden id="132">
+<label class="show" for="132" tabindex="0"></label>
+<div class="licence">
+<pre>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre>
+</div>
+</div>
+
+<div class="product">
+<span class="title">Guava InternalFutureFailureAccess and InternalFutures</span>
+<span class="homepage"><a href="https://github.com/google/guava">homepage</a></span>
 <input type="checkbox" hidden id="133">
 <label class="show" for="133" tabindex="0"></label>
 <div class="licence">
@@ -34459,7 +34381,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Guava InternalFutureFailureAccess and InternalFutures</span>
+<span class="title">Guava ListenableFuture only</span>
 <span class="homepage"><a href="https://github.com/google/guava">homepage</a></span>
 <input type="checkbox" hidden id="134">
 <label class="show" for="134" tabindex="0"></label>
@@ -34671,7 +34593,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Guava ListenableFuture only</span>
+<span class="title">Guava: Google Core Libraries for Java</span>
 <span class="homepage"><a href="https://github.com/google/guava">homepage</a></span>
 <input type="checkbox" hidden id="135">
 <label class="show" for="135" tabindex="0"></label>
@@ -34883,222 +34805,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 </div>
 
 <div class="product">
-<span class="title">Guava: Google Core Libraries for Java</span>
-<span class="homepage"><a href="https://github.com/google/guava">homepage</a></span>
-<input type="checkbox" hidden id="136">
-<label class="show" for="136" tabindex="0"></label>
-<div class="licence">
-<pre>
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-   1. Definitions.
-
-      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      &quot;control&quot; means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      &quot;Source&quot; form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      &quot;Object&quot; form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      &quot;Work&quot; shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      &quot;Contribution&quot; shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
-
-      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-
-   APPENDIX: How to apply the Apache License to your work.
-
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
-      replaced with your own identifying information. (Don&#x27;t include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same &quot;printed page&quot; as the copyright notice for easier
-      identification within third-party archives.
-
-   Copyright [yyyy] [name of copyright owner]
-
-   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-</pre>
-</div>
-</div>
-
-<div class="product">
 <span class="title">GVR Android SDK</span>
 <span class="homepage"><a href="https://github.com/googlevr/gvr-android-sdk">homepage</a></span>
-<input type="checkbox" hidden id="137">
-<label class="show" for="137" tabindex="0"></label>
+<input type="checkbox" hidden id="136">
+<label class="show" for="136" tabindex="0"></label>
 <div class="licence">
 <pre>   Copyright (c) 2015, Google Inc.
 
@@ -43050,8 +42760,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">GVR Keyboard</span>
 <span class="homepage"><a href="NA">homepage</a></span>
-<input type="checkbox" hidden id="138">
-<label class="show" for="138" tabindex="0"></label>
+<input type="checkbox" hidden id="137">
+<label class="show" for="137" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -43262,8 +42972,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">harfbuzz-ng</span>
 <span class="homepage"><a href="http://harfbuzz.org">homepage</a></span>
-<input type="checkbox" hidden id="139">
-<label class="show" for="139" tabindex="0"></label>
+<input type="checkbox" hidden id="138">
+<label class="show" for="138" tabindex="0"></label>
 <div class="licence">
 <pre>HarfBuzz is licensed under the so-called &quot;Old MIT&quot; license.  Details follow.
 For parts of HarfBuzz that are licensed under different licenses see individual
@@ -43310,8 +43020,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 <div class="product">
 <span class="title">Headers for the Windows 10 WebAuthn API (webauthn.dll)</span>
 <span class="homepage"><a href="https://github.com/Microsoft/webauthn/">homepage</a></span>
-<input type="checkbox" hidden id="140">
-<label class="show" for="140" tabindex="0"></label>
+<input type="checkbox" hidden id="139">
+<label class="show" for="139" tabindex="0"></label>
 <div class="licence">
 <pre>    MIT License
 
@@ -43341,8 +43051,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 <div class="product">
 <span class="title">Highway: C++ library for SIMD</span>
 <span class="homepage"><a href="https://github.com/google/highway">homepage</a></span>
-<input type="checkbox" hidden id="141">
-<label class="show" for="141" tabindex="0"></label>
+<input type="checkbox" hidden id="140">
+<label class="show" for="140" tabindex="0"></label>
 <div class="licence">
 <pre>                                 Apache License
                            Version 2.0, January 2004
@@ -43551,8 +43261,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 <div class="product">
 <span class="title">hunspell</span>
 <span class="homepage"><a href="http://hunspell.sourceforge.net/">homepage</a></span>
-<input type="checkbox" hidden id="142">
-<label class="show" for="142" tabindex="0"></label>
+<input type="checkbox" hidden id="141">
+<label class="show" for="141" tabindex="0"></label>
 <div class="licence">
 <pre>                          MOZILLA PUBLIC LICENSE
                                 Version 1.1
@@ -44031,8 +43741,8 @@ EXHIBIT A -Mozilla Public License.
 <div class="product">
 <span class="title">hyphenation-patterns</span>
 <span class="homepage"><a href="https://android.googlesource.com/platform/external/hyphenation-patterns/">homepage</a></span>
-<input type="checkbox" hidden id="143">
-<label class="show" for="143" tabindex="0"></label>
+<input type="checkbox" hidden id="142">
+<label class="show" for="142" tabindex="0"></label>
 <div class="licence">
 <pre>hyph-as.hyb
 
@@ -45429,8 +45139,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">IAccessible2 COM interfaces for accessibility</span>
 <span class="homepage"><a href="https://github.com/LinuxA11y/IAccessible2">homepage</a></span>
-<input type="checkbox" hidden id="144">
-<label class="show" for="144" tabindex="0"></label>
+<input type="checkbox" hidden id="143">
+<label class="show" for="143" tabindex="0"></label>
 <div class="licence">
 <pre>/*************************************************************************
  *
@@ -45489,8 +45199,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">iccjpeg</span>
 <span class="homepage"><a href="http://www.ijg.org">homepage</a></span>
-<input type="checkbox" hidden id="145">
-<label class="show" for="145" tabindex="0"></label>
+<input type="checkbox" hidden id="144">
+<label class="show" for="144" tabindex="0"></label>
 <div class="licence">
 <pre>(Copied from the README.)
 
@@ -45552,8 +45262,8 @@ assumed by the product vendor.
 <div class="product">
 <span class="title">icu</span>
 <span class="homepage"><a href="https://github.com/unicode-org/icu">homepage</a></span>
-<input type="checkbox" hidden id="146">
-<label class="show" for="146" tabindex="0"></label>
+<input type="checkbox" hidden id="145">
+<label class="show" for="145" tabindex="0"></label>
 <div class="licence">
 <pre>COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
 
@@ -45974,8 +45684,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">inspector protocol</span>
 <span class="homepage"><a href="https://chromium.googlesource.com/deps/inspector_protocol/">homepage</a></span>
-<input type="checkbox" hidden id="147">
-<label class="show" for="147" tabindex="0"></label>
+<input type="checkbox" hidden id="146">
+<label class="show" for="146" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright 2016 The Chromium Authors. All rights reserved.
 //
@@ -46011,8 +45721,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">IntelliJ IDEA Annotations</span>
 <span class="homepage"><a href="http://www.jetbrains.org">homepage</a></span>
-<input type="checkbox" hidden id="148">
-<label class="show" for="148" tabindex="0"></label>
+<input type="checkbox" hidden id="147">
+<label class="show" for="147" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -46223,8 +45933,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">International Phone Number Library</span>
 <span class="homepage"><a href="https://github.com/googlei18n/libphonenumber/">homepage</a></span>
-<input type="checkbox" hidden id="149">
-<label class="show" for="149" tabindex="0"></label>
+<input type="checkbox" hidden id="148">
+<label class="show" for="148" tabindex="0"></label>
 <div class="licence">
 <pre>                                 Apache License
                            Version 2.0, January 2004
@@ -46409,8 +46119,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">intl-messageformat</span>
 <span class="homepage"><a href="https://github.com/formatjs/formatjs">homepage</a></span>
-<input type="checkbox" hidden id="150">
-<label class="show" for="150" tabindex="0"></label>
+<input type="checkbox" hidden id="149">
+<label class="show" for="149" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2019, Oath Inc.
 
@@ -46452,8 +46162,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">ISimpleDOM COM interfaces for accessibility</span>
 <span class="homepage"><a href="http://developer.mozilla.org/en-US/docs/Accessibility/AT-APIs">homepage</a></span>
-<input type="checkbox" hidden id="151">
-<label class="show" for="151" tabindex="0"></label>
+<input type="checkbox" hidden id="150">
+<label class="show" for="150" tabindex="0"></label>
 <div class="licence">
 <pre>/* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
@@ -46497,8 +46207,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">J2ObjC Annotations</span>
 <span class="homepage"><a href="https://github.com/google/j2objc/">homepage</a></span>
-<input type="checkbox" hidden id="152">
-<label class="show" for="152" tabindex="0"></label>
+<input type="checkbox" hidden id="151">
+<label class="show" for="151" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -46709,8 +46419,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">javax.inject</span>
 <span class="homepage"><a href="http://code.google.com/p/atinject/">homepage</a></span>
-<input type="checkbox" hidden id="153">
-<label class="show" for="153" tabindex="0"></label>
+<input type="checkbox" hidden id="152">
+<label class="show" for="152" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -46921,8 +46631,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Jinja2 Python Template Engine</span>
 <span class="homepage"><a href="https://jinja.palletsprojects.com/">homepage</a></span>
-<input type="checkbox" hidden id="154">
-<label class="show" for="154" tabindex="0"></label>
+<input type="checkbox" hidden id="153">
+<label class="show" for="153" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2007 Pallets
 
@@ -46959,8 +46669,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">JPEG XL image decoder library</span>
 <span class="homepage"><a href="https://github.com/libjxl/libjxl">homepage</a></span>
-<input type="checkbox" hidden id="155">
-<label class="show" for="155" tabindex="0"></label>
+<input type="checkbox" hidden id="154">
+<label class="show" for="154" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) the JPEG XL Project Authors.
 All rights reserved.
@@ -46996,8 +46706,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">jsoncpp</span>
 <span class="homepage"><a href="https://github.com/open-source-parsers/jsoncpp">homepage</a></span>
-<input type="checkbox" hidden id="156">
-<label class="show" for="156" tabindex="0"></label>
+<input type="checkbox" hidden id="155">
+<label class="show" for="155" tabindex="0"></label>
 <div class="licence">
 <pre>The JsonCpp library&#x27;s source code, including accompanying documentation, 
 tests and demonstration applications, are licensed under the following
@@ -47061,8 +46771,8 @@ license you like.
 <div class="product">
 <span class="title">Khronos header files</span>
 <span class="homepage"><a href="http://www.khronos.org/registry">homepage</a></span>
-<input type="checkbox" hidden id="157">
-<label class="show" for="157" tabindex="0"></label>
+<input type="checkbox" hidden id="156">
+<label class="show" for="156" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2007-2010 The Khronos Group Inc.
 
@@ -47119,8 +46829,8 @@ Graphics, Inc.
 <div class="product">
 <span class="title">Khronos reference front-end for GLSL and ESSL</span>
 <span class="homepage"><a href="https://github.com/KhronosGroup/glslang">homepage</a></span>
-<input type="checkbox" hidden id="158">
-<label class="show" for="158" tabindex="0"></label>
+<input type="checkbox" hidden id="157">
+<label class="show" for="157" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2015-2016 The Khronos Group Inc.
 
@@ -47154,8 +46864,8 @@ MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 <div class="product">
 <span class="title">Khronos Vulkan Tools Components</span>
 <span class="homepage"><a href="https://github.com/KhronosGroup/Vulkan-Tools">homepage</a></span>
-<input type="checkbox" hidden id="159">
-<label class="show" for="159" tabindex="0"></label>
+<input type="checkbox" hidden id="158">
+<label class="show" for="158" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -47366,8 +47076,8 @@ MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 <div class="product">
 <span class="title">Khronos Vulkan Validation Layers Components</span>
 <span class="homepage"><a href="https://github.com/KhronosGroup/Vulkan-ValidationLayers">homepage</a></span>
-<input type="checkbox" hidden id="160">
-<label class="show" for="160" tabindex="0"></label>
+<input type="checkbox" hidden id="159">
+<label class="show" for="159" tabindex="0"></label>
 <div class="licence">
 <pre>The majority of files in this project use the Apache 2.0 License.
 There are a few exceptions and their license can be found in the source.
@@ -47584,6 +47294,218 @@ Any file without a license in it&#x27;s source defaults to the repository Apache
 <div class="product">
 <span class="title">Kotlin Stdlib</span>
 <span class="homepage"><a href="https://kotlinlang.org/">homepage</a></span>
+<input type="checkbox" hidden id="160">
+<label class="show" for="160" tabindex="0"></label>
+<div class="licence">
+<pre>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+</pre>
+</div>
+</div>
+
+<div class="product">
+<span class="title">Kotlin Stdlib Common</span>
+<span class="homepage"><a href="https://kotlinlang.org/">homepage</a></span>
 <input type="checkbox" hidden id="161">
 <label class="show" for="161" tabindex="0"></label>
 <div class="licence">
@@ -47794,7 +47716,7 @@ Any file without a license in it&#x27;s source defaults to the repository Apache
 </div>
 
 <div class="product">
-<span class="title">Kotlin Stdlib Common</span>
+<span class="title">Kotlin Stdlib Jdk7</span>
 <span class="homepage"><a href="https://kotlinlang.org/">homepage</a></span>
 <input type="checkbox" hidden id="162">
 <label class="show" for="162" tabindex="0"></label>
@@ -48006,7 +47928,7 @@ Any file without a license in it&#x27;s source defaults to the repository Apache
 </div>
 
 <div class="product">
-<span class="title">Kotlin Stdlib Jdk7</span>
+<span class="title">Kotlin Stdlib Jdk8</span>
 <span class="homepage"><a href="https://kotlinlang.org/">homepage</a></span>
 <input type="checkbox" hidden id="163">
 <label class="show" for="163" tabindex="0"></label>
@@ -48218,8 +48140,8 @@ Any file without a license in it&#x27;s source defaults to the repository Apache
 </div>
 
 <div class="product">
-<span class="title">Kotlin Stdlib Jdk8</span>
-<span class="homepage"><a href="https://kotlinlang.org/">homepage</a></span>
+<span class="title">kotlinx-coroutines-android</span>
+<span class="homepage"><a href="https://github.com/Kotlin/kotlinx.coroutines">homepage</a></span>
 <input type="checkbox" hidden id="164">
 <label class="show" for="164" tabindex="0"></label>
 <div class="licence">
@@ -48430,7 +48352,7 @@ Any file without a license in it&#x27;s source defaults to the repository Apache
 </div>
 
 <div class="product">
-<span class="title">kotlinx-coroutines-android</span>
+<span class="title">kotlinx-coroutines-core</span>
 <span class="homepage"><a href="https://github.com/Kotlin/kotlinx.coroutines">homepage</a></span>
 <input type="checkbox" hidden id="165">
 <label class="show" for="165" tabindex="0"></label>
@@ -48642,222 +48564,10 @@ Any file without a license in it&#x27;s source defaults to the repository Apache
 </div>
 
 <div class="product">
-<span class="title">kotlinx-coroutines-core</span>
-<span class="homepage"><a href="https://github.com/Kotlin/kotlinx.coroutines">homepage</a></span>
-<input type="checkbox" hidden id="166">
-<label class="show" for="166" tabindex="0"></label>
-<div class="licence">
-<pre>
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-   1. Definitions.
-
-      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      &quot;control&quot; means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      &quot;Source&quot; form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      &quot;Object&quot; form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      &quot;Work&quot; shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      &quot;Contribution&quot; shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
-
-      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-
-   APPENDIX: How to apply the Apache License to your work.
-
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
-      replaced with your own identifying information. (Don&#x27;t include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same &quot;printed page&quot; as the copyright notice for easier
-      identification within third-party archives.
-
-   Copyright [yyyy] [name of copyright owner]
-
-   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-</pre>
-</div>
-</div>
-
-<div class="product">
 <span class="title">LCOV - the LTP GCOV extension</span>
 <span class="homepage"><a href="http://ltp.sourceforge.net/coverage/lcov.php">homepage</a></span>
-<input type="checkbox" hidden id="167">
-<label class="show" for="167" tabindex="0"></label>
+<input type="checkbox" hidden id="166">
+<label class="show" for="166" tabindex="0"></label>
 <div class="licence">
 <pre>		    GNU GENERAL PUBLIC LICENSE
 		       Version 2, June 1991
@@ -49205,8 +48915,8 @@ Public License instead of this License.
 <div class="product">
 <span class="title">LevelDB: A Fast Persistent Key-Value Store</span>
 <span class="homepage"><a href="https://github.com/google/leveldb.git">homepage</a></span>
-<input type="checkbox" hidden id="168">
-<label class="show" for="168" tabindex="0"></label>
+<input type="checkbox" hidden id="167">
+<label class="show" for="167" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2011 The LevelDB Authors. All rights reserved.
 
@@ -49242,8 +48952,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">libaddressinput</span>
 <span class="homepage"><a href="https://github.com/googlei18n/libaddressinput">homepage</a></span>
-<input type="checkbox" hidden id="169">
-<label class="show" for="169" tabindex="0"></label>
+<input type="checkbox" hidden id="168">
+<label class="show" for="168" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -49454,8 +49164,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">libavif - Library for encoding and decoding .avif files</span>
 <span class="homepage"><a href="https://github.com/AOMediaCodec/libavif">homepage</a></span>
-<input type="checkbox" hidden id="170">
-<label class="show" for="170" tabindex="0"></label>
+<input type="checkbox" hidden id="169">
+<label class="show" for="169" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2019 Joe Drago. All rights reserved.
 
@@ -49510,8 +49220,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">libbrlapi</span>
 <span class="homepage"><a href="http://brltty.app">homepage</a></span>
-<input type="checkbox" hidden id="171">
-<label class="show" for="171" tabindex="0"></label>
+<input type="checkbox" hidden id="170">
+<label class="show" for="170" tabindex="0"></label>
 <div class="licence">
 <pre>
                   GNU LESSER GENERAL PUBLIC LICENSE
@@ -50030,8 +49740,8 @@ That&#x27;s all there is to it!
 <div class="product">
 <span class="title">libcxx</span>
 <span class="homepage"><a href="http://libcxx.llvm.org/">homepage</a></span>
-<input type="checkbox" hidden id="172">
-<label class="show" for="172" tabindex="0"></label>
+<input type="checkbox" hidden id="171">
+<label class="show" for="171" tabindex="0"></label>
 <div class="licence">
 <pre>==============================================================================
 The LLVM Project is under the Apache License v2.0 with LLVM Exceptions:
@@ -50351,8 +50061,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">libcxxabi</span>
 <span class="homepage"><a href="http://libcxxabi.llvm.org/">homepage</a></span>
-<input type="checkbox" hidden id="173">
-<label class="show" for="173" tabindex="0"></label>
+<input type="checkbox" hidden id="172">
+<label class="show" for="172" tabindex="0"></label>
 <div class="licence">
 <pre>==============================================================================
 The LLVM Project is under the Apache License v2.0 with LLVM Exceptions:
@@ -50672,8 +50382,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">libevent</span>
 <span class="homepage"><a href="http://libevent.org/">homepage</a></span>
-<input type="checkbox" hidden id="174">
-<label class="show" for="174" tabindex="0"></label>
+<input type="checkbox" hidden id="173">
+<label class="show" for="173" tabindex="0"></label>
 <div class="licence">
 <pre>Libevent is available for use under the following license, commonly known
 as the 3-clause (or &quot;modified&quot;) BSD license:
@@ -50735,8 +50445,8 @@ tree.h:
 <div class="product">
 <span class="title">libFuzzer</span>
 <span class="homepage"><a href="http://llvm.org/docs/LibFuzzer.html">homepage</a></span>
-<input type="checkbox" hidden id="175">
-<label class="show" for="175" tabindex="0"></label>
+<input type="checkbox" hidden id="174">
+<label class="show" for="174" tabindex="0"></label>
 <div class="licence">
 <pre>==============================================================================
 LLVM Release License
@@ -50808,6 +50518,218 @@ OpenBSD regex       llvm/lib/Support/{reg*, COPYRIGHT.regex}
 pyyaml tests        llvm/test/YAMLParser/{*.data, LICENSE.TXT}
 ARM contributions   llvm/lib/Target/ARM/LICENSE.TXT
 md5 contributions   llvm/lib/Support/MD5.cpp llvm/include/llvm/Support/MD5.h
+</pre>
+</div>
+</div>
+
+<div class="product">
+<span class="title">libgav1</span>
+<span class="homepage"><a href="https://chromium.googlesource.com/codecs/libgav1/">homepage</a></span>
+<input type="checkbox" hidden id="175">
+<label class="show" for="175" tabindex="0"></label>
+<div class="licence">
+<pre>
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      &quot;Legal Entity&quot; shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      &quot;control&quot; means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      &quot;You&quot; (or &quot;Your&quot;) shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      &quot;Source&quot; form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      &quot;Object&quot; form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      &quot;Work&quot; shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      &quot;Derivative Works&quot; shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      &quot;Contribution&quot; shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, &quot;submitted&quot;
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as &quot;Not a Contribution.&quot;
+
+      &quot;Contributor&quot; shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a &quot;NOTICE&quot; text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an &quot;AS IS&quot; BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets &quot;[]&quot;
+      replaced with your own identifying information. (Don&#x27;t include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same &quot;printed page&quot; as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
 </pre>
 </div>
 </div>
@@ -92557,48 +92479,10 @@ or contact
 </div>
 
 <div class="product">
-<span class="title">tcmalloc</span>
-<span class="homepage"><a href="http://github.com/gperftools/gperftools">homepage</a></span>
-<input type="checkbox" hidden id="297">
-<label class="show" for="297" tabindex="0"></label>
-<div class="licence">
-<pre>// Copyright (c) 2005, Google Inc.
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are
-// met:
-//
-//     * Redistributions of source code must retain the above copyright
-// notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above
-// copyright notice, this list of conditions and the following disclaimer
-// in the documentation and/or other materials provided with the
-// distribution.
-//     * Neither the name of Google Inc. nor the names of its
-// contributors may be used to endorse or promote products derived from
-// this software without specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-</pre>
-</div>
-</div>
-
-<div class="product">
 <span class="title">TensorFlow Lite</span>
 <span class="homepage"><a href="https://github.com/tensorflow/tensorflow">homepage</a></span>
-<input type="checkbox" hidden id="298">
-<label class="show" for="298" tabindex="0"></label>
+<input type="checkbox" hidden id="297">
+<label class="show" for="297" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2019 The TensorFlow Authors.  All rights reserved.
 
@@ -92810,8 +92694,8 @@ or contact
 <div class="product">
 <span class="title">TensorFlow Lite Support</span>
 <span class="homepage"><a href="https://github.com/tensorflow/tflite-support">homepage</a></span>
-<input type="checkbox" hidden id="299">
-<label class="show" for="299" tabindex="0"></label>
+<input type="checkbox" hidden id="298">
+<label class="show" for="298" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2020 The TensorFlow Authors.  All rights reserved.
 
@@ -93022,8 +92906,8 @@ or contact
 <div class="product">
 <span class="title">TensorFlow Text</span>
 <span class="homepage"><a href="https://github.com/tensorflow/text.git">homepage</a></span>
-<input type="checkbox" hidden id="300">
-<label class="show" for="300" tabindex="0"></label>
+<input type="checkbox" hidden id="299">
+<label class="show" for="299" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2018 The TensorFlow Authors.  All rights reserved.
 
@@ -93235,8 +93119,8 @@ or contact
 <div class="product">
 <span class="title">test_fonts</span>
 <span class="homepage"><a href="https://pagure.io/lohit, http://www.nongnu.org/freebangfont/downloads.html#mukti, https://dejavu-fonts.github.io/Download.html">homepage</a></span>
-<input type="checkbox" hidden id="301">
-<label class="show" for="301" tabindex="0"></label>
+<input type="checkbox" hidden id="300">
+<label class="show" for="300" tabindex="0"></label>
 <div class="licence">
 <pre>The SIL OPEN FONT LICENSE applies to the following files:
 Gelasio-Bold.ttf
@@ -94258,8 +94142,8 @@ modified, regenerated, posted, packaged and redistributed. George Douros
 <div class="product">
 <span class="title">Text Fragments Polyfill</span>
 <span class="homepage"><a href="https://github.com/GoogleChromeLabs/text-fragments-polyfill">homepage</a></span>
-<input type="checkbox" hidden id="302">
-<label class="show" for="302" tabindex="0"></label>
+<input type="checkbox" hidden id="301">
+<label class="show" for="301" tabindex="0"></label>
 <div class="licence">
 <pre>                                 Apache License
                            Version 2.0, January 2004
@@ -94469,8 +94353,8 @@ modified, regenerated, posted, packaged and redistributed. George Douros
 <div class="product">
 <span class="title">The Chromium Project</span>
 <span class="homepage"><a href="http://www.chromium.org">homepage</a></span>
-<input type="checkbox" hidden id="303">
-<label class="show" for="303" tabindex="0"></label>
+<input type="checkbox" hidden id="302">
+<label class="show" for="302" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright 2015 The Chromium Authors. All rights reserved.
 //
@@ -94506,8 +94390,8 @@ modified, regenerated, posted, packaged and redistributed. George Douros
 <div class="product">
 <span class="title">The Diff Match and Patch libraries offer robust algorithms to perform the operations required for synchronizing plain text.</span>
 <span class="homepage"><a href="https://github.com/google/diff-match-patch/tree/master/javascript">homepage</a></span>
-<input type="checkbox" hidden id="304">
-<label class="show" for="304" tabindex="0"></label>
+<input type="checkbox" hidden id="303">
+<label class="show" for="303" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -94717,8 +94601,8 @@ modified, regenerated, posted, packaged and redistributed. George Douros
 <div class="product">
 <span class="title">The Incremental Distributed Point Functions library</span>
 <span class="homepage"><a href="https://github.com/google/distributed_point_functions">homepage</a></span>
-<input type="checkbox" hidden id="305">
-<label class="show" for="305" tabindex="0"></label>
+<input type="checkbox" hidden id="304">
+<label class="show" for="304" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -94929,8 +94813,8 @@ modified, regenerated, posted, packaged and redistributed. George Douros
 <div class="product">
 <span class="title">The ruy matrix multiplication library</span>
 <span class="homepage"><a href="https://github.com/google/ruy">homepage</a></span>
-<input type="checkbox" hidden id="306">
-<label class="show" for="306" tabindex="0"></label>
+<input type="checkbox" hidden id="305">
+<label class="show" for="305" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -95141,8 +95025,8 @@ modified, regenerated, posted, packaged and redistributed. George Douros
 <div class="product">
 <span class="title">The USB ID Repository</span>
 <span class="homepage"><a href="http://www.linux-usb.org/usb-ids.html">homepage</a></span>
-<input type="checkbox" hidden id="307">
-<label class="show" for="307" tabindex="0"></label>
+<input type="checkbox" hidden id="306">
+<label class="show" for="306" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2012, Linux USB Project
 All rights reserved.
@@ -95168,8 +95052,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&
 <div class="product">
 <span class="title">transport-api</span>
 <span class="homepage"><a href="https://developers.google.com/android/guides/setup">homepage</a></span>
-<input type="checkbox" hidden id="308">
-<label class="show" for="308" tabindex="0"></label>
+<input type="checkbox" hidden id="307">
+<label class="show" for="307" tabindex="0"></label>
 <div class="licence">
 <pre>Terms and conditions
 
@@ -95325,8 +95209,8 @@ December 9, 2016
 <div class="product">
 <span class="title">UKey2</span>
 <span class="homepage"><a href="https://github.com/google/ukey2">homepage</a></span>
-<input type="checkbox" hidden id="309">
-<label class="show" for="309" tabindex="0"></label>
+<input type="checkbox" hidden id="308">
+<label class="show" for="308" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -95537,8 +95421,8 @@ December 9, 2016
 <div class="product">
 <span class="title">Unicode Common Locale Data Repository</span>
 <span class="homepage"><a href="http://cldr.unicode.org/index/downloads">homepage</a></span>
-<input type="checkbox" hidden id="310">
-<label class="show" for="310" tabindex="0"></label>
+<input type="checkbox" hidden id="309">
+<label class="show" for="309" tabindex="0"></label>
 <div class="licence">
 <pre>﻿UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
 
@@ -95593,8 +95477,8 @@ written authorization of the copyright holder.
 <div class="product">
 <span class="title">UnRAR source for decompressing .RAR and other files.</span>
 <span class="homepage"><a href="https://github.com/aawc/unrar.git">homepage</a></span>
-<input type="checkbox" hidden id="311">
-<label class="show" for="311" tabindex="0"></label>
+<input type="checkbox" hidden id="310">
+<label class="show" for="310" tabindex="0"></label>
 <div class="licence">
 <pre> ******    *****   ******   UnRAR - free utility for RAR archives
  **   **  **   **  **   **  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95645,8 +95529,8 @@ written authorization of the copyright holder.
 <div class="product">
 <span class="title">URI Template Parser</span>
 <span class="homepage"><a href="https://github.com/google/google-api-cpp-client/">homepage</a></span>
-<input type="checkbox" hidden id="312">
-<label class="show" for="312" tabindex="0"></label>
+<input type="checkbox" hidden id="311">
+<label class="show" for="311" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -95857,8 +95741,8 @@ written authorization of the copyright holder.
 <div class="product">
 <span class="title">URL Pattern Library</span>
 <span class="homepage"><a href="https://chromium.googlesource.com/chromium/src/+/HEAD/third_party/liburlpattern">homepage</a></span>
-<input type="checkbox" hidden id="313">
-<label class="show" for="313" tabindex="0"></label>
+<input type="checkbox" hidden id="312">
+<label class="show" for="312" tabindex="0"></label>
 <div class="licence">
 <pre>The MIT License (MIT)
 
@@ -95889,8 +95773,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">url_parse</span>
 <span class="homepage"><a href="http://mxr.mozilla.org/comm-central/source/mozilla/netwerk/base/src/nsURLParsers.cpp">homepage</a></span>
-<input type="checkbox" hidden id="314">
-<label class="show" for="314" tabindex="0"></label>
+<input type="checkbox" hidden id="313">
+<label class="show" for="313" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 2007, Google Inc.
 All rights reserved.
@@ -95964,8 +95848,8 @@ the terms of any one of the MPL, the GPL or the LGPL.
 <div class="product">
 <span class="title">usrsctp</span>
 <span class="homepage"><a href="http://github.com/sctplab/usrsctp">homepage</a></span>
-<input type="checkbox" hidden id="315">
-<label class="show" for="315" tabindex="0"></label>
+<input type="checkbox" hidden id="314">
+<label class="show" for="314" tabindex="0"></label>
 <div class="licence">
 <pre>(Copied from the COPYRIGHT file of
 https://code.google.com/p/sctp-refimpl/source/browse/trunk/COPYRIGHT)
@@ -96004,8 +95888,8 @@ SUCH DAMAGE.
 <div class="product">
 <span class="title">v4l-utils</span>
 <span class="homepage"><a href="http://git.linuxtv.org/v4l-utils.git">homepage</a></span>
-<input type="checkbox" hidden id="316">
-<label class="show" for="316" tabindex="0"></label>
+<input type="checkbox" hidden id="315">
+<label class="show" for="315" tabindex="0"></label>
 <div class="licence">
 <pre>
 		  GNU LESSER GENERAL PUBLIC LICENSE
@@ -96524,8 +96408,8 @@ That&#x27;s all there is to it!
 <div class="product">
 <span class="title">V8 fork of fdlibm</span>
 <span class="homepage"><a href="source.chromium.org/chromium/chromium/src/+/master:v8/src/base/ieee754.cc">homepage</a></span>
-<input type="checkbox" hidden id="317">
-<label class="show" for="317" tabindex="0"></label>
+<input type="checkbox" hidden id="316">
+<label class="show" for="316" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (C) 1993-2004 by Sun Microsystems, Inc. All rights reserved.
 
@@ -96540,8 +96424,8 @@ is preserved.
 <div class="product">
 <span class="title">V8 JavaScript Engine</span>
 <span class="homepage"><a href="http://code.google.com/p/v8">homepage</a></span>
-<input type="checkbox" hidden id="318">
-<label class="show" for="318" tabindex="0"></label>
+<input type="checkbox" hidden id="317">
+<label class="show" for="317" tabindex="0"></label>
 <div class="licence">
 <pre>This license applies to all parts of V8 that are not externally
 maintained libraries.  The externally maintained libraries used by V8
@@ -96612,8 +96496,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">valgrind</span>
 <span class="homepage"><a href="http://valgrind.org">homepage</a></span>
-<input type="checkbox" hidden id="319">
-<label class="show" for="319" tabindex="0"></label>
+<input type="checkbox" hidden id="318">
+<label class="show" for="318" tabindex="0"></label>
 <div class="licence">
 <pre>   Notice that the following BSD-style license applies to the Valgrind header
    files used by Chromium (valgrind.h and memcheck.h). However, the rest of
@@ -96661,8 +96545,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">VersionedParcelable and friends</span>
 <span class="homepage"><a href="http://developer.android.com/tools/extras/support-library.html">homepage</a></span>
-<input type="checkbox" hidden id="320">
-<label class="show" for="320" tabindex="0"></label>
+<input type="checkbox" hidden id="319">
+<label class="show" for="319" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -96873,8 +96757,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Vulkan API headers</span>
 <span class="homepage"><a href="https://github.com/KhronosGroup/Vulkan-Headers">homepage</a></span>
-<input type="checkbox" hidden id="321">
-<label class="show" for="321" tabindex="0"></label>
+<input type="checkbox" hidden id="320">
+<label class="show" for="320" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -97085,8 +96969,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Vulkan Deps</span>
 <span class="homepage"><a href="https://chromium.googlesource.com/vulkan-deps/">homepage</a></span>
-<input type="checkbox" hidden id="322">
-<label class="show" for="322" tabindex="0"></label>
+<input type="checkbox" hidden id="321">
+<label class="show" for="321" tabindex="0"></label>
 <div class="licence">
 <pre>// Copyright 2015 The Chromium Authors. All rights reserved.
 //
@@ -97122,8 +97006,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Vulkan Loader Components</span>
 <span class="homepage"><a href="https://github.com/KhronosGroup/Vulkan-Loader">homepage</a></span>
-<input type="checkbox" hidden id="323">
-<label class="show" for="323" tabindex="0"></label>
+<input type="checkbox" hidden id="322">
+<label class="show" for="322" tabindex="0"></label>
 <div class="licence">
 <pre>The majority of files in this project use the Apache 2.0 License.
 There are a few exceptions and their license can be found in the source.
@@ -97339,8 +97223,8 @@ Any license deviations from Apache 2.0 are &quot;more permissive&quot; licenses.
 <div class="product">
 <span class="title">VulkanMemoryAllocator</span>
 <span class="homepage"><a href="https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator">homepage</a></span>
-<input type="checkbox" hidden id="324">
-<label class="show" for="324" tabindex="0"></label>
+<input type="checkbox" hidden id="323">
+<label class="show" for="323" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2017-2021 Advanced Micro Devices, Inc. All rights reserved.
 
@@ -97368,8 +97252,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Wasmparser</span>
 <span class="homepage"><a href="https://github.com/wasdk/wasmparser">homepage</a></span>
-<input type="checkbox" hidden id="325">
-<label class="show" for="325" tabindex="0"></label>
+<input type="checkbox" hidden id="324">
+<label class="show" for="324" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -97555,8 +97439,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">wayland</span>
 <span class="homepage"><a href="http://wayland.freedesktop.org/">homepage</a></span>
-<input type="checkbox" hidden id="326">
-<label class="show" for="326" tabindex="0"></label>
+<input type="checkbox" hidden id="325">
+<label class="show" for="325" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright © 2008-2012 Kristian Høgsberg
 Copyright © 2010-2012 Intel Corporation
@@ -97594,8 +97478,8 @@ The above is the version of the MIT &quot;Expat&quot; License used by X.org:
 <div class="product">
 <span class="title">Web Animations JS</span>
 <span class="homepage"><a href="https://github.com/web-animations/web-animations-js">homepage</a></span>
-<input type="checkbox" hidden id="327">
-<label class="show" for="327" tabindex="0"></label>
+<input type="checkbox" hidden id="326">
+<label class="show" for="326" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -97806,8 +97690,8 @@ The above is the version of the MIT &quot;Expat&quot; License used by X.org:
 <div class="product">
 <span class="title">WebKit</span>
 <span class="homepage"><a href="http://webkit.org/">homepage</a></span>
-<input type="checkbox" hidden id="328">
-<label class="show" for="328" tabindex="0"></label>
+<input type="checkbox" hidden id="327">
+<label class="show" for="327" tabindex="0"></label>
 <div class="licence">
 <pre>(WebKit doesn&#x27;t distribute an explicit license.  This LICENSE is derived from
 license text in the source.)
@@ -98783,8 +98667,8 @@ DAMAGES.
 <div class="product">
 <span class="title">WebM container parser and writer.</span>
 <span class="homepage"><a href="http://www.webmproject.org/code/">homepage</a></span>
-<input type="checkbox" hidden id="329">
-<label class="show" for="329" tabindex="0"></label>
+<input type="checkbox" hidden id="328">
+<label class="show" for="328" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2010, Google Inc. All rights reserved.
 
@@ -98823,8 +98707,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">WebP image encoder/decoder</span>
 <span class="homepage"><a href="http://developers.google.com/speed/webp">homepage</a></span>
-<input type="checkbox" hidden id="330">
-<label class="show" for="330" tabindex="0"></label>
+<input type="checkbox" hidden id="329">
+<label class="show" for="329" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2010, Google Inc. All rights reserved.
 
@@ -98886,8 +98770,8 @@ litigation is filed.
 <div class="product">
 <span class="title">WebRTC</span>
 <span class="homepage"><a href="http://www.webrtc.org">homepage</a></span>
-<input type="checkbox" hidden id="331">
-<label class="show" for="331" tabindex="0"></label>
+<input type="checkbox" hidden id="330">
+<label class="show" for="330" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2011, The WebRTC project authors. All rights reserved.
 
@@ -98925,8 +98809,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">Weston - reference Wayland compositor</span>
 <span class="homepage"><a href="https://gitlab.freedesktop.org/wayland/weston">homepage</a></span>
-<input type="checkbox" hidden id="332">
-<label class="show" for="332" tabindex="0"></label>
+<input type="checkbox" hidden id="331">
+<label class="show" for="331" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright © 2008-2012 Kristian Høgsberg
 Copyright © 2010-2012 Intel Corporation
@@ -98966,8 +98850,8 @@ The above is the version of the MIT &quot;Expat&quot; License used by X.org:
 <div class="product">
 <span class="title">Windows Template Library (WTL)</span>
 <span class="homepage"><a href="https://sourceforge.net/projects/wtl/files/WTL%2010/">homepage</a></span>
-<input type="checkbox" hidden id="333">
-<label class="show" for="333" tabindex="0"></label>
+<input type="checkbox" hidden id="332">
+<label class="show" for="332" tabindex="0"></label>
 <div class="licence">
 <pre>Microsoft Public License (MS-PL)
 
@@ -98998,8 +98882,8 @@ A &quot;contributor&quot; is any person that distributes its contribution under 
 <div class="product">
 <span class="title">woff2</span>
 <span class="homepage"><a href="https://github.com/google/woff2">homepage</a></span>
-<input type="checkbox" hidden id="334">
-<label class="show" for="334" tabindex="0"></label>
+<input type="checkbox" hidden id="333">
+<label class="show" for="333" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright (c) 2013-2017 by the WOFF2 Authors.
 
@@ -99027,8 +98911,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">Wuffs (Wrangling Untrusted File Formats Safely)</span>
 <span class="homepage"><a href="https://github.com/google/wuffs-mirror-release-c">homepage</a></span>
-<input type="checkbox" hidden id="335">
-<label class="show" for="335" tabindex="0"></label>
+<input type="checkbox" hidden id="334">
+<label class="show" for="334" tabindex="0"></label>
 <div class="licence">
 <pre>
                                  Apache License
@@ -99214,8 +99098,8 @@ THE SOFTWARE.
 <div class="product">
 <span class="title">x11proto</span>
 <span class="homepage"><a href="https://gitlab.freedesktop.org/xorg/proto/xproto/">homepage</a></span>
-<input type="checkbox" hidden id="336">
-<label class="show" for="336" tabindex="0"></label>
+<input type="checkbox" hidden id="335">
+<label class="show" for="335" tabindex="0"></label>
 <div class="licence">
 <pre>Copyright 1987, 1994, 1998  The Open Group
 
@@ -99268,29 +99152,10 @@ SOFTWARE.
 <div class="product">
 <span class="title">xdg-mime</span>
 <span class="homepage"><a href="https://gitlab.freedesktop.org/xdg/xdgmime">homepage</a></span>
-<input type="checkbox" hidden id="337">
-<label class="show" for="337" tabindex="0"></label>
+<input type="checkbox" hidden id="336">
+<label class="show" for="336" tabindex="0"></label>
 <div class="licence">
-<pre>Licensed under the Academic Free License version 2.0 (below)
-Or under the following terms:
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the
-Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-Boston, MA 02111-1307, USA.
-
-
---------------------------------------------------------------------------------
+<pre>--------------------------------------------------------------------------------
 Academic Free License v. 2.0
 --------------------------------------------------------------------------------
 
@@ -99446,8 +99311,8 @@ permission of its copyright owner.
 <div class="product">
 <span class="title">xdg-user-dirs</span>
 <span class="homepage"><a href="http://www.freedesktop.org/wiki/Software/xdg-user-dirs">homepage</a></span>
-<input type="checkbox" hidden id="338">
-<label class="show" for="338" tabindex="0"></label>
+<input type="checkbox" hidden id="337">
+<label class="show" for="337" tabindex="0"></label>
 <div class="licence">
 <pre>  Copyright (c) 2007 Red Hat, inc
 
@@ -99477,8 +99342,8 @@ permission of its copyright owner.
 <div class="product">
 <span class="title">xdg-utils</span>
 <span class="homepage"><a href="http://portland.freedesktop.org/wiki/">homepage</a></span>
-<input type="checkbox" hidden id="339">
-<label class="show" for="339" tabindex="0"></label>
+<input type="checkbox" hidden id="338">
+<label class="show" for="338" tabindex="0"></label>
 <div class="licence">
 <pre>#
 #   Permission is hereby granted, free of charge, to any person obtaining a
@@ -99505,8 +99370,8 @@ permission of its copyright owner.
 <div class="product">
 <span class="title">xxHash</span>
 <span class="homepage"><a href="https://github.com/Cyan4973/xxHash">homepage</a></span>
-<input type="checkbox" hidden id="340">
-<label class="show" for="340" tabindex="0"></label>
+<input type="checkbox" hidden id="339">
+<label class="show" for="339" tabindex="0"></label>
 <div class="licence">
 <pre>xxHash Library
 Copyright (c) 2012-2014, Yann Collet
@@ -99539,8 +99404,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">XZ Utils</span>
 <span class="homepage"><a href="http://tukaani.org/xz/">homepage</a></span>
-<input type="checkbox" hidden id="341">
-<label class="show" for="341" tabindex="0"></label>
+<input type="checkbox" hidden id="340">
+<label class="show" for="340" tabindex="0"></label>
 <div class="licence">
 <pre>See http://src.chromium.org/viewvc/chrome/trunk/deps/third_party/xz/COPYING
 </pre>
@@ -99550,8 +99415,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div class="product">
 <span class="title">zlib</span>
 <span class="homepage"><a href="http://zlib.net/">homepage</a></span>
-<input type="checkbox" hidden id="342">
-<label class="show" for="342" tabindex="0"></label>
+<input type="checkbox" hidden id="341">
+<label class="show" for="341" tabindex="0"></label>
 <div class="licence">
 <pre>version 1.2.11, January 15th, 2017
 

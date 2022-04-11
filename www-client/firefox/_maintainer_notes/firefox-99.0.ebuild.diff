@@ -1,5 +1,5 @@
---- firefox-97.0.2.ebuild.orig	2022-03-05 00:40:05.000000000 -0800
-+++ firefox-97.0.2.ebuild	2022-03-11 15:56:57.426332353 -0800
+--- firefox-99.0.ebuild.orig	2022-04-07 00:39:57.000000000 -0700
++++ firefox-99.0.ebuild	2022-04-10 19:09:04.359470607 -0700
 @@ -1,6 +1,12 @@
  # Copyright 1999-2022 Gentoo Authors
  # Distributed under the terms of the GNU General Public License v2
@@ -12,7 +12,7 @@
 +
  EAPI="7"
  
- FIREFOX_PATCHSET="firefox-97-patches-03j.tar.xz"
+ FIREFOX_PATCHSET="firefox-99-patches-01j.tar.xz"
 @@ -40,6 +46,7 @@ MOZ_P_DISTFILES="${MOZ_PN}-${MOZ_PV_DIST
  inherit autotools check-reqs desktop flag-o-matic gnome2-utils linux-info \
  	llvm multiprocessing pax-utils python-any-r1 toolchain-funcs \
@@ -33,11 +33,11 @@
 +# MPL-2.0 is the mostly used and default
 +#1234567890123456789012345678901234567890123456789012345678901234567890123456789
 +LICENSE_FINGERPRINT="\
-+0297907923dc62a2c9ebd3e5b0572e053dd11673af9af7606b0368a2cc9ac4c6\
-+cb397048079dda1254f41a71170e0014d7edd29ac3b0952b6b2a77a54946e45a" # SHA512
++6568aac5155a44f7ae083c8b216c2903315babe25c273e41edcef72970924487\
++c4fd96271412a79816bb920b78fac4f57a4113d1cd7c9b3eb760992e9167caa1" # SHA512
 +# FF-96.0-THIRD-PARTY-LICENSES should be updated per new feature or if the fingerprint changes.
 +# Update the license version also.
-+LICENSE+=" FF-97.0-THIRD-PARTY-LICENSES"
++LICENSE+=" FF-99.0-THIRD-PARTY-LICENSES"
 +LICENSE+="
 +	( BSD-2
 +		BSD
@@ -208,7 +208,7 @@
 -				pgo? ( =sys-libs/compiler-rt-sanitizers-12*[profile] )
 -			)
 -		)
-+LLVM_SLOTS=(13 12 11 10)
++LLVM_SLOTS=(13 12 11)
 +
 +gen_llvm_bdepends() {
 +	local o=""
@@ -244,37 +244,32 @@
  	x86? ( >=dev-lang/nasm-2.14 )"
  
 -COMMON_DEPEND="
--	>=dev-libs/nss-3.74
+-	>=dev-libs/nss-3.76
 -	>=dev-libs/nspr-4.32
 -	dev-libs/atk
 -	dev-libs/expat
--	>=x11-libs/cairo-1.10[X]
--	>=x11-libs/gtk+-3.4.0:3[X]
--	x11-libs/gdk-pixbuf
--	>=x11-libs/pango-1.22.0
+-	media-libs/alsa-lib
 -	>=media-libs/mesa-10.2:*
 -	media-libs/fontconfig
 -	>=media-libs/freetype-2.9
--	kernel_linux? ( !pulseaudio? ( media-libs/alsa-lib ) )
 +CDEPEND="
-+	>=dev-libs/nss-3.74[${MULTILIB_USEDEP}]
++	>=dev-libs/nss-3.76[${MULTILIB_USEDEP}]
 +	>=dev-libs/nspr-4.32[${MULTILIB_USEDEP}]
 +	dev-libs/atk[${MULTILIB_USEDEP}]
 +	dev-libs/expat[${MULTILIB_USEDEP}]
-+	>=x11-libs/cairo-1.10[X,${MULTILIB_USEDEP}]
-+	>=x11-libs/gtk+-3.4.0:3[X,${MULTILIB_USEDEP}]
-+	x11-libs/gdk-pixbuf[${MULTILIB_USEDEP}]
-+	>=x11-libs/pango-1.22.0[${MULTILIB_USEDEP}]
++	media-libs/alsa-lib[${MULTILIB_USEDEP}]
 +	>=media-libs/mesa-10.2:*[${MULTILIB_USEDEP}]
 +	media-libs/fontconfig[${MULTILIB_USEDEP}]
 +	>=media-libs/freetype-2.9[${MULTILIB_USEDEP}]
-+	kernel_linux? ( !pulseaudio? ( media-libs/alsa-lib[${MULTILIB_USEDEP}] ) )
  	virtual/freedesktop-icon-theme
 -	>=x11-libs/pixman-0.19.2
 -	>=dev-libs/glib-2.42:2
 -	>=sys-libs/zlib-1.2.3
 -	>=dev-libs/libffi-3.0.10:=
 -	media-video/ffmpeg
+-	>=x11-libs/cairo-1.10[X]
+-	>=x11-libs/gtk+-3.4.0:3[X]
+-	x11-libs/gdk-pixbuf
 -	x11-libs/libX11
 -	x11-libs/libXcomposite
 -	x11-libs/libXdamage
@@ -283,12 +278,16 @@
 -	x11-libs/libXrandr
 -	x11-libs/libXrender
 -	x11-libs/libXtst
--	x11-libs/libxcb
+-	x11-libs/libxcb:=
+-	>=x11-libs/pango-1.22.0
 +	>=x11-libs/pixman-0.19.2[${MULTILIB_USEDEP}]
 +	>=dev-libs/glib-2.42:2[${MULTILIB_USEDEP}]
 +	>=sys-libs/zlib-1.2.3[${MULTILIB_USEDEP}]
 +	>=dev-libs/libffi-3.0.10:=[${MULTILIB_USEDEP}]
 +	media-video/ffmpeg[${MULTILIB_USEDEP}]
++	>=x11-libs/cairo-1.10[X,${MULTILIB_USEDEP}]
++	>=x11-libs/gtk+-3.4.0:3[X,${MULTILIB_USEDEP}]
++	x11-libs/gdk-pixbuf[${MULTILIB_USEDEP}]
 +	x11-libs/libX11[${MULTILIB_USEDEP}]
 +	x11-libs/libXcomposite[${MULTILIB_USEDEP}]
 +	x11-libs/libXdamage[${MULTILIB_USEDEP}]
@@ -297,7 +296,8 @@
 +	x11-libs/libXrandr[${MULTILIB_USEDEP}]
 +	x11-libs/libXrender[${MULTILIB_USEDEP}]
 +	x11-libs/libXtst[${MULTILIB_USEDEP}]
-+	x11-libs/libxcb[${MULTILIB_USEDEP}]
++	x11-libs/libxcb:=[${MULTILIB_USEDEP}]
++	>=x11-libs/pango-1.22.0[${MULTILIB_USEDEP}]
  	dbus? (
 -		sys-apps/dbus
 -		dev-libs/dbus-glib
@@ -407,17 +407,15 @@
  			return 1
  		fi
  
-@@ -429,7 +577,9 @@ pkg_pretend() {
+@@ -429,6 +577,7 @@ pkg_pretend() {
  	fi
  }
  
 +NABIS=0
  pkg_setup() {
-+	ewarn "This ebuild is a Work In Progress (WIP) / Testing.  It may freeze or lock up for both 32 and 64-bit builds."
  	if [[ ${MERGE_TYPE} != binary ]] ; then
  		if use pgo ; then
- 			if ! has userpriv ${FEATURES} ; then
-@@ -457,7 +607,7 @@ pkg_setup() {
+@@ -457,7 +606,7 @@ pkg_setup() {
  			[[ -n ${version_llvm_rust} ]] && version_llvm_rust=$(ver_cut 1 "${version_llvm_rust}")
  			[[ -z ${version_llvm_rust} ]] && die "Failed to read used LLVM version from rustc!"
  
@@ -426,7 +424,7 @@
  				eerror "Rust is using LLVM version ${version_llvm_rust} but ld.lld version belongs to LLVM version ${version_lld}."
  				eerror "You will be unable to link ${CATEGORY}/${PN}. To proceed you have the following options:"
  				eerror "  - Manually switch rust version using 'eselect rust' to match used LLVM version"
-@@ -549,6 +699,40 @@ pkg_setup() {
+@@ -549,6 +698,40 @@ pkg_setup() {
  	CONFIG_CHECK="~SECCOMP"
  	WARNING_SECCOMP="CONFIG_SECCOMP not set! This system will be unable to play DRM-protected content."
  	linux-info_pkg_setup
@@ -467,7 +465,7 @@
  }
  
  src_unpack() {
-@@ -563,15 +747,57 @@ src_unpack() {
+@@ -563,15 +746,57 @@ src_unpack() {
  		if [[ ${_src_file} == *.xpi ]]; then
  			cp "${DISTDIR}/${_src_file}" "${_lp_dir}" || die "Failed to copy '${_src_file}' to '${_lp_dir}'!"
  		else
@@ -525,7 +523,7 @@
  	# Allow user to apply any additional patches without modifing ebuild
  	eapply_user
  
-@@ -590,11 +816,11 @@ src_prepare() {
+@@ -590,11 +815,11 @@ src_prepare() {
  		"${S}"/intl/icu_sources_data.py \
  		|| die "sed failed to set num_cores"
  
@@ -542,7 +540,7 @@
  
  	sed -i \
  		-e 's/ccache_stats = None/return None/' \
-@@ -607,9 +833,9 @@ src_prepare() {
+@@ -607,9 +832,9 @@ src_prepare() {
  	# Clearing checksums where we have applied patches
  	moz_clear_vendor_checksums target-lexicon-0.9.0
  
@@ -555,16 +553,16 @@
  
  	# Write API keys to disk
  	echo -n "${MOZ_API_KEY_GOOGLE//gGaPi/}" > "${S}"/api-google.key || die
-@@ -617,9 +843,71 @@ src_prepare() {
+@@ -617,9 +842,71 @@ src_prepare() {
  	echo -n "${MOZ_API_KEY_MOZILLA//m0ap1/}" > "${S}"/api-mozilla.key || die
  
  	xdg_src_prepare
 +
-+#	if [[ "${CFLAGS}" =~ "fast-math" || "${CXXFLAGS}" =~ "fast-math" ]] ; then
++	if [[ "${CFLAGS}" =~ "fast-math" || "${CXXFLAGS}" =~ "fast-math" ]] ; then
 +		pushd "${S}" || die
 +		eapply "${FILESDIR}/multiabi/firefox-78.0.2-opus-fast-math.patch"
 +		popd || die
-+#	fi
++	fi
 +
 +	verify_license_fingerprint
 +
@@ -628,7 +626,7 @@
  	# Show flags set at the beginning
  	einfo "Current BINDGEN_CFLAGS:\t${BINDGEN_CFLAGS:-no value set}"
  	einfo "Current CFLAGS:\t\t${CFLAGS:-no value set}"
-@@ -627,14 +915,15 @@ src_configure() {
+@@ -627,6 +914,7 @@ src_configure() {
  	einfo "Current LDFLAGS:\t\t${LDFLAGS:-no value set}"
  	einfo "Current RUSTFLAGS:\t\t${RUSTFLAGS:-no value set}"
  
@@ -636,9 +634,10 @@
  	local have_switched_compiler=
  	if use clang && ! tc-is-clang ; then
  		# Force clang
- 		einfo "Enforcing the use of clang due to USE=clang ..."
+@@ -634,8 +922,8 @@ src_configure() {
  		have_switched_compiler=yes
  		AR=llvm-ar
+ 		AS=llvm-as
 -		CC=${CHOST}-clang
 -		CXX=${CHOST}-clang++
 +		CC=${chost}-clang
@@ -646,7 +645,7 @@
  		NM=llvm-nm
  		RANLIB=llvm-ranlib
  	elif ! use clang && ! tc-is-gcc ; then
-@@ -642,8 +931,8 @@ src_configure() {
+@@ -643,8 +931,8 @@ src_configure() {
  		have_switched_compiler=yes
  		einfo "Enforcing the use of gcc due to USE=-clang ..."
  		AR=gcc-ar
@@ -657,7 +656,7 @@
  		NM=gcc-nm
  		RANLIB=gcc-ranlib
  	fi
-@@ -658,14 +947,14 @@ src_configure() {
+@@ -659,14 +947,14 @@ src_configure() {
  	export HOST_CC="$(tc-getBUILD_CC)"
  	export HOST_CXX="$(tc-getBUILD_CXX)"
  	tc-export CC CXX LD AR NM OBJDUMP RANLIB PKG_CONFIG
@@ -676,7 +675,7 @@
  
  	# python/mach/mach/mixin/process.py fails to detect SHELL
  	export SHELL="${EPREFIX}/bin/bash"
-@@ -673,8 +962,8 @@ src_configure() {
+@@ -674,8 +962,8 @@ src_configure() {
  	# Set state path
  	export MOZBUILD_STATE_PATH="${BUILD_DIR}"
  
@@ -687,7 +686,7 @@
  
  	# Initialize MOZCONFIG
  	mozconfig_add_options_ac '' --enable-application=browser
-@@ -696,28 +985,34 @@ src_configure() {
+@@ -699,28 +987,34 @@ src_configure() {
  		--enable-release \
  		--enable-system-ffi \
  		--enable-system-pixman \
@@ -727,7 +726,7 @@
  		mozconfig_add_options_ac '' --enable-rust-simd
  	fi
  
-@@ -730,38 +1025,38 @@ src_configure() {
+@@ -733,38 +1027,38 @@ src_configure() {
  		mozconfig_add_options_ac '' --enable-sandbox
  	fi
  
@@ -775,7 +774,7 @@
  	else
  		einfo "Building without Mozilla API key ..."
  	fi
-@@ -887,13 +1182,13 @@ src_configure() {
+@@ -890,13 +1184,13 @@ src_configure() {
  		fi
  	fi
  
@@ -791,7 +790,7 @@
  				|| die
  		fi
  	fi
-@@ -964,7 +1259,18 @@ src_configure() {
+@@ -967,7 +1261,18 @@ src_configure() {
  	mozconfig_add_options_ac 'Gentoo default' "XARGS=${EPREFIX}/usr/bin/xargs"
  
  	# Set build dir
@@ -811,7 +810,7 @@
  
  	# Show flags we will use
  	einfo "Build BINDGEN_CFLAGS:\t${BINDGEN_CFLAGS:-no value set}"
-@@ -998,7 +1304,16 @@ src_configure() {
+@@ -1001,7 +1306,16 @@ src_configure() {
  	./mach configure || die
  }
  
@@ -829,7 +828,7 @@
  	local virtx_cmd=
  
  	if use pgo ; then
-@@ -1016,12 +1331,179 @@ src_compile() {
+@@ -1019,12 +1333,179 @@ src_compile() {
  		|| die
  }
  
@@ -1013,7 +1012,7 @@
  
  	DESTDIR="${D}" ./mach install || die
  
-@@ -1084,15 +1566,15 @@ src_install() {
+@@ -1087,15 +1568,15 @@ src_install() {
  	# Install geckodriver
  	if use geckodriver ; then
  		einfo "Installing geckodriver into ${ED}${MOZILLA_FIVE_HOME} ..."
@@ -1032,7 +1031,7 @@
  	local icon_symbolic_file="${FILESDIR}/icon/firefox-symbolic.svg"
  
  	insinto /usr/share/icons/hicolor/symbolic/apps
-@@ -1111,10 +1593,10 @@ src_install() {
+@@ -1114,10 +1595,10 @@ src_install() {
  	done
  
  	# Install menu
@@ -1046,7 +1045,7 @@
  	local icon="${PN}"
  	local use_wayland="false"
  
-@@ -1137,16 +1619,19 @@ src_install() {
+@@ -1140,16 +1621,19 @@ src_install() {
  
  	# Install wrapper script
  	[[ -f "${ED}/usr/bin/${PN}" ]] && rm "${ED}/usr/bin/${PN}"
@@ -1068,9 +1067,9 @@
  }
  
  pkg_preinst() {
-@@ -1244,4 +1729,19 @@ pkg_postinst() {
- 		elog "If you still want to be able to select between running Mozilla ${PN^}"
- 		elog "on X11 or Wayland, you have to re-create these shortcuts on your own."
+@@ -1255,4 +1739,19 @@ pkg_postinst() {
+ 		ewarn "required EGL, so either disable 'hwaccel' or try the workaround "
+ 		ewarn "explained in https://bugs.gentoo.org/835078#c5 if Firefox crashes."
  	fi
 +
 +einfo
