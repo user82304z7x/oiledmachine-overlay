@@ -26,7 +26,7 @@ inherit llvm multilib multilib-minimal user # Added by the oiledmachine-overlay
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
-PATCHSET="4"
+PATCHSET="2"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
 MTD_V="${PV}"
 CTDM_V="${PV}"
@@ -50,8 +50,8 @@ RESTRICT="mirror"
 # SHA512 about_credits.html fingerprint:
 #
 LICENSE_FINGERPRINT="\
-b707687bcd996a2435b300e4c4a2553499725c411224cb6def2ff4c06371fb87\
-e7163217843755b076637fc476a46f25609a26c16432220552cddf8697e203d0"
+ce498e4da2de345614b7bd0da67bc6bed709e37617de0b48bac53f911a0f5595\
+af40e0eab8a2ed0152472726f00b2942d8aaf1a9a222d4d9177d87bc3757f3d4"
 LICENSE="BSD
 	chromium-$(ver_cut 1-3 ${PV}).x
 	APSL-2
@@ -217,13 +217,13 @@ SLOT="0/stable"
 KEYWORDS="amd64 arm64 ~x86" # Waiting for server to upload tarball
 #
 # vaapi is enabled by default upstream for some arches \
-# See https://github.com/chromium/chromium/blob/103.0.5060.134/media/gpu/args.gni#L24
+# See https://github.com/chromium/chromium/blob/104.0.5112.79/media/gpu/args.gni#L24
 #
 # Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 #   incompatible as a shared lib.
 #
 # The suid is built by default upstream but not necessarily used:  \
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/sandbox/linux/BUILD.gn
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/sandbox/linux/BUILD.gn
 #
 CPU_FLAGS_ARM=( neon )
 CPU_FLAGS_X86=( sse2 ssse3 sse4_2 )
@@ -234,25 +234,25 @@ IUSE="${CPU_FLAGS_ARM[@]/#/cpu_flags_arm_} ${CPU_FLAGS_X86[@]/#/cpu_flags_x86_}
 -system-ffmpeg -system-icu -system-harfbuzz -system-png +vaapi wayland widevine"
 IUSE+=" weston r0"
 # What is considered a proprietary codec can be found at:
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/media/filters/BUILD.gn#L160
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/media/media_options.gni#L38
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/media/base/supported_types.cc#L203
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/filters/BUILD.gn#L160
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/media_options.gni#L38
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/base/supported_types.cc#L203
 #     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/media/base/supported_types.cc#L284
-# Codec upstream default: https://github.com/chromium/chromium/blob/103.0.5060.134/tools/mb/mb_config_expectations/chromium.linux.json#L89
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/base/supported_types.cc#L284
+# Codec upstream default: https://github.com/chromium/chromium/blob/104.0.5112.79/tools/mb/mb_config_expectations/chromium.linux.json#L89
 IUSE+=" video_cards_amdgpu video_cards_intel video_cards_iris
 video_cards_i965 video_cards_nouveau video_cards_nvidia
 video_cards_r600 video_cards_radeonsi" # For VA-API
 IUSE+=" +partitionalloc libcmalloc"
 #
 # For cfi-vcall, cfi-icall defaults status, see \
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/build/config/sanitizers/sanitizers.gni
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/sanitizers/sanitizers.gni
 # For cfi-cast default status, see \
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/build/config/sanitizers/sanitizers.gni#L123
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/sanitizers/sanitizers.gni#L123
 # For pgo default status, see \
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/build/config/compiler/pgo/pgo.gni#L15
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/compiler/pgo/pgo.gni#L15
 # For libcxx default, see \
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/build/config/c++/c++.gni#L14
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/c++/c++.gni#L14
 # For cdm availability see third_party/widevine/cdm/widevine.gni#L28
 #
 IUSE_LIBCXX=( bundled-libcxx system-libstdcxx )
@@ -285,21 +285,71 @@ IUSE+=" ${_ABIS[@]}"
 #   https://clang.llvm.org/docs/ControlFlowIntegrity.html#bad-cast-checking
 #
 REQUIRED_USE+="
-	^^ ( ${IUSE_LIBCXX[@]} )
-	^^ ( partitionalloc libcmalloc )
-	!clang? ( !cfi-cast !cfi-icall !cfi-vcall !shadowcallstack )
-	!headless ( || ( X wayland ) )
-	!proprietary-codecs? ( !system-ffmpeg !vaapi )
-	amd64? ( !shadowcallstack )
-	bundled-libcxx? ( clang )
-	branch-protection-standard? ( arm64 )
-	cfi-cast? ( cfi-vcall !system-ffmpeg !system-harfbuzz !system-icu !system-libstdcxx )
-	cfi-icall? ( cfi-vcall !system-ffmpeg !system-harfbuzz !system-icu !system-libstdcxx )
-	cfi-vcall? ( clang !system-ffmpeg !system-harfbuzz !system-icu !system-libstdcxx )
-	component-build? ( !bundled-libcxx !suid )
-	lto-opt? ( clang )
+	^^ (
+		${IUSE_LIBCXX[@]}
+	)
+	^^ (
+		partitionalloc
+		libcmalloc
+	)
+	!clang? (
+		!cfi-cast
+		!cfi-icall
+		!cfi-vcall
+		!shadowcallstack
+	)
+	!headless (
+		|| (
+			X
+			wayland
+		)
+	)
+	!proprietary-codecs? (
+		!system-ffmpeg
+		!vaapi
+	)
+	amd64? (
+		!shadowcallstack
+	)
+	bundled-libcxx? (
+		clang
+	)
+	branch-protection-standard? (
+		arm64
+	)
+	cfi-cast? (
+		!system-ffmpeg
+		!system-harfbuzz
+		!system-icu
+		!system-libstdcxx
+		cfi-vcall
+	)
+	cfi-icall? (
+		!system-ffmpeg
+		!system-harfbuzz
+		!system-icu
+		!system-libstdcxx
+		cfi-vcall
+	)
+	cfi-vcall? (
+		!system-ffmpeg
+		!system-harfbuzz
+		!system-icu
+		!system-libstdcxx
+		clang
+	)
+	component-build? (
+		!bundled-libcxx
+		!suid
+	)
+	lto-opt? (
+		clang
+	)
 	official? (
-		^^ ( pgo pgo-full )
+		^^ (
+			pgo
+			pgo-full
+		)
 		!debug
 		!system-ffmpeg
 		!system-harfbuzz
@@ -307,19 +357,46 @@ REQUIRED_USE+="
 		!system-libstdcxx
 		bundled-libcxx
 		partitionalloc
-		amd64? ( cfi-icall cfi-vcall )
+		amd64? (
+			cfi-icall
+			cfi-vcall
+		)
 	)
-	partitionalloc? ( !component-build )
-	pgo? ( clang !pgo-full )
-	pgo-full? ( clang !pgo )
-	ppc64? ( !shadowcallstack )
-	pre-check-llvm? ( clang )
-	pre-check-vaapi? ( vaapi )
-	screencast? ( wayland )
-	shadowcallstack? ( clang )
-	system-libstdcxx? ( !cfi-cast )
-	system-libstdcxx? ( !cfi-icall )
-	system-libstdcxx? ( !cfi-vcall )
+	partitionalloc? (
+		!component-build
+	)
+	pgo? (
+		clang
+		!pgo-full
+	)
+	pgo-full? (
+		clang
+		!pgo
+	)
+	ppc64? (
+		!shadowcallstack
+	)
+	pre-check-llvm? (
+		clang
+	)
+	pre-check-vaapi? (
+		vaapi
+	)
+	screencast? (
+		wayland
+	)
+	shadowcallstack? (
+		clang
+	)
+	system-libstdcxx? (
+		!cfi-cast
+	)
+	system-libstdcxx? (
+		!cfi-icall
+	)
+	system-libstdcxx? (
+		!cfi-vcall
+	)
 	vaapi? ( proprietary-codecs )
 	video_cards_amdgpu? (
 		!video_cards_r600
@@ -333,8 +410,13 @@ REQUIRED_USE+="
 		!video_cards_amdgpu
 		!video_cards_r600
 	)
-	widevine? ( !arm64 !ppc64 )
-	x86? ( !shadowcallstack )
+	widevine? (
+		!arm64
+		!ppc64
+	)
+	x86? (
+		!shadowcallstack
+	)
 "
 
 LIBVA_V="2.7"
@@ -380,7 +462,9 @@ LIBVA_DEPEND="
 			)
 		)
 		>=x11-libs/libva-${LIBVA_V}:=[${MULTILIB_USEDEP}]
-		system-ffmpeg? ( >=media-video/ffmpeg-${FFMPEG_V}[vaapi,${MULTILIB_USEDEP}] )
+		system-ffmpeg? (
+			>=media-video/ffmpeg-${FFMPEG_V}[vaapi,${MULTILIB_USEDEP}]
+		)
 	)
 "
 
@@ -396,9 +480,15 @@ gen_bdepend_llvm() {
 			>=sys-devel/lld-${s}
 			=sys-libs/compiler-rt-${s}*
 			=sys-libs/compiler-rt-sanitizers-${s}*:=[shadowcallstack?]
-			cfi-cast? ( =sys-libs/compiler-rt-sanitizers-${s}*:=[cfi] )
-			cfi-icall? ( =sys-libs/compiler-rt-sanitizers-${s}*:=[cfi] )
-			cfi-vcall? ( =sys-libs/compiler-rt-sanitizers-${s}*:=[cfi] )
+			cfi-cast? (
+				=sys-libs/compiler-rt-sanitizers-${s}*:=[cfi]
+			)
+			cfi-icall? (
+				=sys-libs/compiler-rt-sanitizers-${s}*:=[cfi]
+			)
+			cfi-vcall? (
+				=sys-libs/compiler-rt-sanitizers-${s}*:=[cfi]
+			)
 		"
 		o_all+=" ( ${t} ) "
 		(( ${s} == ${CR_CLANG_SLOT_OFFICIAL} )) && o_official=" ${t} "
@@ -541,7 +631,7 @@ BDEPEND="
 # This is why LLVM13 was set as the minimum and did fix the problem.
 
 # For the current llvm for this project, see
-#   https://github.com/chromium/chromium/blob/103.0.5060.134/tools/clang/scripts/update.py#L42
+#   https://github.com/chromium/chromium/blob/104.0.5112.79/tools/clang/scripts/update.py#L42
 # Use the same clang for official USE flag because of older llvm bugs which
 #   could result in security weaknesses (explained in the llvm:12 note below).
 # Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -631,7 +721,7 @@ pre_build_checks() {
 		fi
 	fi
 
-# https://github.com/chromium/chromium/blob/103.0.5060.134/docs/linux/build_instructions.md#system-requirements
+# https://github.com/chromium/chromium/blob/104.0.5112.79/docs/linux/build_instructions.md#system-requirements
 # Check build requirements, bug #541816 and bug #471810 .
 	CHECKREQS_MEMORY="4G"
 	CHECKREQS_DISK_BUILD="10G"
@@ -711,9 +801,14 @@ pkg_pretend() {
 	pre_build_checks
 
 	if use headless; then
-		local headless_unused_flags=("cups" "kerberos" "pulseaudio" "vaapi" "wayland")
+		local headless_unused_flags=("cups" "kerberos" "pulseaudio"
+			"vaapi" "wayland")
 		for myiuse in ${headless_unused_flags[@]}; do
-			use ${myiuse} && ewarn "Ignoring USE=${myiuse} since USE=headless is set."
+			if use ${myiuse} ; then
+ewarn
+ewarn "Ignoring USE=${myiuse} since USE=headless is set."
+ewarn
+			fi
 		done
 	fi
 }
@@ -734,7 +829,7 @@ pkg_pretend() {
 
 # LLVM 15
 CR_CLANG_USED="c2a7904a" # Obtained from \
-# https://github.com/chromium/chromium/blob/103.0.5060.134/tools/clang/scripts/update.py#L42 \
+# https://github.com/chromium/chromium/blob/104.0.5112.79/tools/clang/scripts/update.py#L42 \
 # https://github.com/llvm/llvm-project/commit/c2a7904a
 CR_CLANG_USED_UNIX_TIMESTAMP="1652308059" # Cached.  Use below to obtain this. \
 # TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
@@ -1305,6 +1400,26 @@ ewarn "Disable them if problematic."
 ewarn
 	fi
 
+	if use official && tc-is-cross-compiler ; then
+eerror
+eerror "Do not use USE=official with cross-compiling"
+eerror
+		die
+	fi
+
+	if ( \
+		use cfi-cast \
+		|| use cfi-vcall \
+		|| use cfi-icall \
+	) \
+		&& tc-is-cross-compiler ; then
+eerror
+eerror "Do not use USE=cfi-cast, USE=cfi-vcall, USE=cfi-icall with"
+eerror "cross-compiling."
+eerror
+		die
+	fi
+
 	if use official || ( use clang && use cfi-vcall && use pgo ) ; then
 		# sys-devel/lld-13 was ~20 mins for v8_context_snapshot_generator
 		# sys-devel/lld-12 was ~4 hrs for v8_context_snapshot_generator
@@ -1344,7 +1459,8 @@ ewarn
 			if use official ; then
 				LLVM_SLOT=14
 			else
-				LLVM_SLOT=$(ver_cut 1 $(best_version "sys-devel/clang" | sed -e "s|sys-devel/clang-||g"))
+				LLVM_SLOT=$(ver_cut 1 $(best_version "sys-devel/clang" \
+					| sed -e "s|sys-devel/clang-||g"))
 			fi
 		fi
 		if [[ -z "${LLVM_SLOT}" ]] ; then
@@ -1380,25 +1496,34 @@ eerror
 # One reason is possibly for crash reporting.
 			die
 		else
-			export PATH=$(echo "${PATH}" | tr ":" "\n" | sed -e "s|.*llvm/.*||" | uniq \
-				| sed -e "/^$/d" | tr "\n" ":" | sed -e "s|:$||")
-			# If building without ccache, include in the search path:
-			# 1.  Path to clang/clang++ (/usr/lib/llvm/${LLVM_SLOT}/bin)
-			# 2.  Path to highest LLD (/usr/lib/llvm/${v_major_lld}/bin)
-			# If ccache is installed, this really does nothing because
-			# /usr/lib/ccache/bin has a higher precedence.
+			export PATH=$(echo "${PATH}" \
+				| tr ":" "\n" \
+				| sed -e "s|.*llvm/.*||" \
+				| uniq \
+				| sed -e "/^$/d" \
+				| tr "\n" ":" \
+				| sed -e "s|:$||")
+# If building without ccache, include in the search path:
+# 1.  Path to clang/clang++ (/usr/lib/llvm/${LLVM_SLOT}/bin)
+# 2.  Path to highest LLD (/usr/lib/llvm/${v_major_lld}/bin)
+# If ccache is installed, this really does nothing because
+# /usr/lib/ccache/bin has a higher precedence.
 			export PATH+=":/usr/lib/llvm/${LLVM_SLOT}/bin"
 einfo
 einfo "Using sys-devel/llvm:${LLVM_SLOT}"
 einfo
-			local lld_v_maj=$(ver_cut 1 $(best_version "sys-devel/lld" | sed -e "s|sys-devel/lld-||"))
+			local lld_v_maj=$(ver_cut 1 \
+				$(best_version "sys-devel/lld" \
+					| sed -e "s|sys-devel/lld-||"))
 			v_major_lld=$(ver_cut 1 "${v_major_lld}")
 			export PATH+=":/usr/lib/llvm/${v_major_lld}/bin"
 		fi
 		if use pgo ; then
 			local vi=$(get_llvm_profdata_version_info)
-			CURRENT_PROFDATA_VERSION=$(echo "${vi}" | cut -f 1 -d ":")
-			CURRENT_PROFDATA_LLVM_VERSION=$(echo "${vi}" | cut -f 2 -d ":")
+			CURRENT_PROFDATA_VERSION=$(echo "${vi}" \
+				| cut -f 1 -d ":")
+			CURRENT_PROFDATA_LLVM_VERSION=$(echo "${vi}" \
+				| cut -f 2 -d ":")
 		fi
 	fi
 	if [[ -n "${CHROMIUM_EBUILD_MAINTAINER}" ]] ; then
@@ -1447,8 +1572,10 @@ ceapply() {
 
 src_unpack() {
 	for a in ${A} ; do
-		[[ "${a}" == "${PN}-${MTD_V}-media-test-data.tar.gz" ]] && continue
-		[[ "${a}" == "${PN}-${CTDM_V}-chrome-test-data-media.tar.gz" ]] && continue
+		[[ "${a}" == "${PN}-${MTD_V}-media-test-data.tar.gz" ]] \
+			&& continue
+		[[ "${a}" == "${PN}-${CTDM_V}-chrome-test-data-media.tar.gz" ]] \
+			&& continue
 		unpack ${a}
 	done
 }
@@ -1542,6 +1669,8 @@ ewarn
 		"${FILESDIR}/chromium-93-InkDropHost-crash.patch"
 		"${FILESDIR}/chromium-98-EnumTable-crash.patch"
 		"${FILESDIR}/chromium-98-gtk4-build.patch"
+		"${FILESDIR}/chromium-104-tflite-system-zlib.patch"
+		"${FILESDIR}/chromium-104-swiftshader-no-wayland.patch"
 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
 		"${FILESDIR}/chromium-shim_headers.patch"
 		"${FILESDIR}/chromium-cross-compile.patch"
@@ -1916,8 +2045,6 @@ einfo
 	fi
 
 	verify_clang_commit
-	gen_full_pgo_assets
-	gen_full_pgo_external_access_uris
 
 	(( ${NABIS} > 1 )) \
 		&& multilib_copy_sources
@@ -2036,7 +2163,7 @@ einfo
 	fi
 
 # Debug symbols level 2 is still on when official is on even though is_debug=false:
-# See https://github.com/chromium/chromium/blob/103.0.5060.134/build/config/compiler/compiler.gni#L276
+# See https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/compiler/compiler.gni#L276
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
 
@@ -2153,7 +2280,7 @@ ewarn
 
 	# TODO: link_pulseaudio=true for GN.
 
-	#myconf_gn+=" disable_fieldtrial_testing_config=true"
+	myconf_gn+=" disable_fieldtrial_testing_config=true"
 
 	# Never use bundled gold binary. Disable gold linker flags for now.
 	# Do not use bundled clang.
@@ -2361,7 +2488,7 @@ einfo
 	# The PGO data must not be wiped by the sandbox or generated in the sandbox.
 	local pgo_data_dir=$(get_pgo_data_dir)
 	local is_new=$(is_new_pgo)
-	if ! use pgo-full ; then
+	if ! use pgo-full || tc-is-cross-compiler ; then
 		:;
 	elif (( ${is_new} == 1 )) ; then
 		if tc-is-clang ; then
@@ -2435,14 +2562,14 @@ ewarn
 	fi
 
 
-# See https://github.com/chromium/chromium/blob/103.0.5060.134/build/config/sanitizers/BUILD.gn#L196
+# See https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/sanitizers/BUILD.gn#L196
 	if use cfi-vcall ; then
 		myconf_gn+=" is_cfi=true"
 	else
 		myconf_gn+=" is_cfi=false"
 	fi
 
-# See https://github.com/chromium/chromium/blob/103.0.5060.134/tools/mb/mb_config.pyl#L2950
+# See https://github.com/chromium/chromium/blob/104.0.5112.79/tools/mb/mb_config.pyl#L2950
 	if use cfi-cast ; then
 		myconf_gn+=" use_cfi_cast=true"
 	else
@@ -2489,9 +2616,11 @@ einfo
 	fi
 
 # See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-# See also https://github.com/chromium/chromium/blob/103.0.5060.134/docs/pgo.md
+# See also https://github.com/chromium/chromium/blob/104.0.5112.79/docs/pgo.md
 # profile-instr-use is clang which that file assumes but gcc doesn't have.
-	if use pgo-full ; then
+	if tc-is-cross-compiler ; then
+		myconf_gn+=" chrome_pgo_phase=0"
+	elif use pgo-full ; then
 		myconf_gn+=" chrome_pgo_phase=${PGO_PHASE}"
 		mkdir -p "${BUILD_DIR}/chrome/build/pgo_profiles" || die
 		[[ "${PGO_PHASE}" == "2" ]] && \
@@ -2627,7 +2756,7 @@ multilib_src_compile() {
 	#	--use-system-cmake \
 	#	--without-android || die
 
-	if use pgo-full ; then
+	if use pgo-full && ! tc-is-cross-compiler ; then
 		local is_new=$(is_new_pgo)
 		if (( ${is_new} == 1 )) \
 			|| [[ "${GEN_ABOUT_CREDITS}" == "1" ]] ; then
@@ -3025,7 +3154,8 @@ pkg_postinst() {
 
 	if ! use headless; then
 		if use vaapi ; then
-# It says 3 args:  https://github.com/chromium/chromium/blob/103.0.5060.134/docs/gpu/vaapi.md#vaapi-on-linux
+# It says 3 args:
+# https://github.com/chromium/chromium/blob/104.0.5112.79/docs/gpu/vaapi.md#vaapi-on-linux
 einfo
 einfo "VA-API is disabled by default at runtime.  You have to enable it"
 einfo "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
