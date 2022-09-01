@@ -18,19 +18,19 @@ uk ur vi zh-CN zh-TW
 "
 
 UOPTS_PGO_PV=$(ver_cut 1-3 ${PV})
-LLVM_MAX_SLOT=15
+LLVM_MAX_SLOT=16
 LLVM_MIN_SLOT=15 # The pregenerated PGO profile needs profdata version 8
 CR_CLANG_SLOT_OFFICIAL=15
-LLVM_SLOTS=(${LLVM_MAX_SLOT}) # [inclusive, inclusive] high to low
+LLVM_SLOTS=(16 ${LLVM_MAX_SLOT}) # [inclusive, inclusive] high to low
 UOPTS_SUPPORT_TPGO=0
 UOPTS_SUPPORT_TBOLT=0
 inherit check-reqs chromium-2 desktop flag-o-matic ninja-utils pax-utils \
 python-any-r1 readme.gentoo-r1 toolchain-funcs xdg-utils
-inherit llvm multilib multilib-minimal uopts # Added by the oiledmachine-overlay
+inherit check-linker llvm multilib multilib-minimal uopts # Added by the oiledmachine-overlay
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
-PATCHSET="2"
+PATCHSET="1"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
 MTD_V="${PV}"
 CTDM_V="${PV}"
@@ -54,8 +54,8 @@ RESTRICT="mirror"
 # SHA512 about_credits.html fingerprint:
 #
 LICENSE_FINGERPRINT="\
-ce498e4da2de345614b7bd0da67bc6bed709e37617de0b48bac53f911a0f5595\
-af40e0eab8a2ed0152472726f00b2942d8aaf1a9a222d4d9177d87bc3757f3d4"
+d34382b9e1b54764a850c4ddedb531f3a3cbfd6d78aeac63c6491dbeeb4073a7\
+3830413a92a306b5069d0424874da6949de3fbff95af1090d6788aa8bf25e8b0"
 LICENSE="
 	BSD
 	chromium-$(ver_cut 1-3 ${PV}).x
@@ -222,13 +222,13 @@ SLOT="0/stable"
 KEYWORDS="amd64 arm64 ~x86" # Waiting for server to upload tarball
 #
 # vaapi is enabled by default upstream for some arches \
-# See https://github.com/chromium/chromium/blob/104.0.5112.79/media/gpu/args.gni#L24
+# See https://github.com/chromium/chromium/blob/105.0.5195.52/media/gpu/args.gni#L24
 #
 # Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 #   incompatible as a shared lib.
 #
 # The suid is built by default upstream but not necessarily used:  \
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/sandbox/linux/BUILD.gn
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/sandbox/linux/BUILD.gn
 #
 CPU_FLAGS_ARM=( neon )
 CPU_FLAGS_X86=( sse2 ssse3 sse4_2 )
@@ -242,12 +242,12 @@ ${CPU_FLAGS_X86[@]/#/cpu_flags_x86_}
 "
 IUSE+=" weston r0"
 # What is considered a proprietary codec can be found at:
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/filters/BUILD.gn#L160
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/media_options.gni#L38
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/base/supported_types.cc#L203
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/filters/BUILD.gn#L160
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/media_options.gni#L38
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/base/supported_types.cc#L203
 #     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/media/base/supported_types.cc#L284
-# Codec upstream default: https://github.com/chromium/chromium/blob/104.0.5112.79/tools/mb/mb_config_expectations/chromium.linux.json#L89
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/base/supported_types.cc#L284
+# Codec upstream default: https://github.com/chromium/chromium/blob/105.0.5195.52/tools/mb/mb_config_expectations/chromium.linux.json#L89
 IUSE+="
 video_cards_amdgpu video_cards_intel video_cards_iris video_cards_i965
 video_cards_nouveau video_cards_nvidia video_cards_r600 video_cards_radeonsi
@@ -255,34 +255,20 @@ video_cards_nouveau video_cards_nvidia video_cards_r600 video_cards_radeonsi
 IUSE+=" +partitionalloc libcmalloc"
 #
 # For cfi-vcall, cfi-icall defaults status, see \
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/sanitizers/sanitizers.gni
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/sanitizers/sanitizers.gni
 # For cfi-cast default status, see \
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/sanitizers/sanitizers.gni#L123
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/sanitizers/sanitizers.gni#L123
 # For pgo default status, see \
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/compiler/pgo/pgo.gni#L15
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/compiler/pgo/pgo.gni#L15
 # For libcxx default, see \
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/c++/c++.gni#L14
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/c++/c++.gni#L14
 # For cdm availability see third_party/widevine/cdm/widevine.gni#L28
 #
 IUSE_LIBCXX=( bundled-libcxx system-libstdcxx )
 IUSE+="
-${IUSE_LIBCXX[@]} +bundled-libcxx branch-protection +cfi +clang +pre-check-llvm
-+pre-check-vaapi lto-opt +pgo
+${IUSE_LIBCXX[@]} +bundled-libcxx branch-protection +cfi +pre-check-llvm
++pre-check-vaapi +pgo thinlto-opt
 "
-# perf-opt
-_ABIS=(
-	abi_x86_32
-	abi_x86_64
-	abi_x86_x32
-	abi_mips_n32
-	abi_mips_n64
-	abi_mips_o32
-#	abi_ppc_32
-#	abi_ppc_64
-	abi_s390_32
-	abi_s390_64
-)
-IUSE+=" ${_ABIS[@]}"
 
 #
 # vaapi is not conditioned on proprietary-codecs upstream, but should
@@ -302,9 +288,6 @@ REQUIRED_USE+="
 		partitionalloc
 		libcmalloc
 	)
-	!clang? (
-		!cfi
-	)
 	!headless (
 		|| (
 			X
@@ -315,9 +298,6 @@ REQUIRED_USE+="
 		!system-ffmpeg
 		!vaapi
 	)
-	bundled-libcxx? (
-		clang
-	)
 	branch-protection? (
 		arm64
 	)
@@ -326,25 +306,22 @@ REQUIRED_USE+="
 		!system-harfbuzz
 		!system-icu
 		!system-libstdcxx
-		clang
 	)
 	component-build? (
 		!bundled-libcxx
 		!suid
 	)
-	lto-opt? (
-		clang
-	)
 	official? (
-		pgo
-		!epgo
 		!debug
+		!epgo
 		!system-ffmpeg
 		!system-harfbuzz
 		!system-icu
 		!system-libstdcxx
 		bundled-libcxx
 		partitionalloc
+		pgo
+		thinlto-opt
 		!amd64? (
 			!cfi
 		)
@@ -359,14 +336,10 @@ REQUIRED_USE+="
 		!component-build
 	)
 	pgo? (
-		clang
 		!epgo
 	)
 	epgo? (
 		!pgo
-	)
-	pre-check-llvm? (
-		clang
 	)
 	pre-check-vaapi? (
 		vaapi
@@ -445,7 +418,7 @@ LIBVA_DEPEND="
 	)
 "
 
-gen_bdepend_llvm() {
+gen_depend_llvm() {
 	local o_all=""
 	local t=""
 	local o_official=""
@@ -564,7 +537,14 @@ COMMON_DEPEND="
 		x11-libs/pango:=[${MULTILIB_USEDEP}]
 	)
 "
-RDEPEND="${COMMON_DEPEND}
+CLANG_RDEPEND="
+	bundled-libcxx? ( $(gen_depend_llvm) )
+	cfi? ( $(gen_depend_llvm) )
+	official? ( $(gen_depend_llvm) )
+"
+RDEPEND="
+	${COMMON_DEPEND}
+	${CLANG_RDEPEND}
 	!headless? (
 		|| (
 			x11-libs/gtk+:3[X?,wayland?,${MULTILIB_USEDEP}]
@@ -575,13 +555,23 @@ RDEPEND="${COMMON_DEPEND}
 	virtual/ttf-fonts
 	selinux? ( sec-policy/selinux-chromium )
 "
-DEPEND="${COMMON_DEPEND}
+DEPEND="
+	${COMMON_DEPEND}
 	!headless? (
 		gtk4? ( gui-libs/gtk:4[X?,wayland?] )
 		!gtk4? ( x11-libs/gtk+:3[X?,wayland?,${MULTILIB_USEDEP}] )
 	)
 "
+CLANG_BDEPEND="
+	bundled-libcxx? ( $(gen_depend_llvm) )
+	cfi? ( $(gen_depend_llvm) )
+	pre-check-llvm? ( $(gen_depend_llvm) )
+	official? ( $(gen_depend_llvm) )
+	pgo? ( $(gen_depend_llvm) )
+	thinlto-opt? ( $(gen_depend_llvm) )
+"
 BDEPEND="
+	${CLANG_BDEPEND}
 	${COMMON_SNAPSHOT_DEPEND}
 	${PYTHON_DEPS}
 	$(python_gen_any_dep '
@@ -597,7 +587,6 @@ BDEPEND="
 	>=sys-devel/bison-2.4.3
 	sys-devel/flex[${MULTILIB_USEDEP}]
 	>=dev-util/pkgconf-1.3.7[${MULTILIB_USEDEP},pkg-config(+)]
-	clang? ( $(gen_bdepend_llvm) )
 	js-type-check? ( virtual/jre )
 	vaapi? ( media-video/libva-utils )
 "
@@ -608,7 +597,7 @@ BDEPEND="
 # This is why LLVM13 was set as the minimum and did fix the problem.
 
 # For the current llvm for this project, see
-#   https://github.com/chromium/chromium/blob/104.0.5112.79/tools/clang/scripts/update.py#L42
+#   https://github.com/chromium/chromium/blob/105.0.5195.52/tools/clang/scripts/update.py#L42
 # Use the same clang for official USE flag because of older llvm bugs which
 #   could result in security weaknesses (explained in the llvm:12 note below).
 # Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -677,13 +666,13 @@ python_check_deps() {
 	has_version -b "dev-python/setuptools[${PYTHON_USEDEP}]"
 }
 
-pre_build_checks() {
+_compiler_version_checks() {
 	if [[ ${MERGE_TYPE} != binary ]] ; then
 		local -x CPP="$(tc-getCXX) -E"
 		if tc-is-gcc && ! ver_test "$(gcc-version)" -ge 9.2 ; then
 			die "At least gcc 9.2 is required"
 		fi
-		if use clang || tc-is-clang ; then
+		if tc-is-clang ; then
 			tc-is-cross-compiler && CPP=${CBUILD}-clang++ || CPP=${CHOST}-clang++
 			CPP+=" -E"
 			local clang_min
@@ -697,13 +686,16 @@ pre_build_checks() {
 			fi
 		fi
 	fi
+}
 
-# https://github.com/chromium/chromium/blob/104.0.5112.79/docs/linux/build_instructions.md#system-requirements
+pre_build_checks() {
+
+# https://github.com/chromium/chromium/blob/105.0.5195.52/docs/linux/build_instructions.md#system-requirements
 # Check build requirements, bug #541816 and bug #471810 .
 	CHECKREQS_MEMORY="4G"
 	CHECKREQS_DISK_BUILD="10G"
 	tc-is-cross-compiler && CHECKREQS_DISK_BUILD="13G"
-	if use clang ; then
+	if tc-is-clang ; then
 		CHECKREQS_MEMORY="9G"
 		CHECKREQS_DISK_BUILD="12G"
 		tc-is-cross-compiler && CHECKREQS_DISK_BUILD="15G"
@@ -721,14 +713,18 @@ pre_build_checks() {
 	local has_compressed_memory=0
 	local required_total_memory=27
 	local required_total_memory_lto=16
-	if grep -q -e "Y" "/sys/module/zswap/parameters/enabled" ; then
+	if use kernel_linux \
+		&& grep -q -e "Y" "${BROOT}/sys/module/zswap/parameters/enabled" ; then
 		has_compressed_memory=1
 		required_total_memory=12 # Done with zswap
 		required_total_memory_lto=8
 	fi
 
-	local total_memory_sources=$(free --giga | tail -n +2 \
-		| sed -r -e "s|[ ]+| |g" | cut -f 2 -d " ")
+	local total_memory_sources=$(\
+		free --giga \
+		| tail -n +2 \
+		| sed -r -e "s|[ ]+| |g" \
+		| cut -f 2 -d " ")
 	local total_memory=0
 	for total_memory_source in ${total_memory_sources[@]} ; do
 		total_memory=$((${total_memory} + ${total_memory_source}))
@@ -755,20 +751,13 @@ einfo "Total memory is sufficient (>= ${required_total_memory} GiB met)."
 einfo
 	fi
 
-	if use lto-opt && (( ${total_memory} <= ${required_total_memory_lto} )) ; then
+	if use thinlto-opt \
+		&& (( ${total_memory} <= ${required_total_memory_lto} )) ; then
 eerror
-eerror "lto-opt requires >= ${required_total_memory_lto} of total memory.  Add"
+eerror "thinlto-opt requires >= ${required_total_memory_lto} of total memory.  Add"
 eerror "more swap space or enable swap compression."
 eerror
 		die
-	fi
-
-	if has_version "x11-libs/libva-intel-driver" ; then
-ewarn
-ewarn "x11-libs/libva-intel-driver is the older vaapi driver but intended for"
-ewarn "select hardware.  See also x11-libs/libva-intel-media-driver package"
-ewarn "to access more vaapi accelerated encoders if driver support overlaps."
-ewarn
 	fi
 
 	check-reqs_pkg_setup
@@ -800,15 +789,15 @@ ewarn
 # PGO version compatibility
 
 # Profdata versioning:
-# https://github.com/llvm/llvm-project/blob/ba4537b2/llvm/include/llvm/ProfileData/InstrProf.h#L991
+# https://github.com/llvm/llvm-project/blob/89a99ec9/llvm/include/llvm/ProfileData/InstrProf.h#L991
 # LLVM version:
-# https://github.com/llvm/llvm-project/blob/ba4537b2/llvm/CMakeLists.txt#L14
+# https://github.com/llvm/llvm-project/blob/89a99ec9/llvm/CMakeLists.txt#L14
 
 # LLVM 15
-CR_CLANG_USED="c2a7904a" # Obtained from \
-# https://github.com/chromium/chromium/blob/104.0.5112.79/tools/clang/scripts/update.py#L42 \
-# https://github.com/llvm/llvm-project/commit/c2a7904a
-CR_CLANG_USED_UNIX_TIMESTAMP="1652308059" # Cached.  Use below to obtain this. \
+CR_CLANG_USED="89a99ec9" # Obtained from \
+# https://github.com/chromium/chromium/blob/105.0.5195.52/tools/clang/scripts/update.py#L42 \
+# https://github.com/llvm/llvm-project/commit/89a99ec9
+CR_CLANG_USED_UNIX_TIMESTAMP="1657154520" # Cached.  Use below to obtain this. \
 # TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 #	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
 # Change also CR_CLANG_SLOT_OFFICIAL
@@ -1044,6 +1033,11 @@ verify_llvm_report_card() {
 	fi
 }
 
+# This only exists because the distro has live versions and the project uses
+# a live version snapshot in production.  To make it more deterministic, we
+# check if the commits of the live versions to see if they are same or newer
+# to the official build essentially for all toolchain parts.  This commit
+# check also has security and ABI compatibility implications.
 LLVM_TIMESTAMP=
 verify_llvm_toolchain() {
 	local llvm_slot=${1}
@@ -1242,18 +1236,7 @@ is_profdata_compatible() {
 	fi
 }
 
-# Check the system for security weaknesses.
-check_deps_cfi_cross_dso() {
-	if ! use cfi ; then
-einfo
-einfo "Skipping CFI Cross-DSO checks"
-einfo
-		return
-	fi
-	# These are libs required by the prebuilt bin version.
-	# This list was generated from the _maintainer_notes/get_package_libs script.
-	# TODO:  Update list for source build.
-	local pkg_libs=(
+PKG_LIBS=(
 libX11.so.6
 libXau.so.6
 libXcomposite.so.1
@@ -1315,7 +1298,19 @@ libxcb-shm.so.0
 libxcb.so.1
 libxkbcommon.so.0
 libz.so.1
-	)
+)
+
+# Check the system for security weaknesses.
+check_deps_cfi_cross_dso() {
+	if ! use cfi ; then
+einfo
+einfo "Skipping CFI Cross-DSO checks"
+einfo
+		return
+	fi
+	# These are libs required by the prebuilt bin version.
+	# This list was generated from the _maintainer_notes/get_package_libs script.
+	# TODO:  Update list for source build.
 
 	# TODO: check dependency n levels deep.
 	# We assume CFI Cross-DSO.
@@ -1323,7 +1318,8 @@ einfo
 einfo "Evaluating system for possible weaknesses."
 einfo "Assuming systemwide CFI Cross-DSO."
 einfo
-	for f in ${pkg_libs[@]} ; do
+	local f
+	for f in ${PKG_LIBS[@]} ; do
 		local paths=(
 $(realpath {"${EPREFIX}"/usr/lib/gcc/*/{,32/},/lib,/usr/lib}*"/${f}" 2>/dev/null)
 		)
@@ -1349,6 +1345,22 @@ einfo
 einfo "An estimated >= 37.7% (26/69) of the libraries listed should be"
 einfo "marked CFI protected."
 einfo
+}
+
+is_using_clang() {
+	local U=(
+		"bundled-libcxx"
+		"cfi"
+		"pre-check-llvm"
+		"official"
+		"pgo"
+		"thinlto-opt"
+	)
+
+	for u in ${U} ; do
+		use "${u}" && return 0
+	done
+	return 1
 }
 
 CURRENT_PROFDATA_VERSION=
@@ -1380,21 +1392,8 @@ ewarn "Disable them if problematic."
 ewarn
 	fi
 
-	if use official && tc-is-cross-compiler ; then
-eerror
-eerror "Do not use USE=official with cross-compiling"
-eerror
-		die
-	fi
 
-	if use cfi && tc-is-cross-compiler ; then
-eerror
-eerror "Do not use USE=cfi with cross-compiling."
-eerror
-		die
-	fi
-
-	if use official || ( use clang && use cfi && use pgo ) ; then
+	if ( tc-is-clang && is-flagq '-flto*' ) || use official || use cfi ; then
 		# sys-devel/lld-13 was ~20 mins for v8_context_snapshot_generator
 		# sys-devel/lld-12 was ~4 hrs for v8_context_snapshot_generator
 ewarn
@@ -1403,7 +1402,7 @@ ewarn
 	fi
 
 	# These checks are a maybe required.
-	if use clang ; then
+	if tc-is-clang || is_using_clang ; then
 		# No LLVM multi version bug here.
 		# Cr will still work if Mesa slot is lower and Cr is built with
 		# a higher version.
@@ -1522,14 +1521,17 @@ ewarn
 
 	if use system-libstdcxx ; then
 ewarn
-ewarn "The system's libstdcxx may weaken the security.  Consider"
-ewarn "using only the bundled-libcxx instead."
+ewarn "The system's libstdcxx may weaken the security.  Consider using only the"
+ewarn " bundled-libcxx instead."
 ewarn
 	fi
 
+einfo
 einfo "To remove the hard USE mask for the builtin pgo profile:"
-einfo "mkdir -p ${EPREFIX}/etc/portage/profile"
-einfo "echo \"www-client/chromium -pgo\" >> ${EPREFIX}/etc/portage/profile/package.use.mask"
+einfo
+einfo "  mkdir -p ${EPREFIX}/etc/portage/profile"
+einfo "  echo \"www-client/chromium -pgo\" >> ${EPREFIX}/etc/portage/profile/package.use.mask"
+einfo
 
 	uopts_setup
 
@@ -1589,7 +1591,7 @@ src_prepare() {
 	check_deps_cfi_cross_dso
 
 	local PATCHES=()
-	if ( ! use clang ) || use system-libstdcxx ; then
+	if ( ! tc-is-clang ) || use system-libstdcxx ; then
 		# Contains arm64 patches for unknown purpose.
 		# TODO: split GCC only and libstdc++ only.
 		# The patches purpose are not documented well.
@@ -1604,7 +1606,7 @@ ewarn
 		"${FILESDIR}/chromium-98-EnumTable-crash.patch"
 		"${FILESDIR}/chromium-98-gtk4-build.patch"
 		"${FILESDIR}/chromium-104-tflite-system-zlib.patch"
-		"${FILESDIR}/chromium-104-swiftshader-no-wayland.patch"
+		"${FILESDIR}/chromium-105-swiftshader-no-wayland.patch"
 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
 		"${FILESDIR}/chromium-shim_headers.patch"
 		"${FILESDIR}/chromium-cross-compile.patch"
@@ -1614,7 +1616,7 @@ ewarn
 		ceapply "${FILESDIR}/extra-patches/chromium-104.0.5112.79-gcc-pgo-link-gcov.patch"
 	fi
 
-	if use clang ; then
+	if tc-is-clang ; then
 		if tc-is-clang ; then # Duplicate conditional is for testing reasons
 			# Using gcc with these patches results in this error:
 			# Two or more targets generate the same output:
@@ -1704,6 +1706,7 @@ ewarn
 		third_party/ced
 		third_party/cld_3
 		third_party/closure_compiler
+		third_party/content_analysis_sdk
 		third_party/cpuinfo
 		third_party/crashpad
 		third_party/crashpad/crashpad/third_party/lss
@@ -1768,6 +1771,7 @@ ewarn
 		third_party/libaom/source/libaom/third_party/vector
 		third_party/libaom/source/libaom/third_party/x86inc
 		third_party/libavif
+		third_party/libevent
 		third_party/libgav1
 		third_party/libjingle
 		third_party/libjxl
@@ -1813,7 +1817,7 @@ ewarn
 		third_party/pdfium/third_party/bigint
 		third_party/pdfium/third_party/freetype
 		third_party/pdfium/third_party/lcms
-		third_party/pdfium/third_party/libopenjpeg20
+		third_party/pdfium/third_party/libopenjpeg
 		third_party/pdfium/third_party/libpng16
 		third_party/pdfium/third_party/libtiff
 		third_party/pdfium/third_party/skia_shared
@@ -1886,7 +1890,6 @@ ewarn
 		v8/third_party/v8
 
 		# gyp -> gn leftovers
-		base/third_party/libevent
 		third_party/speech-dispatcher
 		third_party/usb_ids
 		third_party/xdg-utils
@@ -1921,6 +1924,8 @@ ewarn
 	fi
 	if use wayland && ! use headless ; then
 		keeplibs+=( third_party/wayland )
+		# only need the .gn files
+		rm -r third_party/wayland/src || die
 	fi
 	if use arm64 || use ppc64 ; then
 		keeplibs+=( third_party/swiftshader/third_party/llvm-10.0 )
@@ -1939,7 +1944,7 @@ ewarn
 			keeplibs+=( third_party/icu )
 		fi
 	fi
-	# we need to generate ppc64 stuff because upstream does not ship it yet
+	# We need to generate ppc64 stuff because upstream does not ship it yet
 	# it has to be done before unbundling.
 	if use ppc64 ; then
 		pushd third_party/libvpx >/dev/null || die
@@ -1971,10 +1976,9 @@ einfo
 	fi
 
 	if ! is_generating_credits ; then
-		#
-		# bundled eu-strip is for amd64 only and we don't want to
-		# pre-strip binaries.
-		#
+#
+# bundled eu-strip is for amd64 only and we don't want to pre-strip binaries.
+#
 		mkdir -p buildtools/third_party/eu-strip/bin || die
 		ln -s "${BROOT}"/bin/true \
 			buildtools/third_party/eu-strip/bin/eu-strip || die
@@ -2013,18 +2017,11 @@ _src_configure() {
 	# Make sure the build system will use the right tools, bug #340795.
 	tc-export AR CC CXX NM READELF STRIP
 
-	if tc-is-clang && ! use clang ; then
-ewarn
-ewarn "Clang detected but clang USE flag was disabled."
-ewarn
-ewarn "Enable the clang USE flag for clang otherwise disable the clang USE"
-ewarn "flag for gcc."
-ewarn
-		die
-	fi
-
 	# Final CC selected
-	if use clang ; then
+	if tc-is-clang || is_using_clang ; then
+einfo
+einfo "Switching to clang"
+einfo
 		# See build/toolchain/linux/unbundle/BUILD.gn for allowed overridable envvars.
 		# See build/toolchain/gcc_toolchain.gni#L657 for consistency.
 		if tc-is-cross-compiler; then
@@ -2050,7 +2047,7 @@ ewarn
 		fi
 	else
 einfo
-einfo "Forcing GCC"
+einfo "Switching to GCC"
 einfo
 		export CC="gcc $(get_abi_CFLAGS ${ABI})"
 		export CXX="g++ $(get_abi_CFLAGS ${ABI})"
@@ -2061,16 +2058,24 @@ einfo
 		export LD=ld.bfd
 	fi
 	strip-unsupported-flags
+	_compiler_version_checks
 
 	# Handled by the build scripts
 	filter-flags \
 		'-f*sanitize*' \
 		'-f*visibility*'
 
-	if use clang ; then
+	if tc-is-clang ; then
 		myconf_gn+=" is_clang=true clang_use_chrome_plugins=false"
 	else
 		myconf_gn+=" is_clang=false"
+	fi
+
+	if tc-is-clang ; then
+		filter-flags -fuse-ld=*
+		myconf_gn+=" use_lld=true"
+	else
+		myconf_gn+=" use_lld=false"
 	fi
 
 	# Define a custom toolchain for GN
@@ -2098,11 +2103,11 @@ einfo
 	fi
 
 # Debug symbols level 2 is still on when official is on even though is_debug=false:
-# See https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/compiler/compiler.gni#L276
+# See https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/compiler/compiler.gni#L276
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
 
-	# enable DCHECK with USE=debug only, increases chrome binary size by 30%, bug #811138.
+	# Enable DCHECK with USE=debug only, increases chrome binary size by 30%, bug #811138.
 	# DCHECK is fatal by default, make it configurable at runtime, #bug 807881.
 	myconf_gn+=" dcheck_always_on=$(usex debug true false)"
 	myconf_gn+=" dcheck_is_configurable=$(usex debug true false)"
@@ -2226,13 +2231,6 @@ ewarn
 		myconf_gn+=" use_custom_libcxx=false"
 	fi
 
-	if use clang || tc-is-clang ; then
-		filter-flags -fuse-ld=*
-		myconf_gn+=" use_lld=true"
-	else
-		myconf_gn+=" use_lld=false"
-	fi
-
 	# Disable pseudolocales, only used for testing
 	myconf_gn+=" enable_pseudolocales=false"
 
@@ -2266,52 +2264,49 @@ ewarn
 		# Debug info section overflows without component build
 		# Prevent linker from running out of address space, bug #471810.
 		if ! use component-build || use x86 ; then
-			filter-flags "-g*"
+			filter-flags '-g*'
 		fi
 
 		# Prevent libvpx/xnnpack build failures. Bug 530248, 544702,
 		# 546984, 853646.
-		if [[ ${myarch} == amd64 || ${myarch} == x86 ]] ; then
+		if [[ "${myarch}" == "amd64" || "${myarch}" == "x86" ]] ; then
 			filter-flags \
-				-mno-avx \
-				-mno-avx2 \
-				-mno-fma \
-				-mno-fma4 \
-				-mno-mmx \
-				-mno-sse2 \
-				-mno-sse4.1 \
-				-mno-ssse3 \
-				-mno-xop
+				'-mno-avx*' \
+				'-mno-fma*' \
+				'-mno-mmx*' \
+				'-mno-sse*' \
+				'-mno-ssse*' \
+				'-mno-xop'
 		fi
 	fi
 
-	if [[ ${myarch} = amd64 ]] ; then
+	if [[ "${myarch}" == "amd64" ]] ; then
 		target_cpu="x64"
-		ffmpeg_target_arch=x64
-	elif [[ ${myarch} = x86 ]] ; then
+		ffmpeg_target_arch="x64"
+	elif [[ "${myarch}" == "x86" ]] ; then
 		target_cpu="x86"
-		ffmpeg_target_arch=ia32
+		ffmpeg_target_arch="ia32"
 
 		# This is normally defined by compiler_cpu_abi in
 		# build/config/compiler/BUILD.gn, but we patch that part out.
 		append-flags -msse2 -mfpmath=sse -mmmx
-	elif [[ ${myarch} = arm64 ]] ; then
+	elif [[ "${myarch}" == "arm64" ]] ; then
 		target_cpu="arm64"
 		ffmpeg_target_arch=arm64
-	elif [[ ${myarch} = arm ]] ; then
+	elif [[ "${myarch}" == "arm" ]] ; then
 		target_cpu="arm"
 		ffmpeg_target_arch=$(usex cpu_flags_arm_neon arm-neon arm)
-	elif [[ ${myarch} = ppc64 ]] ; then
+	elif [[ "${myarch}" == "ppc64" ]] ; then
 		target_cpu="ppc64"
-		ffmpeg_target_arch=ppc64
+		ffmpeg_target_arch="ppc64"
 	else
 		die "Failed to determine target arch, got '${myarch}'."
 	fi
 
-	myconf_gn+=" target_cpu=\"${target_cpu}\""
-	myconf_gn+=" v8_current_cpu=\"${target_cpu}\""
 	myconf_gn+=" current_cpu=\"${target_cpu}\""
 	myconf_gn+=" host_cpu=\"${target_cpu}\""
+	myconf_gn+=" target_cpu=\"${target_cpu}\""
+	myconf_gn+=" v8_current_cpu=\"${target_cpu}\""
 	myconf_gyp+=" -Dtarget_arch=${target_arch}"
 
 	if ! use cpu_flags_x86_sse2 ; then
@@ -2388,19 +2383,6 @@ einfo
 		fi
 	fi
 
-	if ! use epgo || tc-is-cross-compiler ; then
-		:;
-	else
-		[[ "${PGO_PHASE}" == "PGI" ]] && myconf_gn+=" gcc_pgi=true"
-	fi
-
-	uopts_src_configure
-
-	# Explicitly disable ICU data file support for system-icu/headless builds.
-	if use system-icu || use headless; then
-		myconf_gn+=" icu_use_data_file=false"
-	fi
-
 	# Enable ozone wayland and/or headless support
 	myconf_gn+=" use_ozone=true ozone_auto_platforms=false"
 	myconf_gn+=" ozone_platform_headless=true"
@@ -2428,13 +2410,18 @@ einfo
 
 	# Enable official builds
 	myconf_gn+=" is_official_build=$(usex official true false)"
-	if use clang || tc-is-clang ; then
+	local lto_type=$(check-linker_get_lto_type)
+	if ( tc-is-clang && [[ "${lto_type}" == "thinlto" ]] ) \
+		|| use cfi \
+		|| ( use official && [[ "${PGO_PHASE}" != "PGI" ]] ) ; then
 ewarn
 ewarn "Using ThinLTO"
 ewarn
 		myconf_gn+=" use_thin_lto=true "
+		filter-flags '-flto*'
+		filter-flags '-fuse-ld=*'
 		filter-flags '-Wl,--lto-O*'
-		use lto-opt && myconf_gn+=" thin_lto_enable_optimizations=true"
+		use thinlto-opt && myconf_gn+=" thin_lto_enable_optimizations=true"
 	else
 		# gcc doesn't like -fsplit-lto-unit and -fwhole-program-vtables
 		myconf_gn+=" use_thin_lto=false "
@@ -2451,9 +2438,8 @@ ewarn
 			third_party/crc32c/src/src/crc32c_arm64.cc || die
 	fi
 
-
-# See https://github.com/chromium/chromium/blob/104.0.5112.79/build/config/sanitizers/BUILD.gn#L196
-# See https://github.com/chromium/chromium/blob/104.0.5112.79/tools/mb/mb_config.pyl#L2950
+# See https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/sanitizers/BUILD.gn#L196
+# See https://github.com/chromium/chromium/blob/105.0.5195.52/tools/mb/mb_config.pyl#L2950
 	if use official ; then
 		# Forced because it is the final official settings.
 		if [[ "${ABI}" == "amd64" ]] ; then
@@ -2590,9 +2576,10 @@ einfo
 	fi
 
 # See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-# See also https://github.com/chromium/chromium/blob/104.0.5112.79/docs/pgo.md
+# See also https://github.com/chromium/chromium/blob/105.0.5195.52/docs/pgo.md
 # profile-instr-use is clang which that file assumes but gcc doesn't have.
 	if tc-is-cross-compiler || use epgo ; then
+		# Disallow build files choices because they only do Clang PGO.
 		myconf_gn+=" chrome_pgo_phase=0"
 	elif use pgo && tc-is-clang && ver_test $(clang-version) -ge 11 ; then
 		# The profile data is already shipped so use it.
@@ -2604,6 +2591,15 @@ einfo
 		# Kept symbols in build for debug reports for official
 		# myconf_gn+=" symbol_level=0"
 	fi
+
+	if ! use epgo || tc-is-cross-compiler ; then
+		:;
+	else
+		[[ "${PGO_PHASE}" == "PGI" ]] && myconf_gn+=" gcc_pgi=true"
+	fi
+
+	uopts_src_configure
+
 
 einfo
 einfo "Configuring Chromium..."
@@ -2641,16 +2637,40 @@ einfo
 		# It should be updated when the major.minor.build.x changes
 		# because of new features.
 		local license_file_name="${PN}-"$(ver_cut 1-3 ${PV})".x"
+		local fp=$(sha512sum \
+"${BUILD_DIR}/out/Release/gen/components/resources/about_credits.html" \
+			| cut -f 1 -d " ")
 einfo
-einfo "Update the license file by doing the following:"
+einfo "Update the license file with"
 einfo
 einfo "  \`cp -a ${BUILD_DIR}/out/Release/gen/components/resources/about_credits.html \
 ${MY_OVERLAY_DIR}/licenses/${license_file_name}\`"
 einfo
-einfo "LICENSE_FINGERPRINT (with sha512sum) and LICENSE need to be updated also."
-einfo "When you are done updating, comment out GEN_ABOUT_CREDITS."
+einfo "Update ebuild with"
+einfo
+einfo "  LICENSE_FINGERPRINT=\"${pf}\""
+einfo
+einfo "and with LICENSE variable updates.  When you are done updating, comment"
+einfo "out GEN_ABOUT_CREDITS."
 einfo
 		die
+	fi
+}
+
+__clean_build() {
+	if [[ -f out/Release/chromedriver ]] ; then
+		rm -f out/Release/chromedriver || die
+	fi
+	if [[ -f out/Release/chromedriver.unstripped ]] ; then
+		rm -f out/Release/chromedriver.unstripped || die
+	fi
+	if [[ -f out/Release/build.ninja ]] ; then
+		pushd out/Release || popd
+einfo
+einfo "Cleaning out build"
+einfo
+			eninja -t clean
+		popd
 	fi
 }
 
@@ -2677,54 +2697,45 @@ _src_compile() {
 	#	--without-android || die
 
 	_update_licenses
+	__clean_build
 
-	if [[ -f out/Release/chromedriver ]] ; then
-		rm out/Release/chromedriver || die
-	fi
-	if [[ -f out/Release/chromedriver.unstripped ]] ; then
-		rm out/Release/chromedriver.unstripped || die
-	fi
-	if [[ -f out/Release/build.ninja ]] ; then
-		pushd out/Release || popd
-einfo
-einfo "Cleaning out build"
-einfo
-			eninja -t clean
-		popd
-	fi
 	# Build mksnapshot and pax-mark it.
 	local x
 	for x in mksnapshot v8_context_snapshot_generator; do
 		if tc-is-cross-compiler ; then
-			_eninja "out/Release" "host/${x}" "out/Release/host/${x}"
+			_eninja \
+				"out/Release" \
+				"host/${x}" \
+				"out/Release/host/${x}"
 		else
-			_eninja "out/Release" "${x}" "out/Release/${x}"
+			_eninja \
+				"out/Release" \
+				"${x}" \
+				"out/Release/${x}"
 		fi
 	done
 
-	# Even though ninja autodetects number of CPUs, we respect
-	# user's options, for debugging with -j 1 or any other reason.
+	# Even though ninja autodetects number of CPUs, we respect user's
+	# options, for debugging with -j 1 or any other reason.
 	_eninja "out/Release" "chrome" "out/Release/chrome"
 	_eninja "out/Release" "chromedriver" ""
-	if use suid ; then
-		_eninja "out/Release" "chrome_sandbox" ""
-	fi
+	use suid && _eninja "out/Release" "chrome_sandbox" ""
 
 	mv out/Release/chromedriver{.unstripped,} || die
 
 	# Build manpage; bug #684550
 	sed -e 's|@@PACKAGE@@|chromium-browser|g;
 		s|@@MENUNAME@@|Chromium|g;' \
-		chrome/app/resources/manpage.1.in > \
-		out/Release/chromium-browser.1 || die
+		chrome/app/resources/manpage.1.in \
+		> out/Release/chromium-browser.1 || die
 
 	# Build desktop file; bug #706786
 	# Moved down
 	# Moved down
 	sed -e 's|@@PACKAGE@@|chromium-browser|g;
 		s|\(^Exec=\)/usr/bin/|\1|g;' \
-		chrome/installer/linux/common/desktop.template > \
-		out/Release/chromium-browser-chromium.desktop || die
+		chrome/installer/linux/common/desktop.template \
+		> out/Release/chromium-browser-chromium.desktop || die
 
 	# Build vk_swiftshader_icd.json; bug #827861
 	sed -e 's|${ICD_LIBRARY_PATH}|./libvk_swiftshader.so|g' \
@@ -2732,9 +2743,7 @@ einfo
 		> out/Release/vk_swiftshader_icd.json || die
 
 	local suffix
-	if (( ${NABIS} > 1 )) ; then
-		suffix=" (${ABI})"
-	fi
+	(( ${NABIS} > 1 )) && suffix=" (${ABI})"
 	sed -i -e "s|@@MENUNAME@@|Chromium${suffix}|g" \
 		-e "s|@@USR_BIN_SYMLINK_NAME@@|chromium-browser-${ABI}|g" \
 		out/Release/chromium-browser-chromium.desktop || die
@@ -2959,7 +2968,7 @@ pkg_postinst() {
 	if ! use headless; then
 		if use vaapi ; then
 # It says 3 args:
-# https://github.com/chromium/chromium/blob/104.0.5112.79/docs/gpu/vaapi.md#vaapi-on-linux
+# https://github.com/chromium/chromium/blob/105.0.5195.52/docs/gpu/vaapi.md#vaapi-on-linux
 einfo
 einfo "VA-API is disabled by default at runtime.  You have to enable it"
 einfo "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
@@ -3009,3 +3018,25 @@ einfo
 # OILEDMACHINE-OVERLAY-META:  LEGAL-PROTECTIONS
 # OILEDMACHINE-OVERLAY-META-EBUILD-CHANGES:  multiabi, build-32-bit-on-64-bit, license-completeness, license-transparency, prebuilt-pgo-access, shadowcallstack-option-access, disable-simd-on-old-microarches-with-zlib, allow-cfi-with-official-build-settings, branch-protection-access
 # OILEDMACHINE-OVERLAY-META-WIP: event-based-full-pgo
+
+#
+# = Ebuild fork maintainer checklist =
+#
+# Update to latest stable every week
+# Sync update patch section
+#   Check for patch failure
+#   Fix patches
+# Sync update depends section
+# Update license files
+#   Set GEN_ABOUT_CREDITS=1
+#   Copy license to license folder
+# Update the llvm commit details
+#  Update CR_CLANG_USED
+#  Update CR_CLANG_USED_UNIX_TIMESTAMP
+#  Update LLVM_MAX_SLOT, LLVM_MIN_SLOT, LLVM_SLOTS
+# Sync update keeplibs, gn_system_libraries
+# Sync update CHROMIUM_LANGS in every major version
+# Bump chromium-launcher-rX.sh if changed
+#
+# *Sync update means to keep it updated with the distro ebuild.
+#
