@@ -9,7 +9,7 @@
 
 EAPI=7
 PYTHON_COMPAT=( python3_{8..11} )
-PYTHON_REQ_USE="xml"
+PYTHON_REQ_USE="xml(+)"
 
 CHROMIUM_LANGS="
 af am ar bg bn ca cs da de el en-GB es es-419 et fa fi fil fr gu he hi hr hu id
@@ -19,8 +19,8 @@ uk ur vi zh-CN zh-TW
 
 UOPTS_PGO_PV=$(ver_cut 1-3 ${PV})
 LLVM_MAX_SLOT=16
-LLVM_MIN_SLOT=15 # The pregenerated PGO profile needs profdata version 8
-CR_CLANG_SLOT_OFFICIAL=15
+LLVM_MIN_SLOT=16 # The pregenerated PGO profile needs profdata version 8
+CR_CLANG_SLOT_OFFICIAL=16
 LLVM_SLOTS=(16 ${LLVM_MAX_SLOT}) # [inclusive, inclusive] high to low
 UOPTS_SUPPORT_TPGO=0
 UOPTS_SUPPORT_TBOLT=0
@@ -30,7 +30,7 @@ inherit check-linker llvm multilib multilib-minimal uopts # Added by the oiledma
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
-PATCHSET="1"
+PATCHSET="3"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
 MTD_V="${PV}"
 CTDM_V="${PV}"
@@ -49,13 +49,20 @@ RESTRICT="mirror"
 #
 # emerge does not understand ^^ in the LICENSE variable and have been replaced
 # with ||.  You should choose at most one at some instances.
-# GEN_ABOUT_CREDITS=1 # Uncomment to generate about_credits.html including bundled.
+
 #
+# Uncomment below to generate an about_credits.html including bundled internal
+# dependencies.
+#
+# GEN_ABOUT_CREDITS=1
+#
+
 # SHA512 about_credits.html fingerprint:
 #
 LICENSE_FINGERPRINT="\
-d34382b9e1b54764a850c4ddedb531f3a3cbfd6d78aeac63c6491dbeeb4073a7\
-3830413a92a306b5069d0424874da6949de3fbff95af1090d6788aa8bf25e8b0"
+be8c60839619029d50791376aa97cf80151b04b4955d9f1697a3db75c4785660\
+c7372f36371896bcd670eee84232251ac523eacaa4871784c7f7c656669db68a\
+"
 LICENSE="
 	BSD
 	chromium-$(ver_cut 1-3 ${PV}).x
@@ -222,13 +229,13 @@ SLOT="0/stable"
 KEYWORDS="amd64 arm64 ~x86" # Waiting for server to upload tarball
 #
 # vaapi is enabled by default upstream for some arches \
-# See https://github.com/chromium/chromium/blob/105.0.5195.52/media/gpu/args.gni#L24
+# See https://github.com/chromium/chromium/blob/106.0.5249.61/media/gpu/args.gni#L24
 #
 # Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 #   incompatible as a shared lib.
 #
 # The suid is built by default upstream but not necessarily used:  \
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/sandbox/linux/BUILD.gn
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/sandbox/linux/BUILD.gn
 #
 CPU_FLAGS_ARM=( neon )
 CPU_FLAGS_X86=( sse2 ssse3 sse4_2 )
@@ -242,12 +249,12 @@ ${CPU_FLAGS_X86[@]/#/cpu_flags_x86_}
 "
 IUSE+=" weston r0"
 # What is considered a proprietary codec can be found at:
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/filters/BUILD.gn#L160
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/media_options.gni#L38
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/base/supported_types.cc#L203
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/filters/BUILD.gn#L160
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/media_options.gni#L38
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/base/supported_types.cc#L203
 #     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/media/base/supported_types.cc#L284
-# Codec upstream default: https://github.com/chromium/chromium/blob/105.0.5195.52/tools/mb/mb_config_expectations/chromium.linux.json#L89
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/base/supported_types.cc#L284
+# Codec upstream default: https://github.com/chromium/chromium/blob/106.0.5249.61/tools/mb/mb_config_expectations/chromium.linux.json#L89
 IUSE+="
 video_cards_amdgpu video_cards_intel video_cards_iris video_cards_i965
 video_cards_nouveau video_cards_nvidia video_cards_r600 video_cards_radeonsi
@@ -255,13 +262,13 @@ video_cards_nouveau video_cards_nvidia video_cards_r600 video_cards_radeonsi
 IUSE+=" +partitionalloc libcmalloc"
 #
 # For cfi-vcall, cfi-icall defaults status, see \
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/sanitizers/sanitizers.gni
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/sanitizers/sanitizers.gni
 # For cfi-cast default status, see \
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/sanitizers/sanitizers.gni#L123
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/sanitizers/sanitizers.gni#L123
 # For pgo default status, see \
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/compiler/pgo/pgo.gni#L15
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/compiler/pgo/pgo.gni#L15
 # For libcxx default, see \
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/c++/c++.gni#L14
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/c++/c++.gni#L14
 # For cdm availability see third_party/widevine/cdm/widevine.gni#L28
 #
 IUSE_LIBCXX=( bundled-libcxx system-libstdcxx )
@@ -598,7 +605,7 @@ BDEPEND="
 # This is why LLVM13 was set as the minimum and did fix the problem.
 
 # For the current llvm for this project, see
-#   https://github.com/chromium/chromium/blob/105.0.5195.52/tools/clang/scripts/update.py#L42
+#   https://github.com/chromium/chromium/blob/106.0.5249.61/tools/clang/scripts/update.py#L42
 # Use the same clang for official USE flag because of older llvm bugs which
 #   could result in security weaknesses (explained in the llvm:12 note below).
 # Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -691,7 +698,7 @@ _compiler_version_checks() {
 
 pre_build_checks() {
 
-# https://github.com/chromium/chromium/blob/105.0.5195.52/docs/linux/build_instructions.md#system-requirements
+# https://github.com/chromium/chromium/blob/106.0.5249.61/docs/linux/build_instructions.md#system-requirements
 # Check build requirements, bug #541816 and bug #471810 .
 	CHECKREQS_MEMORY="4G"
 	CHECKREQS_DISK_BUILD="10G"
@@ -783,21 +790,21 @@ ewarn
 # The answer to the profdata compatibility is answered in
 # https://clang.llvm.org/docs/SourceBasedCodeCoverage.html#format-compatibility-guarantees
 
-# The profdata (aka indexed profile) version is 8 corresponding from >= llvm 15
-# up to main branch (llvm 15) and is after the magic (lprofi - i for index) in the
+# The profdata (aka indexed profile) version is 8 corresponding from >= LLVM 16
+# up to main branch (LLVM 16) and is after the magic (lprofi - i for index) in the
 # profdata file located in chrome/build/pgo_profiles/*.profdata.
 
 # PGO version compatibility
 
 # Profdata versioning:
-# https://github.com/llvm/llvm-project/blob/89a99ec9/llvm/include/llvm/ProfileData/InstrProf.h#L991
+# https://github.com/llvm/llvm-project/blob/8b740747/llvm/include/llvm/ProfileData/InstrProf.h#L1024
 # LLVM version:
-# https://github.com/llvm/llvm-project/blob/89a99ec9/llvm/CMakeLists.txt#L14
+# https://github.com/llvm/llvm-project/blob/8b740747/llvm/CMakeLists.txt#L14
 
-# LLVM 15
-CR_CLANG_USED="89a99ec9" # Obtained from \
-# https://github.com/chromium/chromium/blob/105.0.5195.52/tools/clang/scripts/update.py#L42 \
-# https://github.com/llvm/llvm-project/commit/89a99ec9
+# LLVM 16
+CR_CLANG_USED="8b740747" # Obtained from \
+# https://github.com/chromium/chromium/blob/106.0.5249.61/tools/clang/scripts/update.py#L42 \
+# https://github.com/llvm/llvm-project/commit/8b740747
 CR_CLANG_USED_UNIX_TIMESTAMP="1657154520" # Cached.  Use below to obtain this. \
 # TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 #	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
@@ -1609,8 +1616,8 @@ ewarn
 		"${FILESDIR}/chromium-93-InkDropHost-crash.patch"
 		"${FILESDIR}/chromium-98-EnumTable-crash.patch"
 		"${FILESDIR}/chromium-98-gtk4-build.patch"
-		"${FILESDIR}/chromium-104-tflite-system-zlib.patch"
 		"${FILESDIR}/chromium-105-swiftshader-no-wayland.patch"
+		"${FILESDIR}/chromium-106-python3_11.patch"
 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
 		"${FILESDIR}/chromium-shim_headers.patch"
 		"${FILESDIR}/chromium-cross-compile.patch"
@@ -1688,6 +1695,7 @@ ewarn
 		third_party/apple_apsl
 		third_party/axe-core
 		third_party/blink
+		third_party/bidimapper
 		third_party/boringssl
 		third_party/boringssl/src/third_party/fiat
 		third_party/breakpad
@@ -1764,6 +1772,7 @@ ewarn
 		third_party/hunspell
 		third_party/iccjpeg
 		third_party/inspector_protocol
+		third_party/ipcz
 		third_party/jinja2
 		third_party/jsoncpp
 		third_party/jstemplate
@@ -2011,6 +2020,9 @@ has_sanitizer_option() {
 
 LTO_TYPE=""
 _src_configure() {
+	local s
+	s=$(_get_s)
+	cd "${s}" || die
 	local chost=$(get_abi_CHOST ${ABI})
 
 	# Calling this here supports resumption via FEATURES=keepwork
@@ -2107,7 +2119,7 @@ einfo
 	fi
 
 # Debug symbols level 2 is still on when official is on even though is_debug=false:
-# See https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/compiler/compiler.gni#L276
+# See https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/compiler/compiler.gni#L276
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
 
@@ -2444,8 +2456,8 @@ ewarn
 			third_party/crc32c/src/src/crc32c_arm64.cc || die
 	fi
 
-# See https://github.com/chromium/chromium/blob/105.0.5195.52/build/config/sanitizers/BUILD.gn#L196
-# See https://github.com/chromium/chromium/blob/105.0.5195.52/tools/mb/mb_config.pyl#L2950
+# See https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/sanitizers/BUILD.gn#L196
+# See https://github.com/chromium/chromium/blob/106.0.5249.61/tools/mb/mb_config.pyl#L2950
 	local is_cfi_custom=0
 	if use official ; then
 		# Forced because it is the final official settings.
@@ -2593,7 +2605,7 @@ einfo
 	fi
 
 # See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-# See also https://github.com/chromium/chromium/blob/105.0.5195.52/docs/pgo.md
+# See also https://github.com/chromium/chromium/blob/106.0.5249.61/docs/pgo.md
 # profile-instr-use is clang which that file assumes but gcc doesn't have.
 	if tc-is-cross-compiler || use epgo ; then
 		# Disallow build files choices because they only do Clang PGO.
@@ -2665,7 +2677,7 @@ ${MY_OVERLAY_DIR}/licenses/${license_file_name}\`"
 einfo
 einfo "Update ebuild with"
 einfo
-einfo "  LICENSE_FINGERPRINT=\"${pf}\""
+einfo "  LICENSE_FINGERPRINT=\"${fp}\""
 einfo
 einfo "and with LICENSE variable updates.  When you are done updating, comment"
 einfo "out GEN_ABOUT_CREDITS."
@@ -2881,7 +2893,6 @@ s:@@OZONE_AUTO_SESSION@@:$(ozone_auto_session):g"
 
 src_compile() {
 	compile_abi() {
-		cd $(_get_s) || die
 		uopts_src_compile
 	}
 	multilib_foreach_abi compile_abi
@@ -2995,7 +3006,7 @@ pkg_postinst() {
 	if ! use headless; then
 		if use vaapi ; then
 # It says 3 args:
-# https://github.com/chromium/chromium/blob/105.0.5195.52/docs/gpu/vaapi.md#vaapi-on-linux
+# https://github.com/chromium/chromium/blob/106.0.5249.61/docs/gpu/vaapi.md#vaapi-on-linux
 einfo
 einfo "VA-API is disabled by default at runtime.  You have to enable it"
 einfo "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
