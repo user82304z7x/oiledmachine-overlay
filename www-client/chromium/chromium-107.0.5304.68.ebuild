@@ -30,7 +30,7 @@ inherit check-linker llvm multilib multilib-minimal uopts # Added by the oiledma
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
-PATCHSET="3"
+PATCHSET="1"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
 MTD_V="${PV}"
 CTDM_V="${PV}"
@@ -60,8 +60,8 @@ RESTRICT="mirror"
 # SHA512 about_credits.html fingerprint:
 #
 LICENSE_FINGERPRINT="\
-be8c60839619029d50791376aa97cf80151b04b4955d9f1697a3db75c4785660\
-c7372f36371896bcd670eee84232251ac523eacaa4871784c7f7c656669db68a\
+2b66e181e7d47cdecdecc7dfdd4052458eeb83e32d72a0eba880545fcd147bc2\
+11186234246fa9cdaa6b57a793dd8ad2a15137a18bd58acacb5c23c6d0f571a2\
 "
 LICENSE="
 	BSD
@@ -256,13 +256,13 @@ SLOT="0/stable"
 KEYWORDS="amd64 arm64 ~x86" # Waiting for server to upload tarball
 #
 # vaapi is enabled by default upstream for some arches \
-# See https://github.com/chromium/chromium/blob/106.0.5249.61/media/gpu/args.gni#L24
+# See https://github.com/chromium/chromium/blob/107.0.5304.68/media/gpu/args.gni#L24
 #
 # Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 #   incompatible as a shared lib.
 #
 # The suid is built by default upstream but not necessarily used:  \
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/sandbox/linux/BUILD.gn
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/sandbox/linux/BUILD.gn
 #
 CPU_FLAGS_ARM=( neon )
 CPU_FLAGS_X86=( sse2 ssse3 sse4_2 )
@@ -271,17 +271,18 @@ IUSE="
 ${CPU_FLAGS_ARM[@]/#/cpu_flags_arm_}
 ${CPU_FLAGS_X86[@]/#/cpu_flags_x86_}
 +X component-build cups -debug gtk4 +hangouts headless +js-type-check kerberos
-+official pic +proprietary-codecs pulseaudio screencast selinux +suid
--system-ffmpeg -system-icu -system-harfbuzz -system-png +vaapi wayland widevine
++official pic +proprietary-codecs pulseaudio qt5 screencast selinux +suid
+-system-av1 -system-ffmpeg -system-icu -system-harfbuzz -system-png +vaapi
+wayland widevine
 "
-IUSE+=" weston r0"
+IUSE+=" r0"
 # What is considered a proprietary codec can be found at:
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/filters/BUILD.gn#L160
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/media_options.gni#L38
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/base/supported_types.cc#L203
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/media/filters/BUILD.gn#L160
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/media/media_options.gni#L38
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/media/base/supported_types.cc#L203
 #     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/media/base/supported_types.cc#L284
-# Codec upstream default: https://github.com/chromium/chromium/blob/106.0.5249.61/tools/mb/mb_config_expectations/chromium.linux.json#L89
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/media/base/supported_types.cc#L284
+# Codec upstream default: https://github.com/chromium/chromium/blob/107.0.5304.68/tools/mb/mb_config_expectations/chromium.linux.json#L89
 IUSE+="
 video_cards_amdgpu video_cards_intel video_cards_iris video_cards_i965
 video_cards_nouveau video_cards_nvidia video_cards_r600 video_cards_radeonsi
@@ -289,13 +290,13 @@ video_cards_nouveau video_cards_nvidia video_cards_r600 video_cards_radeonsi
 IUSE+=" +partitionalloc libcmalloc"
 #
 # For cfi-vcall, cfi-icall defaults status, see \
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/sanitizers/sanitizers.gni
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/build/config/sanitizers/sanitizers.gni
 # For cfi-cast default status, see \
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/sanitizers/sanitizers.gni#L123
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/build/config/sanitizers/sanitizers.gni#L123
 # For pgo default status, see \
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/compiler/pgo/pgo.gni#L15
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/build/config/compiler/pgo/pgo.gni#L15
 # For libcxx default, see \
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/c++/c++.gni#L14
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/build/config/c++/c++.gni#L14
 # For cdm availability see third_party/widevine/cdm/widevine.gni#L28
 #
 IUSE_LIBCXX=( bundled-libcxx system-libstdcxx )
@@ -336,10 +337,12 @@ REQUIRED_USE+="
 		arm64
 	)
 	cfi? (
+		!system-av1
 		!system-ffmpeg
 		!system-harfbuzz
 		!system-icu
 		!system-libstdcxx
+		!system-png
 	)
 	component-build? (
 		!bundled-libcxx
@@ -348,10 +351,12 @@ REQUIRED_USE+="
 	official? (
 		!debug
 		!epgo
+		!system-av1
 		!system-ffmpeg
 		!system-harfbuzz
 		!system-icu
 		!system-libstdcxx
+		!system-png
 		bundled-libcxx
 		partitionalloc
 		pgo
@@ -514,6 +519,10 @@ COMMON_SNAPSHOT_DEPEND="
 	>=media-libs/libwebp-0.4.0:=[${MULTILIB_USEDEP}]
 	media-libs/mesa:=[gbm(+),${MULTILIB_USEDEP}]
 	proprietary-codecs? ( >=media-libs/openh264-1.6.0:=[${MULTILIB_USEDEP}] )
+	system-av1? (
+		>=media-libs/dav1d-1.0.0:=
+		>=media-libs/libaom-3.4.0:=
+	)
 	sys-libs/zlib:=[${MULTILIB_USEDEP}]
 	x11-libs/libdrm:=[${MULTILIB_USEDEP}]
 	!headless? (
@@ -522,7 +531,7 @@ COMMON_SNAPSHOT_DEPEND="
 		pulseaudio? ( media-sound/pulseaudio:=[${MULTILIB_USEDEP}] )
 		sys-apps/pciutils:=[${MULTILIB_USEDEP}]
 		kerberos? ( virtual/krb5[${MULTILIB_USEDEP}] )
-		vaapi? ( >=media-libs/libva-${LIBVA_V}:=[X,drm,${MULTILIB_USEDEP}] )
+		vaapi? ( >=media-libs/libva-${LIBVA_V}:=[X?,drm,wayland?,${MULTILIB_USEDEP}] )
 		X? (
 			x11-libs/libX11:=[${MULTILIB_USEDEP}]
 			x11-libs/libXext:=[${MULTILIB_USEDEP}]
@@ -564,15 +573,23 @@ COMMON_DEPEND="
 	sys-libs/zlib:=[minizip,${MULTILIB_USEDEP}]
 	!headless? (
 		X? ( ${COMMON_X_DEPEND} )
-		>=app-accessibility/at-spi2-atk-2.26:2[${MULTILIB_USEDEP}]
-		>=app-accessibility/at-spi2-core-2.26:2[${MULTILIB_USEDEP}]
-		>=dev-libs/atk-2.26[${MULTILIB_USEDEP}]
+		|| (
+			>=app-accessibility/at-spi2-core-2.46.0:2[${MULTILIB_USEDEP}]
+			(
+				>=app-accessibility/at-spi2-atk-2.26:2[${MULTILIB_USEDEP}]
+				>=dev-libs/atk-2.26[${MULTILIB_USEDEP}]
+			)
+		)
 		media-libs/mesa:=[X?,wayland?,${MULTILIB_USEDEP}]
 		cups? ( >=net-print/cups-1.3.11:=[${MULTILIB_USEDEP}] )
 		${VIRTUAL_UDEV}
 		x11-libs/cairo:=[${MULTILIB_USEDEP}]
 		x11-libs/gdk-pixbuf:2[${MULTILIB_USEDEP}]
 		x11-libs/pango:=[${MULTILIB_USEDEP}]
+		qt5? (
+			dev-qt/qtcore:5
+			dev-qt/qtwidgets:5
+		)
 	)
 "
 CLANG_RDEPEND="
@@ -635,7 +652,7 @@ BDEPEND="
 # This is why LLVM13 was set as the minimum and did fix the problem.
 
 # For the current llvm for this project, see
-#   https://github.com/chromium/chromium/blob/106.0.5249.61/tools/clang/scripts/update.py#L42
+#   https://github.com/chromium/chromium/blob/107.0.5304.68/tools/clang/scripts/update.py#L42
 # Use the same clang for official USE flag because of older llvm bugs which
 #   could result in security weaknesses (explained in the llvm:12 note below).
 # Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -701,7 +718,7 @@ Chromium, then add --password-store=basic to CHROMIUM_FLAGS in
 "
 
 python_check_deps() {
-	python_has_version -b "dev-python/setuptools[${PYTHON_USEDEP}]"
+	python_has_version "dev-python/setuptools[${PYTHON_USEDEP}]"
 }
 
 _compiler_version_checks() {
@@ -728,15 +745,15 @@ _compiler_version_checks() {
 
 pre_build_checks() {
 
-# https://github.com/chromium/chromium/blob/106.0.5249.61/docs/linux/build_instructions.md#system-requirements
+# https://github.com/chromium/chromium/blob/107.0.5304.68/docs/linux/build_instructions.md#system-requirements
 # Check build requirements, bug #541816 and bug #471810 .
 	CHECKREQS_MEMORY="4G"
-	CHECKREQS_DISK_BUILD="10G"
-	tc-is-cross-compiler && CHECKREQS_DISK_BUILD="13G"
+	CHECKREQS_DISK_BUILD="12G"
+	tc-is-cross-compiler && CHECKREQS_DISK_BUILD="14G"
 	if tc-is-clang ; then
 		CHECKREQS_MEMORY="9G"
-		CHECKREQS_DISK_BUILD="12G"
-		tc-is-cross-compiler && CHECKREQS_DISK_BUILD="15G"
+		CHECKREQS_DISK_BUILD="13G"
+		tc-is-cross-compiler && CHECKREQS_DISK_BUILD="16G"
 	fi
 	if ( shopt -s extglob; is-flagq '-g?(gdb)?([1-9])' ) ; then
 		if use custom-cflags || use component-build ; then
@@ -805,8 +822,13 @@ pkg_pretend() {
 	pre_build_checks
 
 	if use headless; then
-		local headless_unused_flags=("cups" "kerberos" "pulseaudio"
-			"vaapi" "wayland")
+		local headless_unused_flags=(
+			"cups"
+			"kerberos"
+			"pulseaudio"
+			"vaapi"
+			"wayland"
+		)
 		for myiuse in ${headless_unused_flags[@]}; do
 			if use ${myiuse} ; then
 ewarn
@@ -827,15 +849,15 @@ ewarn
 # PGO version compatibility
 
 # Profdata versioning:
-# https://github.com/llvm/llvm-project/blob/8b740747/llvm/include/llvm/ProfileData/InstrProf.h#L1024
+# https://github.com/llvm/llvm-project/blob/025a5b22/llvm/include/llvm/ProfileData/InstrProf.h#L1024
 # LLVM version:
-# https://github.com/llvm/llvm-project/blob/8b740747/llvm/CMakeLists.txt#L14
+# https://github.com/llvm/llvm-project/blob/025a5b22/llvm/CMakeLists.txt#L14
 
 # LLVM 16
-CR_CLANG_USED="8b740747" # Obtained from \
-# https://github.com/chromium/chromium/blob/106.0.5249.61/tools/clang/scripts/update.py#L42 \
-# https://github.com/llvm/llvm-project/commit/8b740747
-CR_CLANG_USED_UNIX_TIMESTAMP="1657154520" # Cached.  Use below to obtain this. \
+CR_CLANG_USED="025a5b22" # Obtained from \
+# https://github.com/chromium/chromium/blob/107.0.5304.68/tools/clang/scripts/update.py#L42 \
+# https://github.com/llvm/llvm-project/commit/025a5b22
+CR_CLANG_USED_UNIX_TIMESTAMP="1662736690" # Cached.  Use below to obtain this. \
 # TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 #	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
 # Change also CR_CLANG_SLOT_OFFICIAL
@@ -1647,7 +1669,8 @@ ewarn
 		"${FILESDIR}/chromium-98-EnumTable-crash.patch"
 		"${FILESDIR}/chromium-98-gtk4-build.patch"
 		"${FILESDIR}/chromium-105-swiftshader-no-wayland.patch"
-		"${FILESDIR}/chromium-106-python3_11.patch"
+		"${FILESDIR}/chromium-106-revert-GlobalMediaControlsCastStartStop.patch"
+		"${FILESDIR}/chromium-107-system-zlib.patch"
 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
 		"${FILESDIR}/chromium-shim_headers.patch"
 		"${FILESDIR}/chromium-cross-compile.patch"
@@ -1755,7 +1778,6 @@ ewarn
 		third_party/crashpad/crashpad/third_party/zlib
 		third_party/crc32c
 		third_party/cros_system_api
-		third_party/dav1d
 		third_party/dawn
 		third_party/dawn/third_party/gn/webgpu-cts
 		third_party/dawn/third_party/khronos
@@ -1809,10 +1831,6 @@ ewarn
 		third_party/khronos
 		third_party/leveldatabase
 		third_party/libaddressinput
-		third_party/libaom
-		third_party/libaom/source/libaom/third_party/fastfeat
-		third_party/libaom/source/libaom/third_party/vector
-		third_party/libaom/source/libaom/third_party/x86inc
 		third_party/libavif
 		third_party/libevent
 		third_party/libgav1
@@ -1848,7 +1866,7 @@ ewarn
 		third_party/nearby
 		third_party/neon_2_sse
 		third_party/node
-		third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2
+		third_party/omnibox_proto
 		third_party/one_euro_filter
 		third_party/openscreen
 		third_party/openscreen/src/third_party/mozilla
@@ -1882,9 +1900,7 @@ ewarn
 		third_party/shell-encryption
 		third_party/simplejson
 		third_party/skia
-		third_party/skia/include/third_party/skcms
 		third_party/skia/include/third_party/vulkan
-		third_party/skia/third_party/skcms
 		third_party/skia/third_party/vulkan
 		third_party/smhasher
 		third_party/snappy
@@ -1956,6 +1972,15 @@ ewarn
 	fi
 	if ! use system-png; then
 		keeplibs+=( third_party/libpng )
+	fi
+	if ! use system-av1; then
+		keep_libs+=(
+			third_party/dav1d
+			third_party/libaom
+			third_party/libaom/source/libaom/third_party/fastfeat
+			third_party/libaom/source/libaom/third_party/vector
+			third_party/libaom/source/libaom/third_party/x86inc
+		)
 	fi
 	#
 	# For re2 see ! use system-libstdcxx conditional below
@@ -2149,7 +2174,7 @@ einfo
 	fi
 
 # Debug symbols level 2 is still on when official is on even though is_debug=false:
-# See https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/compiler/compiler.gni#L276
+# See https://github.com/chromium/chromium/blob/107.0.5304.68/build/config/compiler/compiler.gni#L276
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
 
@@ -2418,15 +2443,9 @@ einfo
 		fi
 	fi
 
-	# Disable opaque pointers, https://crbug.com/1316298
-	if tc-is-clang; then
-		if test-flag-CXX -Xclang -no-opaque-pointers; then
-			append-flags -Xclang -no-opaque-pointers
-			if tc-is-cross-compiler; then
-				export BUILD_CXXFLAGS+=" -Xclang -no-opaque-pointers"
-				export BUILD_CFLAGS+=" -Xclang -no-opaque-pointers"
-			fi
-		fi
+	# Explicitly disable ICU data file support for system-icu/headless builds.
+	if use system-icu || use headless; then
+		myconf_gn+=" icu_use_data_file=false"
 	fi
 
 	# Enable ozone wayland and/or headless support
@@ -2434,7 +2453,7 @@ einfo
 	myconf_gn+=" ozone_platform_headless=true"
 	if use headless ; then
 		myconf_gn+=" ozone_platform=\"headless\""
-		myconf_gn+=" use_xkbcommon=false use_gtk=false"
+		myconf_gn+=" use_xkbcommon=false use_gtk=false use_qt=false"
 		myconf_gn+=" use_glib=false use_gio=false"
 		myconf_gn+=" use_pangocairo=false use_alsa=false"
 		myconf_gn+=" use_libpci=false use_udev=false"
@@ -2444,9 +2463,14 @@ einfo
 		myconf_gn+=" use_system_libdrm=true"
 		myconf_gn+=" use_system_minigbm=true"
 		myconf_gn+=" use_xkbcommon=true"
+		myconf_gn+=" use_qt=$(usex qt5 true false)"
 		myconf_gn+=" ozone_platform_x11=$(usex X true false)"
 		myconf_gn+=" ozone_platform_wayland=$(usex wayland true false)"
 		myconf_gn+=" ozone_platform=$(usex wayland \"wayland\" \"x11\")"
+		if use wayland; then
+			myconf_gn+=" use_system_libwayland_server=true"
+			myconf_gn+=" use_system_wayland_scanner=true"
+		fi
 	fi
 
 	#
@@ -2486,8 +2510,8 @@ ewarn
 			third_party/crc32c/src/src/crc32c_arm64.cc || die
 	fi
 
-# See https://github.com/chromium/chromium/blob/106.0.5249.61/build/config/sanitizers/BUILD.gn#L196
-# See https://github.com/chromium/chromium/blob/106.0.5249.61/tools/mb/mb_config.pyl#L2950
+# See https://github.com/chromium/chromium/blob/107.0.5304.68/build/config/sanitizers/BUILD.gn#L196
+# See https://github.com/chromium/chromium/blob/107.0.5304.68/tools/mb/mb_config.pyl#L2950
 	local is_cfi_custom=0
 	if use official ; then
 		# Forced because it is the final official settings.
@@ -2635,7 +2659,7 @@ einfo
 	fi
 
 # See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-# See also https://github.com/chromium/chromium/blob/106.0.5249.61/docs/pgo.md
+# See also https://github.com/chromium/chromium/blob/107.0.5304.68/docs/pgo.md
 # profile-instr-use is clang which that file assumes but gcc doesn't have.
 	if tc-is-cross-compiler || use epgo ; then
 		# Disallow build files choices because they only do Clang PGO.
@@ -3036,7 +3060,7 @@ pkg_postinst() {
 	if ! use headless; then
 		if use vaapi ; then
 # It says 3 args:
-# https://github.com/chromium/chromium/blob/106.0.5249.61/docs/gpu/vaapi.md#vaapi-on-linux
+# https://github.com/chromium/chromium/blob/107.0.5304.68/docs/gpu/vaapi.md#vaapi-on-linux
 einfo
 einfo "VA-API is disabled by default at runtime.  You have to enable it"
 einfo "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
