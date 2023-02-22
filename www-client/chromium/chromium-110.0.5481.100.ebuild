@@ -34,7 +34,7 @@ inherit cflags-depends
 
 DESCRIPTION="Open-source version of Google Chrome web browser"
 HOMEPAGE="https://chromium.org/"
-PATCHSET="2"
+PATCHSET="4"
 PATCHSET_NAME="chromium-$(ver_cut 1)-patchset-${PATCHSET}"
 MTD_V="${PV}"
 CTDM_V="${PV}"
@@ -64,8 +64,8 @@ RESTRICT="mirror"
 # SHA512 about_credits.html fingerprint:
 #
 LICENSE_FINGERPRINT="\
-4dec0b7b8e3ffaa8d157711902e075d6eb49cc4b499743afb67069bdf7fba581\
-b1fb38d2844293c55918d6cea3e9c022f0f0009a4aaef126ed00f2c3ce8eebdd\
+52febf750673ff0b3e135fdba42f09963dd557542ad56184e2a75f62f4a2fd74\
+426bd7fe23058bc0d95b1bac7fb9aab1096a627881fed96ed50cb6322dc32c05\
 "
 LICENSE="
 	BSD
@@ -273,13 +273,13 @@ SLOT="0/stable"
 KEYWORDS="~amd64 ~arm64"
 #
 # vaapi is enabled by default upstream for some arches \
-# See https://github.com/chromium/chromium/blob/109.0.5414.119/media/gpu/args.gni#L24
+# See https://github.com/chromium/chromium/blob/110.0.5481.100/media/gpu/args.gni#L24
 #
 # Using the system-ffmpeg or system-icu breaks cfi-icall or cfi-cast which is
 #   incompatible as a shared lib.
 #
 # The suid is built by default upstream but not necessarily used:  \
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/sandbox/linux/BUILD.gn
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/sandbox/linux/BUILD.gn
 #
 CPU_FLAGS_ARM=( neon )
 CPU_FLAGS_X86=( sse2 ssse3 sse4_2 )
@@ -300,22 +300,22 @@ ${IUSE_LIBCXX[@]}
 r1
 "
 # What is considered a proprietary codec can be found at:
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/media/filters/BUILD.gn#L160
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/media/media_options.gni#L38
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/media/base/supported_types.cc#L203
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/media/filters/BUILD.gn#L160
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/media/media_options.gni#L38
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/media/base/supported_types.cc#L203
 #     Upstream doesn't consider MP3 proprietary, but this ebuild does.
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/media/base/supported_types.cc#L284
-# Codec upstream default: https://github.com/chromium/chromium/blob/109.0.5414.119/tools/mb/mb_config_expectations/chromium.linux.json#L89
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/media/base/supported_types.cc#L284
+# Codec upstream default: https://github.com/chromium/chromium/blob/110.0.5481.100/tools/mb/mb_config_expectations/chromium.linux.json#L89
 
 #
 # For cfi-vcall, cfi-icall defaults status, see \
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/build/config/sanitizers/sanitizers.gni
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/build/config/sanitizers/sanitizers.gni
 # For cfi-cast default status, see \
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/build/config/sanitizers/sanitizers.gni#L123
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/build/config/sanitizers/sanitizers.gni#L123
 # For pgo default status, see \
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/build/config/compiler/pgo/pgo.gni#L15
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/build/config/compiler/pgo/pgo.gni#L15
 # For libcxx default, see \
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/build/config/c++/c++.gni#L14
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/build/config/c++/c++.gni#L14
 # For cdm availability see third_party/widevine/cdm/widevine.gni#L28
 #
 
@@ -498,6 +498,7 @@ COMMON_SNAPSHOT_DEPEND="
 		pulseaudio? ( media-sound/pulseaudio:=[${MULTILIB_USEDEP}] )
 		sys-apps/pciutils:=[${MULTILIB_USEDEP}]
 		kerberos? ( virtual/krb5[${MULTILIB_USEDEP}] )
+		vaapi? ( >=media-libs/libva-2.7:=[${MULTILIB_USEDEP},X?,wayland?] )
 		X? (
 			x11-libs/libX11:=[${MULTILIB_USEDEP}]
 			x11-libs/libXext:=[${MULTILIB_USEDEP}]
@@ -505,7 +506,8 @@ COMMON_SNAPSHOT_DEPEND="
 		)
 		x11-libs/libxkbcommon:=[${MULTILIB_USEDEP}]
 		wayland? (
-			dev-libs/wayland:=[${MULTILIB_USEDEP}]
+			dev-libs/libffi:=[${MULTILIB_USEDEP}]
+			dev-libs/wayland[${MULTILIB_USEDEP}]
 			screencast? ( media-video/pipewire:=[${MULTILIB_USEDEP}] )
 		)
 	)
@@ -618,7 +620,7 @@ declare -A CFLAGS_RDEPEND=(
 # This is why LLVM13 was set as the minimum and did fix the problem.
 
 # For the current llvm for this project, see
-#   https://github.com/chromium/chromium/blob/109.0.5414.119/tools/clang/scripts/update.py#L42
+#   https://github.com/chromium/chromium/blob/110.0.5481.100/tools/clang/scripts/update.py#L42
 # Use the same clang for official USE flag because of older llvm bugs which
 #   could result in security weaknesses (explained in the llvm:12 note below).
 # Used llvm >= 12 for arm64 for the same reason in the Linux kernel CFI comment.
@@ -717,7 +719,7 @@ _compiler_version_checks() {
 
 pre_build_checks() {
 
-# https://github.com/chromium/chromium/blob/109.0.5414.119/docs/linux/build_instructions.md#system-requirements
+# https://github.com/chromium/chromium/blob/110.0.5481.100/docs/linux/build_instructions.md#system-requirements
 # Check build requirements, bug #541816 and bug #471810 .
 	CHECKREQS_MEMORY="4G"
 	CHECKREQS_DISK_BUILD="12G"
@@ -827,10 +829,10 @@ ewarn
 # https://github.com/llvm/llvm-project/blob/60809cd2/llvm/CMakeLists.txt#L14
 
 # LLVM 16
-CR_CLANG_USED="60809cd2" # Obtained from \
-# https://github.com/chromium/chromium/blob/109.0.5414.119/tools/clang/scripts/update.py#L42 \
-# https://github.com/llvm/llvm-project/commit/60809cd2
-CR_CLANG_USED_UNIX_TIMESTAMP="1673395200" # Cached.  Use below to obtain this. \
+CR_CLANG_USED="87d0ff91" # Obtained from \
+# https://github.com/chromium/chromium/blob/110.0.5481.100/tools/clang/scripts/update.py#L42 \
+# https://github.com/llvm/llvm-project/commit/87d0ff91
+CR_CLANG_USED_UNIX_TIMESTAMP="1669652963" # Cached.  Use below to obtain this. \
 # TIMESTAMP=$(wget -q -O - https://github.com/llvm/llvm-project/commit/${CR_CLANG_USED}.patch \
 #	| grep -F -e "Date:" | sed -e "s|Date: ||") ; date -u -d "${TIMESTAMP}" +%s
 # Change also CR_CLANG_SLOT_OFFICIAL
@@ -1658,7 +1660,6 @@ ewarn
 		"${FILESDIR}/chromium-109-system-zlib.patch"
 		"${FILESDIR}/chromium-109-system-openh264.patch"
 		"${FILESDIR}/chromium-109-system-icu.patch"
-		"${FILESDIR}/chromium-109-v8-icu72.patch"
 		"${FILESDIR}/chromium-use-oauth2-client-switches-as-default.patch"
 		"${FILESDIR}/chromium-shim_headers.patch"
 		"${FILESDIR}/chromium-cross-compile.patch"
@@ -1728,11 +1729,8 @@ ewarn
 		net/third_party/uri_template
 		third_party/abseil-cpp
 		third_party/angle
-		third_party/angle/src/common/third_party/base
-		third_party/angle/src/common/third_party/smhasher
 		third_party/angle/src/common/third_party/xxhash
 		third_party/angle/src/third_party/libXNVCtrl
-		third_party/angle/src/third_party/trace_event
 		third_party/angle/src/third_party/volk
 		third_party/apple_apsl
 		third_party/axe-core
@@ -1782,7 +1780,7 @@ ewarn
 		third_party/devtools-frontend/src/front_end/third_party/i18n
 		third_party/devtools-frontend/src/front_end/third_party/intl-messageformat
 		third_party/devtools-frontend/src/front_end/third_party/lighthouse
-		third_party/devtools-frontend/src/front_end/third_party/lit-html
+		third_party/devtools-frontend/src/front_end/third_party/lit
 		third_party/devtools-frontend/src/front_end/third_party/lodash-isequal
 		third_party/devtools-frontend/src/front_end/third_party/marked
 		third_party/devtools-frontend/src/front_end/third_party/puppeteer
@@ -1824,7 +1822,6 @@ ewarn
 		third_party/libevent
 		third_party/libgav1
 		third_party/libjingle
-		third_party/libjxl
 		third_party/libphonenumber
 		third_party/libsecret
 		third_party/libsrtp
@@ -1868,7 +1865,6 @@ ewarn
 		third_party/pdfium/third_party/freetype
 		third_party/pdfium/third_party/lcms
 		third_party/pdfium/third_party/libopenjpeg
-		third_party/pdfium/third_party/libpng16
 		third_party/pdfium/third_party/libtiff
 		third_party/pdfium/third_party/skia_shared
 		third_party/perfetto
@@ -1914,6 +1910,7 @@ ewarn
 		third_party/unrar
 		third_party/utf
 		third_party/vulkan
+		third_party/wayland
 		third_party/web-animations-js
 		third_party/webdriver
 		third_party/webgpu-cts
@@ -1937,6 +1934,7 @@ ewarn
 		v8/src/third_party/siphash
 		v8/src/third_party/valgrind
 		v8/src/third_party/utf8-decoder
+		v8/third_party/glibc
 		v8/third_party/inspector_protocol
 		v8/third_party/v8
 
@@ -1970,6 +1968,7 @@ ewarn
 			third_party/dav1d
 			third_party/libaom
 			third_party/libaom/source/libaom/third_party/fastfeat
+			third_party/libaom/source/libaom/third_party/SVT-AV1
 			third_party/libaom/source/libaom/third_party/vector
 			third_party/libaom/source/libaom/third_party/x86inc
 		)
@@ -1980,25 +1979,16 @@ ewarn
 	if ! use system-harfbuzz; then
 		keeplibs+=( third_party/harfbuzz-ng )
 	fi
-	if use wayland && ! use headless ; then
-		keeplibs+=( third_party/wayland )
-	fi
+	#
+	#
+	#
 	if use arm64 || use ppc64 ; then
 		keeplibs+=( third_party/swiftshader/third_party/llvm-10.0 )
 	fi
 	if ! use system-libstdcxx \
 		|| use cfi \
 		|| use official ; then
-		keeplibs+=( third_party/libxml )
-		keeplibs+=( third_party/libxslt )
 		keeplibs+=( third_party/re2 )
-		#keeplibs+=( third_party/snappy )
-		if use proprietary-codecs ; then
-			keeplibs+=( third_party/openh264 )
-		fi
-		if use system-icu ; then
-			keeplibs+=( third_party/icu )
-		fi
 	fi
 	# We need to generate ppc64 stuff because upstream does not ship it yet
 	# it has to be done before unbundling.
@@ -2149,6 +2139,15 @@ einfo
 		myconf_gn+=" use_lld=false"
 	fi
 
+	if use lto || use pgo ; then
+		AR=llvm-ar
+		NM=llvm-nm
+		if tc-is-cross-compiler; then
+			BUILD_AR=llvm-ar
+			BUILD_NM=llvm-nm
+		fi
+	fi
+
 	# Define a custom toolchain for GN
 	myconf_gn+=" custom_toolchain=\"//build/toolchain/linux/unbundle:default\""
 
@@ -2174,7 +2173,7 @@ einfo
 	fi
 
 # Debug symbols level 2 is still on when official is on even though is_debug=false:
-# See https://github.com/chromium/chromium/blob/109.0.5414.119/build/config/compiler/compiler.gni#L276
+# See https://github.com/chromium/chromium/blob/110.0.5481.100/build/config/compiler/compiler.gni#L276
 	# GN needs explicit config for Debug/Release as opposed to inferring it from build directory.
 	myconf_gn+=" is_debug=false"
 
@@ -2231,15 +2230,8 @@ einfo
 		gn_system_libraries+=( dav1d libaom )
 	fi
 	if use system-libstdcxx ; then
-		# Unbundle only without libc++, because libc++ is not fully ABI
-		# compatible with libstdc++
-		gn_system_libraries+=( libxml )
-		gn_system_libraries+=( libxslt )
 		# re2 library interface relies on std::string and std::vector
 		gn_system_libraries+=( re2 )
-		if use proprietary-codecs ; then
-			gn_system_libraries+=( openh264 )
-		fi
 	fi
 	# [C]
 	if ! use system-libstdcxx \
@@ -2421,6 +2413,9 @@ ewarn
 		fi
 	fi
 
+	# Only enabled for clang, but gcc has endian macros too
+	myconf_gn+=" v8_use_libm_trig_functions=true"
+
 	# Bug 491582.
 	export TMPDIR="${WORKDIR}/temp"
 	mkdir -p -m 755 "${TMPDIR}" || die
@@ -2476,7 +2471,16 @@ einfo
 		myconf_gn+=" use_system_libdrm=true"
 		myconf_gn+=" use_system_minigbm=true"
 		myconf_gn+=" use_xkbcommon=true"
-		use qt5 && export PATH="${PATH}:$(qt5_get_bindir)"
+		if use qt5; then
+			local moc_dir="$(qt5_get_bindir)"
+			if tc-is-cross-compiler; then
+				# Hack to workaround get_libdir not being able to handle CBUILD, bug #794181
+				local cbuild_libdir=$($(tc-getBUILD_PKG_CONFIG) --keep-system-libs --libs-only-L libxslt)
+				cbuild_libdir=${cbuild_libdir:2}
+				moc_dir="${EPREFIX}"/${cbuild_libdir/% }/qt5/bin
+			fi
+			export PATH="${PATH}:${moc_dir}"
+		fi
 		myconf_gn+=" use_qt=$(usex qt5 true false)"
 		myconf_gn+=" ozone_platform_x11=$(usex X true false)"
 		myconf_gn+=" ozone_platform_wayland=$(usex wayland true false)"
@@ -2524,8 +2528,8 @@ ewarn
 			third_party/crc32c/src/src/crc32c_arm64.cc || die
 	fi
 
-# See https://github.com/chromium/chromium/blob/109.0.5414.119/build/config/sanitizers/BUILD.gn#L196
-# See https://github.com/chromium/chromium/blob/109.0.5414.119/tools/mb/mb_config.pyl#L2950
+# See https://github.com/chromium/chromium/blob/110.0.5481.100/build/config/sanitizers/BUILD.gn#L196
+# See https://github.com/chromium/chromium/blob/110.0.5481.100/tools/mb/mb_config.pyl#L2950
 	local is_cfi_custom=0
 	if use official ; then
 		# Forced because it is the final official settings.
@@ -2673,7 +2677,7 @@ einfo
 	fi
 
 # See also build/config/compiler/pgo/BUILD.gn#L71 for PGO flags.
-# See also https://github.com/chromium/chromium/blob/109.0.5414.119/docs/pgo.md
+# See also https://github.com/chromium/chromium/blob/110.0.5481.100/docs/pgo.md
 # profile-instr-use is clang which that file assumes but gcc doesn't have.
 	if tc-is-cross-compiler || use epgo ; then
 		# Disallow build files choices because they only do Clang PGO.
@@ -2990,7 +2994,7 @@ pkg_postinst() {
 	if ! use headless; then
 		if use vaapi ; then
 # It says 3 args:
-# https://github.com/chromium/chromium/blob/109.0.5414.119/docs/gpu/vaapi.md#vaapi-on-linux
+# https://github.com/chromium/chromium/blob/110.0.5481.100/docs/gpu/vaapi.md#vaapi-on-linux
 einfo
 einfo "VA-API is disabled by default at runtime.  You have to enable it"
 einfo "by adding --enable-features=VaapiVideoDecoder --ignore-gpu-blocklist"
