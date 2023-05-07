@@ -16,23 +16,35 @@ HOMEPAGE="https://llvm.org/"
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA"
 SLOT="${LLVM_MAJOR}/${LLVM_SOABI}"
-KEYWORDS=""
+KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
 IUSE="
 debug test zstd
 
 default-full-relro +default-partial-relro default-no-relro
 hardened hardened-compat r1
 "
-REQUIRED_USE+=" hardened? ( !test )"
-RESTRICT="!test? ( test )"
+REQUIRED_USE+="
+	hardened? (
+		!test
+	)
+"
+RESTRICT="
+	!test? (
+		test
+	)
+"
 
 RDEPEND="
 	!sys-devel/lld:0
 	sys-libs/zlib:=
-	zstd? ( app-arch/zstd:= )
-	~sys-devel/llvm-${PV}
+	zstd? (
+		app-arch/zstd:=
+	)
+	~sys-devel/llvm-${PV}[zstd=]
 "
-DEPEND="${RDEPEND}"
+DEPEND="
+	${RDEPEND}
+"
 BDEPEND="
 	ebolt? (
 		>=sys-devel/llvm-14[bolt]
@@ -58,17 +70,39 @@ REQUIRED_USE+="
 		default-partial-relro
 	)
 
-	amd64? ( llvm_targets_X86 )
-	arm? ( llvm_targets_ARM )
-	arm64? ( llvm_targets_AArch64 )
-	loong? ( llvm_targets_LoongArch )
-	m68k? ( llvm_targets_M68k )
-	mips? ( llvm_targets_Mips )
-	ppc? ( llvm_targets_PowerPC )
-	ppc64? ( llvm_targets_PowerPC )
-	riscv? ( llvm_targets_RISCV )
-	sparc? ( llvm_targets_Sparc )
-	x86? ( llvm_targets_X86 )
+	amd64? (
+		llvm_targets_X86
+	)
+	arm? (
+		llvm_targets_ARM
+	)
+	arm64? (
+		llvm_targets_AArch64
+	)
+	loong? (
+		llvm_targets_LoongArch
+	)
+	m68k? (
+		llvm_targets_M68k
+	)
+	mips? (
+		llvm_targets_Mips
+	)
+	ppc? (
+		llvm_targets_PowerPC
+	)
+	ppc64? (
+		llvm_targets_PowerPC
+	)
+	riscv? (
+		llvm_targets_RISCV
+	)
+	sparc? (
+		llvm_targets_Sparc
+	)
+	x86? (
+		llvm_targets_X86
+	)
 
 	default-full-relro? (
 		!test

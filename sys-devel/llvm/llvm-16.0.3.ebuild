@@ -23,46 +23,81 @@ HOMEPAGE="https://llvm.org/"
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
 SLOT="${LLVM_MAJOR}/${LLVM_SOABI}"
-KEYWORDS="amd64 ~arm arm64 ~ppc ~ppc64 ~riscv ~sparc ~x86 ~amd64-linux ~ppc-macos ~x64-macos"
+KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc ~x86 ~amd64-linux ~ppc-macos ~x64-macos"
 IUSE="
 +binutils-plugin debug doc exegesis libedit +libffi ncurses test xar xml z3 zstd
 
-bolt bolt-heatmap -dump jemalloc tcmalloc r5
+bolt bolt-heatmap -dump jemalloc tcmalloc r6
 "
 REQUIRED_USE="
-	!amd64? ( !arm64? ( !bolt ) )
-	bolt-heatmap? ( bolt )
-	jemalloc? ( bolt )
-	tcmalloc? ( bolt )
+	!amd64? (
+		!arm64? (
+			!bolt
+		)
+	)
+	bolt-heatmap? (
+		bolt
+	)
+	jemalloc? (
+		bolt
+	)
+	tcmalloc? (
+		bolt
+	)
 "
-RESTRICT="!test? ( test )"
+RESTRICT="
+	!test? (
+		test
+	)
+"
 
 RDEPEND="
 	sys-libs/zlib:0=[${MULTILIB_USEDEP}]
-	binutils-plugin? ( >=sys-devel/binutils-2.31.1-r4:*[plugins] )
-	exegesis? ( dev-libs/libpfm:= )
-	jemalloc? ( dev-libs/jemalloc )
-	libedit? ( dev-libs/libedit:0=[${MULTILIB_USEDEP}] )
-	libffi? ( >=dev-libs/libffi-3.0.13-r1:0=[${MULTILIB_USEDEP}] )
-	ncurses? ( >=sys-libs/ncurses-5.9-r3:0=[${MULTILIB_USEDEP}] )
-	tcmalloc? ( dev-util/google-perftools )
-	xar? ( app-arch/xar )
-	xml? ( dev-libs/libxml2:2=[${MULTILIB_USEDEP}] )
-	z3? ( >=sci-mathematics/z3-4.7.1:0=[${MULTILIB_USEDEP}] )
-	zstd? ( app-arch/zstd:=[${MULTILIB_USEDEP}] )
+	binutils-plugin? (
+		>=sys-devel/binutils-2.31.1-r4:*[plugins]
+	)
+	exegesis? (
+		dev-libs/libpfm:=
+	)
+	jemalloc? (
+		dev-libs/jemalloc
+	)
+	libedit? (
+		dev-libs/libedit:0=[${MULTILIB_USEDEP}]
+	)
+	libffi? (
+		>=dev-libs/libffi-3.0.13-r1:0=[${MULTILIB_USEDEP}]
+	)
+	ncurses? (
+		>=sys-libs/ncurses-5.9-r3:0=[${MULTILIB_USEDEP}]
+	)
+	tcmalloc? (
+		dev-util/google-perftools
+	)
+	xar? (
+		app-arch/xar
+	)
+	xml? (
+		dev-libs/libxml2:2=[${MULTILIB_USEDEP}]
+	)
+	z3? (
+		>=sci-mathematics/z3-4.7.1:0=[${MULTILIB_USEDEP}]
+	)
+	zstd? (
+		app-arch/zstd:=[${MULTILIB_USEDEP}]
+	)
 "
 DEPEND="
 	${RDEPEND}
-	binutils-plugin? ( sys-libs/binutils-libs )
+	binutils-plugin? (
+		sys-libs/binutils-libs
+	)
 "
 BDEPEND="
 	${PYTHON_DEPS}
-	dev-lang/perl
 	>=dev-util/cmake-3.16
+	dev-lang/perl
 	sys-devel/gnuconfig
-	bolt? (
-		dev-util/patchutils
-	)
 	doc? (
 		$(python_gen_any_dep '
 			dev-python/recommonmark[${PYTHON_USEDEP}]
@@ -86,48 +121,54 @@ RDEPEND="
 PDEPEND="
 	sys-devel/llvm-common
 	sys-devel/llvm-toolchain-symlinks:${LLVM_MAJOR}
-	binutils-plugin? ( >=sys-devel/llvmgold-${LLVM_MAJOR} )
+	binutils-plugin? (
+		>=sys-devel/llvmgold-${LLVM_MAJOR}
+	)
 "
 PATCHES=(
 	"${FILESDIR}/llvm-14.0.0.9999-stop-triple-spam.patch"
 )
 
-LLVM_COMPONENTS=( llvm bolt cmake third-party )
+LLVM_COMPONENTS=( llvm bolt cmake )
+LLVM_TEST_COMPONENTS=( third-party )
 LLVM_MANPAGES=1
-LLVM_PATCHSET=${PV/_/-}
 LLVM_USE_TARGETS=provide
 llvm.org_set_globals
-SRC_URI+="
-	bolt? (
-		https://github.com/llvm/llvm-project/commit/9029ed2e4b2fda3b4c138eefeed686234e163495.patch
-			-> llvm-commit-9029ed2.patch
-		https://github.com/llvm/llvm-project/commit/61cff9079c083fdcfb9fa324e50b9e480165037e.patch
-			-> llvm-commit-61cff90.patch
-		https://github.com/llvm/llvm-project/commit/90dcdc4b6e7d86cb3d5049bd766aecddd549dd7d.patch
-			-> llvm-commit-90dcdc4.patch
-	)
-"
-# 90dcdc4 - [bolt][llvm][cmake] Use CMAKE_INSTALL_LIBDIR too
-#   To fix multilib support
-
-# 9029ed2 - [BOLT] Fix (part of) dylib compatibility
-#   Commit dependency of 61cff90
-
-# 61cff90 - [BOLT] Support building bolt when LLVM_LINK_LLVM_DYLIB is ON
-#   Fixes linking problem
 
 REQUIRED_USE+="
-	amd64? ( llvm_targets_X86 )
-	arm? ( llvm_targets_ARM )
-	arm64? ( llvm_targets_AArch64 )
-	loong? ( llvm_targets_LoongArch )
-	m68k? ( llvm_targets_M68k )
-	mips? ( llvm_targets_Mips )
-	ppc? ( llvm_targets_PowerPC )
-	ppc64? ( llvm_targets_PowerPC )
-	riscv? ( llvm_targets_RISCV )
-	sparc? ( llvm_targets_Sparc )
-	x86? ( llvm_targets_X86 )
+	amd64? (
+		llvm_targets_X86
+	)
+	arm? (
+		llvm_targets_ARM
+	)
+	arm64? (
+		llvm_targets_AArch64
+	)
+	loong? (
+		llvm_targets_LoongArch
+	)
+	m68k? (
+		llvm_targets_M68k
+	)
+	mips? (
+		llvm_targets_Mips
+	)
+	ppc? (
+		llvm_targets_PowerPC
+	)
+	ppc64? (
+		llvm_targets_PowerPC
+	)
+	riscv? (
+		llvm_targets_RISCV
+	)
+	sparc? (
+		llvm_targets_Sparc
+	)
+	x86? (
+		llvm_targets_X86
+	)
 "
 
 pkg_setup() {
@@ -305,12 +346,7 @@ src_prepare() {
 	if use bolt ; then
 		pushd "${WORKDIR}" || die
 			eapply "${FILESDIR}/llvm-14.0.6-bolt-set-cmake-libdir.patch"
-			eapply "${FILESDIR}/llvm-14.0.6-bolt_rt-RuntimeLibrary.cpp-path.patch"
-			eapply "${DISTDIR}/llvm-commit-90dcdc4.patch"
-			eapply "${DISTDIR}/llvm-commit-9029ed2.patch"
-			filterdiff -x "*/bat-dump/*" $(realpath "${DISTDIR}/llvm-commit-61cff90.patch") \
-				> "${T}/llvm-commit-61cff90.patch" || die
-			eapply "${T}/llvm-commit-61cff90.patch"
+			eapply "${FILESDIR}/llvm-16.0.0.9999-bolt_rt-RuntimeLibrary.cpp-path.patch"
 		popd
 	fi
 
@@ -373,6 +409,7 @@ get_distribution_components() {
 			llvm-cxxdump
 			llvm-cxxfilt
 			llvm-cxxmap
+			llvm-debuginfo-analyzer
 			llvm-debuginfod
 			llvm-debuginfod-find
 			llvm-diff
@@ -413,6 +450,7 @@ get_distribution_components() {
 			llvm-readobj
 			llvm-reduce
 			llvm-remark-size-diff
+			llvm-remarkutil
 			llvm-rtdyld
 			llvm-sim
 			llvm-size
@@ -530,6 +568,8 @@ einfo
 		# is that the former list is explicitly verified at cmake time
 		-DLLVM_TARGETS_TO_BUILD=""
 		-DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD="${LLVM_TARGETS// /;}"
+		-DLLVM_INCLUDE_BENCHMARKS=OFF
+		-DLLVM_INCLUDE_TESTS=$(usex test)
 		-DLLVM_BUILD_TESTS=$(usex test)
 
 		-DLLVM_ENABLE_DUMP=$(usex dump)
@@ -557,23 +597,24 @@ einfo
 		-DOCAMLFIND=NO
 	)
 
+	local suffix=
+	if [[ -n ${EGIT_VERSION} && ${EGIT_BRANCH} != release/* ]]; then
+		# the ABI of the main branch is not stable, so let's include
+		# the commit id in the SOVERSION to contain the breakage
+		suffix+="git${EGIT_VERSION::8}"
+	fi
 	if [[ $(tc-get-cxx-stdlib) == libc++ ]]; then
 		# Smart hack: alter version suffix -> SOVERSION when linking
 		# against libc++. This way we won't end up mixing LLVM libc++
 		# libraries with libstdc++ clang, and the other way around.
+		suffix+="+libcxx"
 		mycmakeargs+=(
-			-DLLVM_VERSION_SUFFIX="libcxx"
 			-DLLVM_ENABLE_LIBCXX=ON
 		)
 	fi
-
-#	Note: go bindings have no CMake rules at the moment
-#	but let's kill the check in case they are introduced
-#	if ! multilib_is_native_abi || ! use go; then
-		mycmakeargs+=(
-			-DGO_EXECUTABLE=GO_EXECUTABLE-NOTFOUND
-		)
-#	fi
+	mycmakeargs+=(
+		-DLLVM_VERSION_SUFFIX="${suffix}"
+	)
 
 	use bolt && mycmakeargs+=(
 		-DLLVM_ENABLE_PROJECTS="bolt"
@@ -603,16 +644,6 @@ einfo
 		)
 		use binutils-plugin && mycmakeargs+=(
 			-DLLVM_BINUTILS_INCDIR="${EPREFIX}"/usr/include
-		)
-	fi
-
-	if tc-is-cross-compiler; then
-		local tblgen="${BROOT}/usr/lib/llvm/${LLVM_MAJOR}/bin/llvm-tblgen"
-		[[ -x "${tblgen}" ]] \
-			|| die "${tblgen} not found or usable"
-		mycmakeargs+=(
-			-DCMAKE_CROSSCOMPILING=ON
-			-DLLVM_TABLEGEN="${tblgen}"
 		)
 	fi
 
