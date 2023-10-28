@@ -1,7 +1,16 @@
-diff -u b/build/config/clang/BUILD.gn b/build/config/clang/BUILD.gn
---- b/build/config/clang/BUILD.gn	2023-09-25 17:31:39.230928378 -0700
-+++ b/build/config/clang/BUILD.gn	2023-09-25 18:29:06.454888726 -0700
-@@ -116,14 +116,15 @@
+--- a/build/toolchain/toolchain.gni.orig	2023-10-28 11:42:39.831376052 -0700
++++ b/build/toolchain/toolchain.gni	2023-10-28 11:43:19.155143696 -0700
+@@ -44,6 +44,7 @@ declare_args() {
+     # TODO(crbug.com/1467585): Remove in the next clang roll
+     clang_version = "17"
+   }
++  llvm_libdir = "lib64" # /usr/lib/llvm/18/lib64, the 6 component with / as delimiter.
+ }
+ 
+ # Extension for shared library files (including leading dot).
+--- a/build/config/clang/BUILD.gn.orig	2023-10-24 16:56:34.299079000 -0700
++++ b/build/config/clang/BUILD.gn	2023-10-28 11:42:39.831376052 -0700
+@@ -116,14 +116,15 @@ template("clang_lib") {
        } else if (is_apple) {
          _dir = "darwin"
        } else if (is_linux || is_chromeos) {
@@ -22,7 +31,7 @@ diff -u b/build/config/clang/BUILD.gn b/build/config/clang/BUILD.gn
          } else {
            assert(false)  # Unhandled cpu type
          }
-@@ -154,7 +155,7 @@
+@@ -154,7 +155,7 @@ template("clang_lib") {
          assert(false)  # Unhandled target platform
        }
  
@@ -31,9 +40,8 @@ diff -u b/build/config/clang/BUILD.gn b/build/config/clang/BUILD.gn
        _lib_file = "${_prefix}clang_rt.${_libname}${_suffix}.${_ext}"
        libs = [ "$_clang_lib_dir/$_dir/$_lib_file" ]
      }
-unchanged:
---- a/build/rust/rust_bindgen.gni.orig	2023-09-21 13:08:21.529632000 -0700
-+++ b/build/rust/rust_bindgen.gni	2023-09-25 17:44:24.390919577 -0700
+--- a/build/rust/rust_bindgen.gni.orig	2023-10-24 16:56:34.339082200 -0700
++++ b/build/rust/rust_bindgen.gni	2023-10-28 11:42:39.831376052 -0700
 @@ -97,7 +97,7 @@ template("rust_bindgen") {
        # point to.
        args += [
@@ -52,9 +60,8 @@ unchanged:
                      root_build_dir)
      args += [
        "-resource-dir",
-unchanged:
---- a/build/rust/rs_bindings_from_cc.gni.orig	2023-09-21 13:08:21.529632000 -0700
-+++ b/build/rust/rs_bindings_from_cc.gni	2023-09-25 17:36:14.462925213 -0700
+--- a/build/rust/rs_bindings_from_cc.gni.orig	2023-10-24 16:56:34.339082200 -0700
++++ b/build/rust/rs_bindings_from_cc.gni	2023-10-28 11:42:39.831376052 -0700
 @@ -287,7 +287,7 @@ template("rs_bindings_from_cc") {
        #
        # Add it last so includes from deps and configs take precedence.
@@ -64,14 +71,3 @@ unchanged:
                root_build_dir),
  
        # Passes C comments through as rustdoc attributes.
-unchanged:
---- a/build/toolchain/toolchain.gni.orig	2023-09-25 17:39:21.162923065 -0700
-+++ b/build/toolchain/toolchain.gni	2023-09-25 17:41:52.122921328 -0700
-@@ -39,6 +39,7 @@ if (generate_linker_map) {
- 
- declare_args() {
-   clang_version = "18"
-+  llvm_libdir = "lib64" # /usr/lib/llvm/18/lib64, the 6 component with / as delimiter.
- }
- 
- # Extension for shared library files (including leading dot).
