@@ -28,7 +28,7 @@ unset __
 # https://wiki.mozilla.org/Release_Management/Calendar
 
 EBUILD_MAINTAINER_MODE=0
-FIREFOX_PATCHSET="firefox-${PV%%.*}esr-patches-07.tar.xz"
+FIREFOX_PATCHSET="firefox-${PV%%.*}esr-patches-08.tar.xz"
 
 LLVM_SLOTS=( 16 14 )
 LLVM_MAX_SLOT=16
@@ -407,32 +407,32 @@ REQUIRED_USE="
 # For dependency versioning, see also
 # https://firefox-source-docs.mozilla.org/setup/linux_build.html
 # https://www.mozilla.org/en-US/firefox/117.0.1/system-requirements/
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/moz.configure
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/moz.configure
 #   perl L589
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41  [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/build/moz.configure/nss.configure L12
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/gfx/graphite2/include/graphite2/Font.h L31
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/gfx/harfbuzz/configure.ac L3
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/intl/icu/source/common/unicode/uvernum.h L63
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/ipc/chromium/src/third_party/libevent/configure.ac L8
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/media/libaom/config/aom_version.h L7
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/media/libjpeg/jconfig.h L7
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/media/libpng/png.h L281
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/media/libvpx/config/vpx_version.h L8
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/media/libwebp/moz.yaml L16
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/modules/freetype2/include/freetype/freetype.h L4943
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/nsprpub/pr/include/prinit.h L35
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/third_party/dav1d/meson.build L26
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/third_party/pipewire/pipewire/version.h L49
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/taskcluster/ci/fetch/toolchains.yml
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41  [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/build/moz.configure/nss.configure L12
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/gfx/graphite2/include/graphite2/Font.h L31
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/gfx/harfbuzz/configure.ac L3
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/intl/icu/source/common/unicode/uvernum.h L63
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/ipc/chromium/src/third_party/libevent/configure.ac L8
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/media/libaom/config/aom_version.h L7
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/media/libjpeg/jconfig.h L7
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/media/libpng/png.h L281
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/media/libvpx/config/vpx_version.h L8
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/media/libwebp/moz.yaml L16
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/modules/freetype2/include/freetype/freetype.h L4943
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/nsprpub/pr/include/prinit.h L35
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/third_party/dav1d/meson.build L26
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/third_party/pipewire/pipewire/version.h L49
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/taskcluster/ci/fetch/toolchains.yml
 #   Keyword searches:  cbindgen-, llvm-, pkgconf-, rust-
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/taskcluster/ci/packages/
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/taskcluster/ci/packages/
 #   Keyword search:  gtk
-# /var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0/taskcluster/ci/toolchain/
+# /var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0/taskcluster/ci/toolchain/
 #   Keyword search:  nasm, nodejs, zlib
 __='
 # Scan with also:
-SRC="/var/tmp/portage/www-client/firefox-115.4.0e/work/firefox-115.4.0"
+SRC="/var/tmp/portage/www-client/firefox-115.6.0e/work/firefox-115.6.0"
 grep -E \
 	-e "[0-9]+\.[0-9]+(\.[0-9]+)?" \
 	-e "dependency" \
@@ -818,7 +818,7 @@ einfo "Using LLVM slot ${LLVM_SLOT} to build" >&2
 
 # Check every minor version
 __='
-PV="115.4.0"
+PV="115.6.0"
 wget -q -O - "http://ftp.mozilla.org/pub/firefox/releases/${PV}esr/linux-x86_64/xpi/" \
 	| grep "href.*linux-x86_64"  \
 	| cut -f 3 -d ">" \
@@ -1434,7 +1434,6 @@ src_prepare() {
 		rm -v "${WORKDIR}/firefox-patches/"*"-musl-non-lfs64-api-on-audio_thread_priority-crate.patch" || die
 	fi
 
-	eapply "${WORKDIR}/firefox-patches"
 	eapply "${FILESDIR}/extra-patches/${PN}-106.0.2-disallow-store-data-races.patch"
 
 	# Flicker prevention with -Ofast
@@ -1461,6 +1460,15 @@ src_prepare() {
 
 	# Prevent video seek bug
 	eapply "${FILESDIR}/extra-patches/${PN}-106.0.2-disable-broken-flags-ipc-chromium-chromium-config.patch"
+
+	# Workaround for bgo#917599
+	if has_version ">=dev-libs/icu-74.1" && use system-icu ; then
+		eapply "${WORKDIR}/firefox-patches/0029-bmo-1862601-system-icu-74.patch"
+	fi
+
+	rm -v "${WORKDIR}/firefox-patches/0029-bmo-1862601-system-icu-74.patch" || die
+
+	eapply "${WORKDIR}/firefox-patches"
 
 	# Allow user to apply any additional patches without modifing ebuild
 	eapply_user
@@ -2310,7 +2318,7 @@ ewarn
 	export MOZ_MAKE_FLAGS="${MAKEOPTS}"
 
 	# Use system's Python environment
-	export PIP_NETWORK_INSTALL_RESTRICTED_VIRTUALENVS=mach
+	export PIP_NETWORK_INSTALL_RESTRICTED_VIRTUALENVS="mach"
 
 	if use system-python-libs; then
 		export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE="system"

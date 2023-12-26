@@ -31,7 +31,7 @@ unset __
 EBUILD_MAINTAINER_MODE=0
 FIREFOX_PATCHSET="firefox-${PV%%.*}-patches-01.tar.xz"
 
-LLVM_SLOTS=( 17 16 14 )
+LLVM_SLOTS=( 17 14 )
 LLVM_MAX_SLOT=17
 
 PYTHON_COMPAT=( python3_{10..11} )
@@ -96,8 +96,8 @@ SLOT="rapid"
 LICENSE="MPL-2.0 GPL-2 LGPL-2.1"
 # MPL-2.0 is the mostly used and default
 LICENSE_FINGERPRINT="\
-37933cb9ba52d66e897d8150432304537c5cfa4e47785ce584d41e04f76e2156\
-e5daafe80e6c3a57cf65e2dd7b4120c224a2a4afa3efce8f8b949b93169432bf\
+7a71114e20f9414d28133677c5e5af6d752a6d47860193ab15e3bf12b939a829\
+89732187897843c66a2a9aed1565a5e7c4fd66041e51411b9edc36608a97f961\
 " # SHA512
 GAPI_KEY_MD5="709560c02f94b41f9ad2c49207be6c54"
 GLOCATIONAPI_KEY_MD5="ffb7895e35dedf832eb1c5d420ac7420"
@@ -342,7 +342,12 @@ NON_FREE_REQUIRED_USE="
 		eme-free
 	)
 "
+# "-jumbo-build +system-icu": build failure on firefox-120:
+#   firefox-120.0/intl/components/src/TimeZone.cpp:345:3: error: use of undeclared identifier 'MOZ_TRY'
 REQUIRED_USE="
+	!jumbo-build? (
+		!system-icu
+	)
 	${NON_FREE_REQUIRED_USE}
 	aac? (
 		system-ffmpeg
@@ -406,32 +411,32 @@ REQUIRED_USE="
 # For dependency versioning, see also
 # https://firefox-source-docs.mozilla.org/setup/linux_build.html
 # https://www.mozilla.org/en-US/firefox/117.0.1/system-requirements/
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/moz.configure
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/moz.configure
 #   perl L589
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41 [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/build/moz.configure/nss.configure L12
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/gfx/graphite2/include/graphite2/Font.h L31
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/gfx/harfbuzz/configure.ac L3
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/intl/icu/source/common/unicode/uvernum.h L63
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/ipc/chromium/src/third_party/libevent/configure.ac L8
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/media/libaom/config/aom_version.h L7
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/media/libjpeg/jconfig.h L7
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/media/libpng/png.h L281
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/media/libvpx/config/vpx_version.h L8
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/media/libwebp/moz.yaml L16
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/modules/freetype2/include/freetype/freetype.h L5223
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/nsprpub/pr/include/prinit.h L35
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/third_party/dav1d/meson.build L26
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/third_party/pipewire/pipewire/version.h L49
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/taskcluster/ci/fetch/toolchains.yml
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41 [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/build/moz.configure/nss.configure L12
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/gfx/graphite2/include/graphite2/Font.h L31
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/gfx/harfbuzz/configure.ac L3
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/intl/icu/source/common/unicode/uvernum.h L63
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/ipc/chromium/src/third_party/libevent/configure.ac L8
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/media/libaom/config/aom_version.h L7
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/media/libjpeg/jconfig.h L7
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/media/libpng/png.h L281
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/media/libvpx/config/vpx_version.h L8
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/media/libwebp/moz.yaml L16
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/modules/freetype2/include/freetype/freetype.h L5223
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/nsprpub/pr/include/prinit.h L35
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/third_party/dav1d/meson.build L26
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/third_party/pipewire/pipewire/version.h L49
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/taskcluster/ci/fetch/toolchains.yml
 #   Keyword searches:  cbindgen-, llvm-, pkgconf-, rust-
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/taskcluster/ci/packages/
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/taskcluster/ci/packages/
 #   Keyword search:  gtk
-# /var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0/taskcluster/ci/toolchain/
+# /var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0/taskcluster/ci/toolchain/
 #   Keyword search:  nasm, nodejs, zlib
 __='
 # Scan with also:
-SRC="/var/tmp/portage/www-client/firefox-119.0/work/firefox-119.0"
+SRC="/var/tmp/portage/www-client/firefox-121.0/work/firefox-121.0"
 grep -E \
 	-e "[0-9]+\.[0-9]+(\.[0-9]+)?" \
 	-e "dependency" \
@@ -566,7 +571,7 @@ CDEPEND="
 	${NON_FREE_CDEPENDS}
 	>=app-accessibility/at-spi2-core-2.46.0:2[${MULTILIB_USEDEP}]
 	>=dev-libs/glib-2.42:2[${MULTILIB_USEDEP}]
-	>=dev-libs/nss-3.94.0[${MULTILIB_USEDEP}]
+	>=dev-libs/nss-3.95.0[${MULTILIB_USEDEP}]
 	>=dev-libs/nspr-4.35[${MULTILIB_USEDEP}]
 	>=media-libs/fontconfig-2.7.0[${MULTILIB_USEDEP}]
 	>=media-libs/freetype-2.13.2[${MULTILIB_USEDEP}]
@@ -580,7 +585,6 @@ CDEPEND="
 	x11-libs/cairo[${MULTILIB_USEDEP}]
 	x11-libs/gdk-pixbuf[${MULTILIB_USEDEP}]
 	dbus? (
-		>=dev-libs/dbus-glib-${DBUS_GLIB_PV}[${MULTILIB_USEDEP}]
 		>=sys-apps/dbus-${DBUS_PV}[${MULTILIB_USEDEP}]
 	)
 	jack? (
@@ -641,7 +645,6 @@ CDEPEND="
 	)
 	wifi? (
 		kernel_linux? (
-			>=dev-libs/dbus-glib-${DBUS_GLIB_PV}[${MULTILIB_USEDEP}]
 			>=net-misc/networkmanager-0.7[${MULTILIB_USEDEP}]
 			>=sys-apps/dbus-${DBUS_PV}[${MULTILIB_USEDEP}]
 		)
@@ -729,20 +732,28 @@ DEPEND+="
 		x11-libs/libSM[${MULTILIB_USEDEP}]
 	)
 "
-
+RUST_PV="1.73.0"
 BDEPEND+="
+	!elibc_glibc? (
+		|| (
+			dev-lang/rust[${MULTILIB_USEDEP}]
+			<dev-lang/rust-bin-1.73[${MULTILIB_USEDEP}]
+		)
+	)
 	${PYTHON_DEPS}
 	${GAMEPAD_BDEPEND}
 	>=dev-lang/perl-5.006
 	>=dev-util/cbindgen-0.26.0
 	>=dev-util/pkgconf-1.8.0[${MULTILIB_USEDEP},pkg-config(+)]
 	>=net-libs/nodejs-12
-	>=virtual/rust-1.72.1[${MULTILIB_USEDEP}]
 	app-alternatives/awk
 	app-arch/unzip
 	app-arch/zip
 	amd64? (
 		>=dev-lang/nasm-${NASM_PV}
+	)
+	elibc_glibc? (
+		>=virtual/rust-${RUST_PV}[${MULTILIB_USEDEP}]
 	)
 	mold? (
 		sys-devel/mold
@@ -815,7 +826,7 @@ einfo "Using LLVM slot ${LLVM_SLOT} to build" >&2
 
 # Check every minor version
 __='
-PV="119.0"
+PV="121.0"
 wget -q -O - "http://ftp.mozilla.org/pub/firefox/releases/${PV}/linux-x86_64/xpi/" \
 	| grep "href.*linux-x86_64"  \
 	| cut -f 3 -d ">" \
@@ -1431,6 +1442,17 @@ src_prepare() {
 		rm -v "${WORKDIR}/firefox-patches/"*"ppc64"*".patch" || die
 	fi
 
+	# Workaround for bgo#917599
+	if has_version ">=dev-libs/icu-74.1" && use system-icu ; then
+		eapply "${WORKDIR}/firefox-patches/0028-bmo-1862601-system-icu-74.patch"
+	fi
+	rm -v "${WORKDIR}/firefox-patches/0028-bmo-1862601-system-icu-74.patch" || die
+
+	# Workaround for bgo#915651 on musl
+	if ! use elibc_glibc ; then
+		rm -v "${WORKDIR}/firefox-patches/"*"bgo-748849-RUST_TARGET_override.patch" || die
+	fi
+
 	eapply "${WORKDIR}/firefox-patches"
 	eapply "${FILESDIR}/extra-patches/${PN}-106.0.2-disallow-store-data-races.patch"
 
@@ -1462,6 +1484,17 @@ src_prepare() {
 
 	# Make cargo respect MAKEOPTS
 	export CARGO_BUILD_JOBS="$(makeopts_jobs)"
+
+	# Workaround for bgo#915651
+	if ! use elibc_glibc ; then
+		if use amd64 ; then
+			export RUST_TARGET="x86_64-unknown-linux-musl"
+		elif use x86 ; then
+			export RUST_TARGET="x86-unknown-linux-musl"
+		else
+			die "Unknown musl chost, please post your rustc -vV along with emerge --info on Gentoo's bug #915651"
+		fi
+	fi
 
 	# Make LTO respect MAKEOPTS
 	sed -i \
@@ -2292,12 +2325,15 @@ einfo "Editing ${f}:  __OFLAG_SAFE__ -> ${oflag_safe}"
 			# relr-elf-hack is currently broken with mold, bgo#916259
 			mozconfig_add_options_ac 'disable elf-hack with mold linker' --disable-elf-hack
 		else
-			if use clang ; then
+			if tc-is-clang ; then
 				mozconfig_add_options_ac 'relr elf-hack with clang' --enable-elf-hack=relr
 			else
 				mozconfig_add_options_ac 'legacy elf-hack with gcc' --enable-elf-hack=legacy
 			fi
 		fi
+	elif use ppc64 ; then
+		# '--disable-elf-hack' is not recognized on ppc64, bgo#917049
+		:;
 	else
 		mozconfig_add_options_ac 'disable elf-hack on non-supported arches' --disable-elf-hack
 	fi
@@ -2342,7 +2378,7 @@ ewarn
 	export MOZ_MAKE_FLAGS="${MAKEOPTS}"
 
 	# Use system's Python environment
-	export PIP_NETWORK_INSTALL_RESTRICTED_VIRTUALENVS=mach
+	export PIP_NETWORK_INSTALL_RESTRICTED_VIRTUALENVS="mach"
 
 	if use system-python-libs; then
 		export MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE="system"
