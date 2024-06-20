@@ -4,7 +4,7 @@
 
 EAPI=8
 
-# 125.0.1 -> 126.0
+# 126.0 -> 127.0.1
 
 # Originally based on the firefox-89.0.ebuild from the gentoo-overlay,
 # with update sync updated to this version of the ebuild.
@@ -19,28 +19,28 @@ EAPI=8
 #
 # For dependency versioning, see also
 # https://firefox-source-docs.mozilla.org/setup/linux_build.html
-# https://www.mozilla.org/en-US/firefox/117.0.1/system-requirements/
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/moz.configure
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41 [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/build/moz.configure/nss.configure L12
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/gfx/graphite2/include/graphite2/Font.h L31
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/gfx/harfbuzz/configure.ac L3
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/intl/icu/source/common/unicode/uvernum.h L63
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/ipc/chromium/src/third_party/libevent/configure.ac L8
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/media/libaom/config/aom_version.h L7
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/media/libjpeg/jconfig.h L7
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/media/libpng/png.h L281
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/media/libvpx/config/vpx_version.h L8
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/media/libwebp/moz.yaml L16
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/modules/freetype2/include/freetype/freetype.h L5223
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/nsprpub/pr/include/prinit.h L35
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/third_party/dav1d/meson.build L26
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/third_party/pipewire/pipewire/version.h L49
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/taskcluster/ci/fetch/toolchains.yml
+# https://www.mozilla.org/en-US/firefox/127.0.1/system-requirements/
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/moz.configure
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41 [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/build/moz.configure/nss.configure L12
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/gfx/graphite2/include/graphite2/Font.h L31
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/gfx/harfbuzz/configure.ac L3
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/intl/icu/source/common/unicode/uvernum.h L63
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/ipc/chromium/src/third_party/libevent/configure.ac L8
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/media/libaom/config/aom_version.h L7 [old]
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/media/libjpeg/jconfig.h L7
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/media/libpng/png.h L281
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/media/libvpx/config/vpx_version.h L8
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/media/libwebp/moz.yaml L16
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/modules/freetype2/include/freetype/freetype.h L5223
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/nsprpub/pr/include/prinit.h L35
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/third_party/dav1d/meson.build L26
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/third_party/pipewire/pipewire/version.h L49
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/taskcluster/kinds/fetch/toolchains.yml
 #   Keyword searches:  cbindgen-, llvm-, pkgconf-, rust-
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/taskcluster/ci/packages/
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/taskcluster/kinds/packages/
 #   Keyword search:  gtk
-# /var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0/taskcluster/ci/toolchain/
+# /var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1/taskcluster/kinds/toolchain/
 #   Keyword search:  nasm, nodejs, zlib
 
 # Track http://ftp.mozilla.org/pub/firefox/releases/ for version updates.
@@ -62,7 +62,7 @@ unset __
 
 # To check every minor version or update MOZ_LANGS use the code below:
 __='
-PV="126.0"
+PV="127.0.1"
 wget -q -O - "http://ftp.mozilla.org/pub/firefox/releases/${PV}/linux-x86_64/xpi/" \
 	| grep "href.*linux-x86_64"  \
 	| cut -f 3 -d ">" \
@@ -79,7 +79,7 @@ unset __
 
 __='
 # For dependency versions, scan also with:
-SRC="/var/tmp/portage/www-client/firefox-126.0/work/firefox-126.0"
+SRC="/var/tmp/portage/www-client/firefox-127.0.1/work/firefox-127.0.1"
 grep -E \
 	-e "[0-9]+\.[0-9]+(\.[0-9]+)?" \
 	-e "dependency" \
@@ -100,7 +100,7 @@ grep -E \
 	| grep -F -v "/zero/"
 '
 unset __
-#   Keyword search:  aom, dbus, fontconfig, pango, perl, pixman, xkbcommon
+#   Keyword search:  aom, dbus, fontconfig, pango, perl, pixman, xkbcommon, xrandr
 
 BUILD_OBJ_DIR="" # global var not const
 DBUS_PV="0.60"
@@ -112,6 +112,7 @@ declare -A CFLAGS_RDEPEND=(
 )
 EBUILD_MAINTAINER_MODE=0
 FFMPEG_COMPAT=(
+	"0/59.61.61" # 7.0
 	"0/58.60.60" # 6.0
 	"0/57.59.59" # 5.0
 	"0/56.58.58" # 4.0
@@ -123,20 +124,20 @@ FFMPEG_COMPAT=(
 	"0/51.53.53" # 0.10
 	"0/50.53.53" # 0.8
 )
-FIREFOX_PATCHSET="firefox-${PV%%.*}-patches-01.tar.xz"
+FIREFOX_PATCHSET="firefox-${PV%%.*}-patches-02.tar.xz"
 GAPI_KEY_MD5="709560c02f94b41f9ad2c49207be6c54"
 GLOCATIONAPI_KEY_MD5="ffb7895e35dedf832eb1c5d420ac7420"
 GTK3_PV="3.14.5"
 LICENSE_FILE_NAME="FF-$(ver_cut 1-2 ${PV})-THIRD-PARTY-LICENSES.html"
 LICENSE_FINGERPRINT="\
-f9b664423ff9cc435294aaf2d987119ba433e57bd60c2572e0f678b9a22b048b\
-03d06647ffa4cd48449f5d87312541ad20282ebcb265e12f2906575f15d1caf3\
+6604cfe81e76ac1c9aa3f4c2bb1c098d47daf8f73550fa47f5828c7a24b4e739\
+da48f27e94128b1ae1a81ee68deb1d03a0e8cd0b78bbfa2c0369d128f82470be\
 " # SHA512
-LLVM_COMPAT=( 18 17 ) # Limited based on virtual/rust
+LLVM_COMPAT=( {18..17} ) # Limited based on virtual/rust
 LTO_TYPE="" # Global variable
 MAPI_KEY_MD5="3927726e9442a8e8fa0e46ccc39caa27"
-MITIGATION_DATE="May 14, 2024"
-MITIGATION_URI="https://www.mozilla.org/en-US/security/advisories/mfsa2024-21/"
+MITIGATION_DATE="Jun 11, 2024"
+MITIGATION_URI="https://www.mozilla.org/en-US/security/advisories/mfsa2024-25/"
 MOZ_ESR=
 MOZ_LANGS=(
 ach af an ar ast az be bg bn br bs ca-valencia ca cak cs cy da de dsb el en-CA
@@ -448,8 +449,6 @@ NON_FREE_REQUIRED_USE="
 		eme-free
 	)
 "
-# "-jumbo-build +system-icu": build failure on firefox-120:
-#   firefox-120.0/intl/components/src/TimeZone.cpp:345:3: error: use of undeclared identifier 'MOZ_TRY'
 REQUIRED_USE="
 	${NON_FREE_REQUIRED_USE}
 	^^ (
@@ -634,13 +633,13 @@ CDEPEND="
 	${NON_FREE_CDEPENDS}
 	>=app-accessibility/at-spi2-core-2.46.0:2[${MULTILIB_USEDEP}]
 	>=dev-libs/glib-2.42:2[${MULTILIB_USEDEP}]
-	>=dev-libs/nss-3.99.0[${MULTILIB_USEDEP}]
+	>=dev-libs/nss-3.100[${MULTILIB_USEDEP}]
 	>=dev-libs/nspr-4.35[${MULTILIB_USEDEP}]
 	>=media-libs/fontconfig-2.7.0[${MULTILIB_USEDEP}]
 	>=media-libs/freetype-2.13.2[${MULTILIB_USEDEP}]
 	>=sys-libs/zlib-1.3.1[${MULTILIB_USEDEP}]
 	>=x11-libs/pango-1.22.0[${MULTILIB_USEDEP}]
-	>=x11-libs/pixman-0.36.0[${MULTILIB_USEDEP}]
+	>=x11-libs/pixman-0.40.0[${MULTILIB_USEDEP}]
 	dev-libs/expat[${MULTILIB_USEDEP}]
 	dev-libs/libffi:=[${MULTILIB_USEDEP}]
 	media-libs/alsa-lib[${MULTILIB_USEDEP}]
@@ -674,7 +673,7 @@ CDEPEND="
 	)
 	system-harfbuzz? (
 		>=media-gfx/graphite2-1.3.14[${MULTILIB_USEDEP}]
-		>=media-libs/harfbuzz-8.3.1:0=[${MULTILIB_USEDEP}]
+		>=media-libs/harfbuzz-8.4.0:0=[${MULTILIB_USEDEP}]
 	)
 	system-icu? (
 		>=dev-libs/icu-73.1:=[${MULTILIB_USEDEP}]
@@ -692,7 +691,7 @@ CDEPEND="
 		>=media-libs/libpng-1.6.43:0=[${MULTILIB_USEDEP},apng]
 	)
 	system-webp? (
-		>=media-libs/libwebp-1.3.2:0=[${MULTILIB_USEDEP}]
+		>=media-libs/libwebp-1.4.0:0=[${MULTILIB_USEDEP}]
 	)
 	valgrind? (
 		dev-debug/valgrind
@@ -834,7 +833,10 @@ BDEPEND+="
 	)
 	pgo? (
 		wayland? (
-			>=gui-libs/wlroots-0.15.1-r1[tinywl]
+			|| (
+				gui-wm/tinywl
+				<gui-libs/wlroots-0.17.3[tinywl(-)]
+			)
 			x11-misc/xkeyboard-config
 		)
 		X? (
@@ -1530,7 +1532,7 @@ src_prepare() {
 	# use the build information for 64-bit linking, which should be 32-bit.
 
 	# Allow to use system-ffmpeg completely.
-	eapply "${FILESDIR}/extra-patches/${PN}-115e-allow-ffmpeg-decode-av1.patch"
+	eapply "${FILESDIR}/extra-patches/${PN}-127-allow-ffmpeg-decode-av1.patch"
 	eapply "${FILESDIR}/extra-patches/${PN}-125-disable-ffvpx.patch"
 
 	# Prevent tab crash

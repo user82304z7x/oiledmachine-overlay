@@ -4,7 +4,7 @@
 
 EAPI=8
 
-# 115.10.0 -> 115.11.0
+# 115.11.0 -> 115.12.0
 
 # SECURITY:  If this gets bumped, then dev-lang/spidermonkey should be bumped too with the same ESR version.
 
@@ -24,28 +24,28 @@ EAPI=8
 #
 # For dependency versioning, see also
 # https://firefox-source-docs.mozilla.org/setup/linux_build.html
-# https://www.mozilla.org/en-US/firefox/117.0.1/system-requirements/
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/moz.configure
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41  [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/build/moz.configure/nss.configure L12
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/gfx/graphite2/include/graphite2/Font.h L31
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/gfx/harfbuzz/configure.ac L3
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/intl/icu/source/common/unicode/uvernum.h L63
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/ipc/chromium/src/third_party/libevent/configure.ac L8
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/media/libaom/config/aom_version.h L7
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/media/libjpeg/jconfig.h L7
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/media/libpng/png.h L281
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/media/libvpx/config/vpx_version.h L8
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/media/libwebp/moz.yaml L16
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/modules/freetype2/include/freetype/freetype.h L4943
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/nsprpub/pr/include/prinit.h L35
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/third_party/dav1d/meson.build L26
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/third_party/pipewire/pipewire/version.h L49
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/taskcluster/ci/fetch/toolchains.yml
+# https://www.mozilla.org/en-US/firefox/115.12.0/system-requirements/
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/moz.configure
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/dom/media/platforms/ffmpeg//FFmpegRuntimeLinker.cpp L41  [y component in x.y.z subslot in ebuild.  >= n0.8 for 53]
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/build/moz.configure/nss.configure L12
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/gfx/graphite2/include/graphite2/Font.h L31
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/gfx/harfbuzz/configure.ac L3
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/intl/icu/source/common/unicode/uvernum.h L63
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/ipc/chromium/src/third_party/libevent/configure.ac L8
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/media/libaom/config/aom_version.h L7 [old]
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/media/libjpeg/jconfig.h L7
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/media/libpng/png.h L281
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/media/libvpx/config/vpx_version.h L8
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/media/libwebp/moz.yaml L16
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/modules/freetype2/include/freetype/freetype.h L4943
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/nsprpub/pr/include/prinit.h L35
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/third_party/dav1d/meson.build L26
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/third_party/pipewire/pipewire/version.h L49
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/taskcluster/ci/fetch/toolchains.yml
 #   Keyword searches:  cbindgen-, llvm-, pkgconf-, rust-
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/taskcluster/ci/packages/
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/taskcluster/ci/packages/
 #   Keyword search:  gtk
-# /var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0/taskcluster/ci/toolchain/
+# /var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0/taskcluster/ci/toolchain/
 #   Keyword search:  nasm, nodejs, zlib
 
 # Due to versioning conflicts and ebuild assumptions, you cannot have stable and esr be the same version
@@ -64,7 +64,7 @@ unset __
 
 # To check every minor version or update MOZ_LANGS use the code below:
 __='
-PV="115.11.0"
+PV="115.12.0"
 wget -q -O - "http://ftp.mozilla.org/pub/firefox/releases/${PV}esr/linux-x86_64/xpi/" \
 	| grep "href.*linux-x86_64"  \
 	| cut -f 3 -d ">" \
@@ -81,7 +81,7 @@ unset __
 
 __='
 # For dependency versions, scan also with:
-SRC="/var/tmp/portage/www-client/firefox-115.11.0e/work/firefox-115.11.0"
+SRC="/var/tmp/portage/www-client/firefox-115.12.0e/work/firefox-115.12.0"
 grep -E \
 	-e "[0-9]+\.[0-9]+(\.[0-9]+)?" \
 	-e "dependency" \
@@ -138,8 +138,8 @@ e6ce73d176e405d1dab64151a7787bc3190692df5ba72f552039a61883d0e273\
 LLVM_COMPAT=( 16 ) # Limited based on virtual/rust
 LTO_TYPE="" # Global variable
 MAPI_KEY_MD5="3927726e9442a8e8fa0e46ccc39caa27"
-MITIGATION_DATE="May 14, 2024"
-MITIGATION_URI="https://www.mozilla.org/en-US/security/advisories/mfsa2024-22/"
+MITIGATION_DATE="Jun 13, 2024"
+MITIGATION_URI="https://www.mozilla.org/en-US/security/advisories/mfsa2024-28/"
 MOZ_ESR="yes"
 MOZ_LANGS=(
 ach af an ar ast az be bg bn br bs ca-valencia ca cak cs cy da de dsb el en-CA
@@ -850,7 +850,10 @@ BDEPEND+="
 			x11-apps/xhost
 		)
 		wayland? (
-			>=gui-libs/wlroots-0.15.1-r1[tinywl]
+			|| (
+				gui-wm/tinywl
+				<gui-libs/wlroots-0.17.3[tinywl(-)]
+			)
 			x11-misc/xkeyboard-config
 		)
 
