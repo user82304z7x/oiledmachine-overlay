@@ -172,14 +172,12 @@ index ecb688e..70fadd4 100644
  
    run_loop.Run();
  
-diff --git a/third_party/blink/renderer/platform/instrumentation/partition_alloc_memory_dump_provider.cc b/third_party/blink/renderer/platform/instrumentation/partition_alloc_memory_dump_provider.cc
-index 644aefb..a2f53015 100644
---- a/third_party/blink/renderer/platform/instrumentation/partition_alloc_memory_dump_provider.cc
-+++ b/third_party/blink/renderer/platform/instrumentation/partition_alloc_memory_dump_provider.cc
-@@ -5,6 +5,7 @@
+--- a/third_party/blink/renderer/platform/instrumentation/partition_alloc_memory_dump_provider.cc.orig	2024-09-17 15:00:18.518635000 -0700
++++ b/third_party/blink/renderer/platform/instrumentation/partition_alloc_memory_dump_provider.cc	2024-09-22 07:53:06.644442354 -0700
+@@ -4,6 +4,7 @@
+ 
  #include "third_party/blink/renderer/platform/instrumentation/partition_alloc_memory_dump_provider.h"
  
- #include "base/allocator/partition_allocator/src/partition_alloc/partition_alloc.h"
 +#include "base/allocator/partition_allocator/src/partition_alloc/partition_alloc_buildflags.h"
  #include "base/format_macros.h"
  #include "base/strings/stringprintf.h"
@@ -194,7 +192,7 @@ index 644aefb..a2f53015 100644
  
  PartitionAllocMemoryDumpProvider* PartitionAllocMemoryDumpProvider::Instance() {
    DEFINE_STATIC_LOCAL(PartitionAllocMemoryDumpProvider, instance, ());
-@@ -24,6 +27,7 @@
+@@ -24,6 +27,7 @@ PartitionAllocMemoryDumpProvider* Partit
  bool PartitionAllocMemoryDumpProvider::OnMemoryDump(
      const base::trace_event::MemoryDumpArgs& args,
      base::trace_event::ProcessMemoryDump* memory_dump) {
@@ -202,7 +200,7 @@ index 644aefb..a2f53015 100644
    using base::trace_event::MemoryDumpLevelOfDetail;
  
    MemoryDumpLevelOfDetail level_of_detail = args.level_of_detail;
-@@ -49,6 +53,7 @@
+@@ -49,6 +53,7 @@ bool PartitionAllocMemoryDumpProvider::O
        "size", "bytes", partition_stats_dumper.total_active_bytes());
    memory_dump->AddOwnershipEdge(allocated_objects_dump->guid(),
                                  partitions_dump->guid());
