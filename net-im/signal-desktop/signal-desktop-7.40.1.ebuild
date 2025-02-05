@@ -1,14 +1,14 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 # To update use:
-# NPM_UPDATER_PROJECT_ROOT="Signal-Desktop-7.36.1" npm_updater_update_locks.sh 7.36.1
+# NPM_UPDATER_PROJECT_ROOT="Signal-Desktop-7.40.1" npm_updater_update_locks.sh 7.40.1
 
 # Ignore if error:
 # Could not detect abi for version ' + target + ' and runtime ' + runtime + '.  Updating "node-abi" might help solve this issue if it is a new release of ' + runtime)
-# https://github.com/signalapp/Signal-Desktop/blob/v7.36.1/CONTRIBUTING.md#known-issues
+# https://github.com/signalapp/Signal-Desktop/blob/v7.40.1/CONTRIBUTING.md#known-issues
 
 MY_PN="Signal-Desktop"
 MY_PN2="Signal"
@@ -20,18 +20,19 @@ NPM_AUDIT_FIX_ARGS=( "--prefer-offline" )
 # https://github.com/electron/node-abi/blob/v3.71.0/abi_registry.json
 # prebuilt-install depends on node-abi
 # Use the newer Electron to increase mitigation with vendor static libs.
+AT_TYPES_NODE_PV="20.17.6"
 ELECTRON_BUILDER_PV="24.13.3"
 _ELECTRON_DEP_ROUTE="secure" # reproducible or secure
 if [[ "${_ELECTRON_DEP_ROUTE}" == "secure" ]] ; then
 	# Ebuild maintainer's choice
-	ELECTRON_APP_ELECTRON_PV="34.0.0" # Cr 132.0.6834.83, node 20.18.1
+	ELECTRON_APP_ELECTRON_PV="35.0.0-beta.2" # Cr 134.0.6968.0, node 22.9.0
 else
 	# Upstream's choice
-	ELECTRON_APP_ELECTRON_PV="33.2.1" # Cr 130.0.6723.137, node 20.18.1
+	ELECTRON_APP_ELECTRON_PV="33.3.1" # Cr 130.0.6723.170, node 20.18.1
 fi
 ELECTRON_APP_REQUIRES_MITIGATE_ID_CHECK="1"
 NPM_SLOT=3
-NODE_VERSION=20 # Upstream uses 20.18.0
+NODE_VERSION=${AT_TYPES_NODE_PV%%.*} # Upstream uses 20.18.0
 NODE_ENV="development"
 if [[ "${NPM_UPDATE_LOCK}" != "1" ]] ; then
 	NPM_INSTALL_ARGS+=( "--force" )
@@ -65,7 +66,6 @@ HOMEPAGE="
 	https://github.com/signalapp/Signal-Desktop
 "
 
-# electron-34.0.0-beta.5-chromium.html fingerprint is the same as electron-34.0.0-beta.7-chromium.html
 # electron-33.1.0-chromium.html fingerprint is the same as electron-33.0.0-beta.9-chromium.html
 LICENSE="
 	${ELECTRON_APP_LICENSES}
@@ -73,7 +73,7 @@ LICENSE="
 "
 if [[ "${_ELECTRON_DEP_ROUTE}" == "secure" ]] ; then
 	LICENSE+="
-		electron-34.0.0-beta.7-chromium.html
+		electron-35.0.0-beta.2-chromium.html
 	"
 else
 	LICENSE+="
@@ -284,6 +284,7 @@ pkg_postinst() {
 	elog "For using the tray icon on compatible desktop environments, start Signal with"
 	elog " '--start-in-tray' or '--use-tray-icon'."
 }
+# OILEDMACHINE-OVERLAY-TEST:  passed (7.40.1, 20250205, electron 35.0.0-beta.2)
 # OILEDMACHINE-OVERLAY-TEST:  passed (7.36.1, 20250105, electron 34.0.0-beta.5)
 # OILEDMACHINE-OVERLAY-TEST:  passed (7.36.1, 20250105, electron 34.0.0-beta.14)
 # OILEDMACHINE-OVERLAY-TEST:  passed (7.38.0, 20250116, electron 34.0.0)
