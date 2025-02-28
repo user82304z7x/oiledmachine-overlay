@@ -4,16 +4,20 @@
 EAPI=8
 
 # To update use:
-# NPM_UPDATER_PROJECT_ROOT="Signal-Desktop-7.40.1" npm_updater_update_locks.sh 7.40.1
+# NPM_UPDATER_PROJECT_ROOT="Signal-Desktop-7.44.0" npm_updater_update_locks.sh 7.44.0
 
 # Ignore if error:
 # Could not detect abi for version ' + target + ' and runtime ' + runtime + '.  Updating "node-abi" might help solve this issue if it is a new release of ' + runtime)
-# https://github.com/signalapp/Signal-Desktop/blob/v7.40.1/CONTRIBUTING.md#known-issues
+# https://github.com/signalapp/Signal-Desktop/blob/v7.44.0/CONTRIBUTING.md#known-issues
 
 MY_PN="Signal-Desktop"
 MY_PN2="Signal"
-NPM_INSTALL_ARGS=( "--prefer-offline" )
-NPM_AUDIT_FIX_ARGS=( "--prefer-offline" )
+NPM_INSTALL_ARGS=(
+	"--prefer-offline"
+)
+NPM_AUDIT_FIX_ARGS=(
+	"--prefer-offline"
+)
 
 # See
 # https://releases.electronjs.org/releases.json
@@ -25,13 +29,10 @@ ELECTRON_BUILDER_PV="24.13.3"
 _ELECTRON_DEP_ROUTE="secure" # reproducible or secure
 if [[ "${_ELECTRON_DEP_ROUTE}" == "secure" ]] ; then
 	# Ebuild maintainer's choice
-	#ELECTRON_APP_ELECTRON_PV="35.0.0-beta.3" # Cr 134.0.6968.0, node 22.9.0 # Broken
-#	ELECTRON_APP_ELECTRON_PV="34.1.1" # Cr 132.0.6834.194, node 20.18.1
-#	ELECTRON_APP_ELECTRON_PV="34.2.0" # Cr 132.0.6834.196, node 20.18.2
-	ELECTRON_APP_ELECTRON_PV="35.0.0-beta.6" # Cr 134.0.6990.0, node 22.9.0
+	ELECTRON_APP_ELECTRON_PV="35.0.0-beta.11" # Cr 134.0.6998.23, node 22.14.0
 else
 	# Upstream's choice
-	ELECTRON_APP_ELECTRON_PV="33.3.1" # Cr 130.0.6723.170, node 20.18.1
+	ELECTRON_APP_ELECTRON_PV="34.1.1" # Cr 132.0.6834.194, node 20.18.1
 fi
 ELECTRON_APP_REQUIRES_MITIGATE_ID_CHECK="1"
 NPM_SLOT=3
@@ -79,7 +80,7 @@ LICENSE="
 "
 if [[ "${_ELECTRON_DEP_ROUTE}" == "secure" ]] ; then
 	LICENSE+="
-		electron-34.0.0-beta.7-chromium.html
+		electron-35.0.0-beta.11-chromium.html
 	"
 else
 	LICENSE+="
