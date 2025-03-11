@@ -4,7 +4,7 @@
 EAPI=8
 
 # To update use:
-# NPM_UPDATER_PROJECT_ROOT="Signal-Desktop-7.44.0" npm_updater_update_locks.sh 7.44.0
+# PNPM_UPDATER_PROJECT_ROOT="Signal-Desktop-7.45.0" pnpm_updater_update_locks.sh
 
 # Ignore if error:
 # Could not detect abi for version ' + target + ' and runtime ' + runtime + '.  Updating "node-abi" might help solve this issue if it is a new release of ' + runtime)
@@ -31,17 +31,18 @@ ELECTRON_BUILDER_PV="24.13.3"
 _ELECTRON_DEP_ROUTE="secure" # reproducible or secure
 if [[ "${_ELECTRON_DEP_ROUTE}" == "secure" ]] ; then
 	# Ebuild maintainer's choice
-	ELECTRON_APP_ELECTRON_PV="35.0.0-beta.11" # Cr 134.0.6998.23, node 22.14.0
+	ELECTRON_APP_ELECTRON_PV="35.0.1" # Cr 134.0.6998.44, node 22.14.0
 else
 	# Upstream's choice
-	ELECTRON_APP_ELECTRON_PV="34.1.1" # Cr 132.0.6834.194, node 20.18.1
+	ELECTRON_APP_ELECTRON_PV="34.2.0" # Cr 132.0.6834.196, node 20.18.2
 fi
 ELECTRON_APP_REQUIRES_MITIGATE_ID_CHECK="1"
 NPM_SLOT=3
+PNPM_SLOT=9
 NODE_VERSION=${AT_TYPES_NODE_PV%%.*} # Upstream uses 20.18.0
 NODE_ENV="development"
-if [[ "${NPM_UPDATE_LOCK}" != "1" ]] ; then
-	NPM_INSTALL_ARGS+=( "--force" )
+if [[ "${PNPM_UPDATE_LOCK}" != "1" ]] ; then
+	PNPM_INSTALL_ARGS+=( "--force" )
 fi
 RUST_MAX_VER="1.81.0" # Inclusive
 RUST_MIN_VER="1.81.0" # Corresponds to llvm-18.1.  Rust is required for @swc/core
@@ -60,7 +61,7 @@ QA_PREBUILT="
 	opt/Signal/swiftshader/libGLESv2.so
 "
 
-inherit electron-app lcnr npm pax-utils rust unpacker xdg
+inherit electron-app lcnr pax-utils pnpm rust unpacker xdg
 
 S="${WORKDIR}/${MY_PN}-${PV}"
 SRC_URI="
@@ -82,11 +83,11 @@ LICENSE="
 "
 if [[ "${_ELECTRON_DEP_ROUTE}" == "secure" ]] ; then
 	LICENSE+="
-		electron-35.0.0-beta.11-chromium.html
+		electron-35.0.1-chromium.html
 	"
 else
 	LICENSE+="
-		electron-33.0.0-beta.9-chromium.html
+		electron-34.2.0-chromium.html
 	"
 fi
 SLOT="0"
@@ -135,13 +136,13 @@ get_deps() {
 	cd "${S}" || die
 	[[ -d "${S}/node_modules/.bin" ]] || die
 	export PATH="${S}/node_modules/.bin:${PATH}"
-	enpm run build:acknowledgments
+	epnpm run build:acknowledgments
 	patch-package --error-on-fail --error-on-warn || die
-	enpm run electron:install-app-deps
+	epnpm run electron:install-app-deps
 }
 
 pkg_setup() {
-	npm_pkg_setup
+	pnpm_pkg_setup
 	rust_pkg_setup
 	if has_version "dev-lang/rust-bin:${RUST_PV}" ; then
 		rust_prepend_path "${RUST_PV}" "binary"
@@ -153,37 +154,37 @@ eerror "Rust ${RUST_PV} required for @swc/core"
 	fi
 }
 
-npm_unpack_post() {
+pnpm_unpack_post() {
 	sed -i -e "s|postinstall|disabled_postinstall|g" "${S}/package.json" || die
 }
 
-npm_unpack_install_post() {
+pnpm_unpack_install_post() {
 	:
 	#die
 }
 
 src_unpack() {
-	if [[ "${NPM_UPDATE_LOCK}" == "1" ]] ; then
-		npm_hydrate
+	if [[ "${PNPM_UPDATE_LOCK}" == "1" ]] ; then
+		pnpm_hydrate
 		unpack ${P}.tar.gz
 		cd "${S}" || die
 
 	# The package contains multiple package-lock.json.
 		local EDISTDIR="${PORTAGE_ACTUAL_DISTDIR:-${DISTDIR}}"
-		export NPM_ENABLE_OFFLINE_MODE=1
-		export NPM_CACHE_FOLDER="${EDISTDIR}/npm-download-cache-${NPM_SLOT}/${CATEGORY}/${P}"
+		export PNPM_ENABLE_OFFLINE_MODE=1
+		export PNPM_CACHE_FOLDER="${EDISTDIR}/npm-download-cache-${PNPM_SLOT}/${CATEGORY}/${P}"
 		einfo "DEBUG:  Default cache folder:  ${HOME}/.npm/_cacache"
-		einfo "NPM_ENABLE_OFFLINE_MODE:  ${YARN_ENABLE_OFFLINE_MODE}"
-		einfo "NPM_CACHE_FOLDER:  ${NPM_CACHE_FOLDER}"
+		einfo "PNPM_ENABLE_OFFLINE_MODE:  ${YARN_ENABLE_OFFLINE_MODE}"
+		einfo "PNPM_CACHE_FOLDER:  ${PNPM_CACHE_FOLDER}"
 		rm -rf "${HOME}/.npm/_cacache"
-		ln -s "${NPM_CACHE_FOLDER}" "${HOME}/.npm/_cacache" # npm likes to remove the ${HOME}/.npm folder
+		ln -s "${PNPM_CACHE_FOLDER}" "${HOME}/.npm/_cacache" # npm likes to remove the ${HOME}/.npm folder
 		addwrite "${EDISTDIR}"
-		addwrite "${NPM_CACHE_FOLDER}"
-		mkdir -p "${NPM_CACHE_FOLDER}"
+		addwrite "${PNPM_CACHE_FOLDER}"
+		mkdir -p "${PNPM_CACHE_FOLDER}"
 
 		sed -i -e "s|postinstall|disabled_postinstall|g" "package.json" || die
 
-		enpm install ${NPM_INSTALL_ARGS[@]}
+		epnpm install ${PNPM_INSTALL_ARGS[@]}
 
 ewarn "QA:  Manually remove node_modules/vite/node_modules/esbuild and all 0.18.* associated packages from ${S}/sticker-creator/package-lock.json"
 ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node_modules/@octokit/core from ${S}/danger/package-lock.json"
@@ -192,8 +193,8 @@ ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node
 ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node_modules/@octokit/request from ${S}/danger/package-lock.json"
 ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node_modules/@octokit/request-error from ${S}/danger/package-lock.json"
 ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node_modules/@octokit/rest from ${S}/danger/package-lock.json"
-		patch_edits() {
-			pushd "sticker-creator" >/dev/null 2>&1 || die
+		patch_edits_npm() {
+#			pushd "sticker-creator" >/dev/null 2>&1 || die
 				sed -i -e "s|\"cross-spawn\": \"^6.0.5\"|\"cross-spawn\": \"^6.0.6\"|g" "package-lock.json" || die								# CVE-2024-21538; DoS; High
 				sed -i -e "s|\"esbuild\": \"^0.18.10\"|\"esbuild\": \"^0.25.0\"|g" "package-lock.json" || die									# GHSA-67mh-4wv8-2f99; ID; Moderate
 				sed -i -e "s|\"happy-dom\": \"8.9.0\"|\"happy-dom\": \"15.10.2\"|g" "package-lock.json" || die									# CVE-2024-51757; DoS, DT, ID; Critical
@@ -201,8 +202,8 @@ ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node
 				sed -i -e "s|\"vite\": \"4.5.3\"|\"vite\": \"4.5.6\"|g" "package-lock.json" || die										# CVE-2025-24010; ID; Medium
 																								# CVE-2024-45812; DoS, DT, ID; Medium
 																								# CVE-2024-45811; ID; Medium
-			popd >/dev/null 2>&1 || die
-			pushd "danger" >/dev/null 2>&1 || die
+#			popd >/dev/null 2>&1 || die
+#			pushd "danger" >/dev/null 2>&1 || die
 				sed -i -e "s|\"cross-spawn\": \"^7.0.3\"|\"cross-spawn\": \"^7.0.5\"|g" "package-lock.json" || die								# CVE-2024-21538; DoS; High
 				sed -i -e "s|\"micromatch\": \"^4.0.2\"|\"micromatch\": \"^4.0.8\"|g" "package-lock.json" || die								# CVE-2024-4067; DoS; Medium
 				sed -i -e "s|\"micromatch\": \"^4.0.4\"|\"micromatch\": \"^4.0.8\"|g" "package-lock.json" || die								# CVE-2024-4067; DoS; Medium
@@ -211,7 +212,7 @@ ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node
 																								#   @octokit/plugin-paginate-rest
 																								#   @octokit/request-error
 																								# CVE-2025-25289, CVE-2025-25288, CVE-2025-25290; DoS; Low
-			popd >/dev/null 2>&1 || die
+#			popd >/dev/null 2>&1 || die
 			sed -i -e "s|\"electron\": \"^23.1.2\"|\"electron\": \"^${ELECTRON_APP_ELECTRON_PV}\"|g" "package-lock.json" || die							# CVE-2023-44402; DoS, DT, ID; High
 			sed -i -e "s|\"esbuild\": \"0.24.0\"|\"esbuild\": \"^0.25.0\"|g" "package-lock.json" || die										# GHSA-67mh-4wv8-2f99; ID; Moderate
 			sed -i -e "s#\"esbuild\": \"^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0\"#\"esbuild\": \"^0.25.0\"#g" "package-lock.json" || die		# GHSA-67mh-4wv8-2f99; ID; Moderate
@@ -226,7 +227,7 @@ ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node
 																								#   @octokit/request-error
 																								# CVE-2025-25289, CVE-2025-25288, CVE-2025-25290; DoS; Low
 		}
-		patch_edits
+		#patch_edits_npm
 
 		local deps=()
 		pushd "sticker-creator" >/dev/null 2>&1 || die
@@ -237,7 +238,7 @@ ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node
 				"rollup@3.29.5"
 				"vite@4.5.6"
 			)
-			enpm install ${deps[@]} -D ${NPM_INSTALL_ARGS[@]}
+			epnpm install ${deps[@]} -D ${PNPM_INSTALL_ARGS[@]}
 		popd >/dev/null 2>&1 || die
 
 		pushd "danger" >/dev/null 2>&1 || die
@@ -246,53 +247,64 @@ ewarn "QA:  Manually remove node_modules/memfs-or-file-map-to-github-branch/node
 				"micromatch@4.0.8"
 				"@octokit/rest@20.1.2"
 			)
-			enpm install ${deps[@]} -P ${NPM_INSTALL_ARGS[@]}
+			epnpm install ${deps[@]} -P ${PNPM_INSTALL_ARGS[@]}
 		popd >/dev/null 2>&1 || die
 
 		deps=(
 			"esbuild@0.25.0"
 			"got@11.8.5"
 		)
-		enpm install ${deps[@]} -P ${NPM_INSTALL_ARGS[@]}
+		epnpm install ${deps[@]} -P ${PNPM_INSTALL_ARGS[@]}
 		deps=(
 			"@octokit/rest@20.1.2"
+			"patch-package@8.0.0"
 		)
-		enpm install ${deps[@]} -D ${NPM_INSTALL_ARGS[@]}
+		epnpm install ${deps[@]} -D ${PNPM_INSTALL_ARGS[@]}
 
-		enpm audit fix ${NPM_AUDIT_FIX_ARGS[@]}
+		epnpm audit fix ${PNPM_AUDIT_FIX_ARGS[@]}
 
-	# Required for custom version bump
 ewarn "QA:  Manually remove node_modules/react-devtools/node_modules/electron from package-lock.json"												# CVE-2023-44402
-		enpm install "electron@${ELECTRON_APP_ELECTRON_PV}" -D ${NPM_INSTALL_ARGS[@]}
 
-		patch_edits
-		enpm dedupe
-		patch_edits
+		deps=(
+	# Required for custom version bump
+			"electron@${ELECTRON_APP_ELECTRON_PV}"
+		)
+		epnpm install ${deps[@]} -D ${PNPM_INSTALL_ARGS[@]}
+
+		#patch_edits_npm
+		epnpm dedupe
+		#patch_edits_npm
+
 
 		sed -i -e "s|disabled_postinstall|postinstall|g" "package.json" || die
 
 
 einfo "Copying lockfiles"
 		mkdir -p "${WORKDIR}/lockfile-image" || die
-		local L=(
+		local LOCKFILES_NPM=(
 			"danger/package-lock.json"
 			"sticker-creator/package-lock.json"
 			"package-lock.json"
 		)
+		local LOCKFILES_PNPM=(
+			"danger/pnpm-lock.yaml"
+			"pnpm-lock.yaml"
+			"sticker-creator/pnpm-lock.yaml"
+		)
 		local x
-		for x in ${L[@]} ; do
+		for x in ${LOCKFILES_PNPM[@]} ; do
 			local d=$(dirname "${x}")
 			mkdir -p "${WORKDIR}/lockfile-image/${d}" || die
 			if [[ -e "${d}/package.json" ]] ; then
 				cp -av "${d}/package.json" "${WORKDIR}/lockfile-image/${d}" || die
 			fi
-			if [[ -e "${d}/package-lock.json" ]] ; then
-				cp -av "${d}/package-lock.json" "${WORKDIR}/lockfile-image/${d}" || die
+			if [[ -e "${d}/pnpm-lock.yaml" ]] ; then
+				cp -av "${d}/pnpm-lock.yaml" "${WORKDIR}/lockfile-image/${d}" || die
 			fi
 		done
 
 		grep -e "TypeError:" "${T}/build.log" && die "Detected error.  Retry."
-		_npm_check_errors
+		_pnpm_check_errors
 einfo "Updating lockfile done."
 		exit 0
 	else
@@ -300,7 +312,7 @@ einfo "Updating lockfile done."
 		export ELECTRON_BUILDER_CACHE="${HOME}/.cache/electron-builder"
 		export ELECTRON_CACHE="${HOME}/.cache/electron"
 		export ELECTRON_CUSTOM_DIR="v${ELECTRON_APP_ELECTRON_PV}"
-		npm_src_unpack
+		pnpm_src_unpack
 		get_deps
 	fi
 }
@@ -314,7 +326,7 @@ src_configure() {
 }
 
 src_compile() {
-	npm_hydrate
+	pnpm_hydrate
 
 	# The zip gets wiped for some reason in src_unpack.
 	electron-app_cp_electron
@@ -323,7 +335,7 @@ src_compile() {
 	# fatal: not a git repository (or any of the parent directories): .git
 	gen_git_tag "${S}" "v${PV}"
 
-	enpm run build
+	epnpm run build
 
 	electron-builder \
 		$(electron-app_get_electron_platarch_args) \
@@ -391,6 +403,7 @@ pkg_postinst() {
 	elog "For using the tray icon on compatible desktop environments, start Signal with"
 	elog " '--start-in-tray' or '--use-tray-icon'."
 }
+# OILEDMACHINE-OVERLAY-TEST:  passed (7.45.1, 20250311, electron 35.0.1)
 # OILEDMACHINE-OVERLAY-TEST:  passed (7.44.0, 20250227, electron 35.0.0-beta.11)
 # OILEDMACHINE-OVERLAY-TEST:  passed (7.42.0, 20250214, electron 35.0.0-beta.6)
 # OILEDMACHINE-OVERLAY-TEST:  passed (7.41.0, 20250116, electron 34.1.1)
