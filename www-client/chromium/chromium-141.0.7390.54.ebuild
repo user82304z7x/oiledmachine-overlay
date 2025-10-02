@@ -35,6 +35,7 @@ EAPI=8
 # 138.0.7204.100 -> 139.0.7258.66
 # 139.0.7258.66 -> 140.0.7339.80
 # 140.0.7339.80 -> 140.0.7339.127
+# 140.0.7339.127 -> 141.0.7390.54
 
 # For depends see:
 # https://github.com/chromium/chromium/tree/140.0.7339.127/build/linux/sysroot_scripts/generated_package_lists				; Last update 20240501, D11
@@ -123,8 +124,8 @@ te th tr uk ur vi zh-CN zh-TW
 "
 CHROMIUM_TOOLCHAIN=1
 
-CROMITE_COMMIT="63888d58b55fab6873bea02b17bd3c533dfad697" # Based on most recent either tools/under-control/src/RELEASE or build/RELEASE
-CROMITE_PV="140.0.7339.128"
+CROMITE_COMMIT="fde090c0d3690592570011055c980f1679d2b28d" # Based on most recent either tools/under-control/src/RELEASE or build/RELEASE
+CROMITE_PV="140.0.7339.186"
 
 # About PGO version compatibility
 #
@@ -168,8 +169,8 @@ GTK4_PV="4.8.3"
 LIBVA_PV="2.17.0"
 # SHA512 about_credits.html fingerprint: \
 LICENSE_FINGERPRINT="\
-68aefe6548277b28cc1c9d3137a42efac54623a1420192bf9ada58dc054f376a\
-b94a0e89d1ddf1763bf2172bf49a4818fa1752e95d3491d56b4c898fa200ac86\
+e5e278799d8f98a7a701384fb82a3823480d3af837f4323431f4101ef78649ad\
+3305ad42ec05bdfad189b32541f6fb88608440d297ad5079c2c7584f65fc607a\
 "
 if [[ "${ALLOW_SYSTEM_TOOLCHAIN}" == "1" ]] ; then
 	LLVM_COMPAT=( 22 21 ) # Can use [CURRENT_LLVM_MAJOR_VERSION+1 or CURRENT_LLVM_MAJOR_VERSION] inclusive
@@ -184,12 +185,23 @@ LLVM_OFFICIAL_SLOT="${LLVM_COMPAT[-1]}" # Cr official slot
 LLVM_SLOT="" # Global variable
 LTO_TYPE="" # Global variable
 MESA_PV="20.3.5"
-MITIGATION_DATE="Sep 2, 2025" # Official annoucement (blog)
-MITIGATION_LAST_UPDATE=1757373660 # From `date +%s -d "2025-09-08 4:21 PM PDT"` From tag in GH
-MITIGATION_URI="https://chromereleases.googleblog.com/2025/09/stable-channel-update-for-desktop_9.html"
+MITIGATION_DATE="Sep 30, 2025" # Official annoucement (blog)
+MITIGATION_LAST_UPDATE=1759165500 # From `date +%s -d "2025-09-29 10:05 AM PDT"` From tag in GH
+MITIGATION_URI="https://chromereleases.googleblog.com/2025/09/stable-channel-update-for-desktop_30.html"
 VULNERABILITIES_FIXED=(
-	"CVE-2025-10200;MC, DoS, DT, ID;High"
-	"CVE-2025-10201;DoS, DT, ID;High"
+	"CVE-2025-11205;HO;"
+	"CVE-2025-11206;HO;"
+	"CVE-2025-11207;ID;"
+	"CVE-2025-11208;II;"
+	"CVE-2025-11209;II;"
+	"CVE-2025-11210;ID;"
+	"CVE-2025-11211;OOBR;"
+	"CVE-2025-11212;II;"
+	"CVE-2025-11213;II;"
+	"CVE-2025-11215;;"
+	"CVE-2025-11216;II;"
+	"CVE-2025-11219;UAF;"
+	"448476731;;"
 )
 NABIS=0 # Global variable
 NODE_VERSION=22
@@ -211,7 +223,7 @@ PREGENERATED_PGO_PROFILE_MIN_LLVM_SLOT="${LLVM_MIN_SLOT}"
 PYTHON_COMPAT=( "python3_"{9..13} )
 PYTHON_REQ_USE="xml(+)"
 QT6_PV="6.4.2"
-UNGOOGLED_CHROMIUM_PV="140.0.7339.132-1"
+UNGOOGLED_CHROMIUM_PV="140.0.7339.213-1"
 USE_LTO=0 # Global variable
 # https://github.com/chromium/chromium/blob/140.0.7339.127/tools/clang/scripts/update.py#L38 \
 # grep 'CLANG_REVISION = ' ${S}/tools/clang/scripts/update.py -A1 | cut -c 18- # \
@@ -1367,7 +1379,7 @@ RUST_BDEPEND="
 if [[ "${ALLOW_SYSTEM_TOOLCHAIN}" == "1" ]] ; then
 	BDEPEND+="
 		${CLANG_BDEPEND}
-		>=net-libs/nodejs-22.11.0:${NODE_VERSION%%.*}[inspector]
+		>=net-libs/nodejs-22.11.0[inspector]
 		app-eselect/eselect-nodejs
 	"
 fi
@@ -1930,7 +1942,7 @@ ewarn
 	# The emerge package system will over prune when it should not when it
 	# uses the mv merge technique with sandbox disabled.
 
-	local tc_count_expected=4900
+	local tc_count_expected=4973
 	local tc_count_actual=$(cat "/usr/share/chromium/toolchain/file-count")
 	if (( ${tc_count_actual} != ${tc_count_expected} )) ; then
 ewarn
@@ -1942,7 +1954,7 @@ ewarn "Expected file count:  ${tc_count_expected}"
 ewarn
 	fi
 
-	local sources_count_expected=538513
+	local sources_count_expected=543369
 	local sources_count_actual=$(cat "/usr/share/chromium/sources/file-count")
 	if (( ${sources_count_actual} != ${sources_count_expected} )) ; then
 ewarn
@@ -2283,6 +2295,12 @@ apply_distro_patchset_for_system_toolchain() {
 			|| die "Failed to tell GN that we have adler and not adler2"
 	fi
 
+	# chromium@0420449584e2afb7473393f536379efe194ba23c
+	# this crate is not included in the latest versions of Rust,
+	# and apparently has been unnecessary in Chromium for a long time.
+	sed -i '/unicode_width/d' build/rust/std/BUILD.gn ||
+		die "Failed to remove unicode_width from build/rust/std/BUILD.gn"
+
 	if ver_test ${RUST_SLOT} -lt "1.89.0"; then
 	# The rust allocator was changed in 1.89.0, so we need to patch sources for older versions
 		PATCHES+=(
@@ -2294,14 +2312,14 @@ apply_distro_patchset_for_system_toolchain() {
 apply_distro_patchset() {
 einfo "Applying the distro patchset ..."
 	PATCHES+=(
-		"${FILESDIR}/chromium-cross-compile.patch"
-		$(use system-zlib && echo "${FILESDIR}/chromium-109-system-zlib.patch")
-		"${FILESDIR}/chromium-111-InkDropHost-crash.patch"
-		"${FILESDIR}/chromium-131-unbundle-icu-target.patch"
-		"${FILESDIR}/chromium-134-bindgen-custom-toolchain.patch"
-		"${FILESDIR}/chromium-135-oauth2-client-switches.patch"
-		"${FILESDIR}/chromium-135-map_droppable-glibc.patch"
-		"${FILESDIR}/chromium-138-nodejs-version-check.patch"
+		"${FILESDIR}/${PN}-cross-compile.patch"
+		$(use system-zlib && echo "${FILESDIR}/${PN}-109-system-zlib.patch")
+		"${FILESDIR}/${PN}-111-InkDropHost-crash.patch"
+		"${FILESDIR}/${PN}-131-unbundle-icu-target.patch"
+		"${FILESDIR}/${PN}-134-bindgen-custom-toolchain.patch"
+		"${FILESDIR}/${PN}-135-oauth2-client-switches.patch"
+		"${FILESDIR}/${PN}-138-nodejs-version-check.patch"
+		"${FILESDIR}/${PN}-141-cssstylesheet-iwyu.patch"
 	)
 
 	# https://issues.chromium.org/issues/442698344
@@ -2976,6 +2994,10 @@ ewarn "The use of patching can interfere with the pregenerated PGO profile."
 		third_party/farmhash
 		third_party/fast_float
 		third_party/fdlibm
+		third_party/federated_compute/src/fcp/base
+		third_party/federated_compute/src/fcp/confidentialcompute
+		third_party/federated_compute/src/fcp/protos/confidentialcompute
+		third_party/federated_compute/src/fcp/protos/federatedcompute
 		third_party/fft2d
 		third_party/flatbuffers
 		third_party/fp16
@@ -3046,6 +3068,8 @@ ewarn "The use of patching can interfere with the pregenerated PGO profile."
 		third_party/nearby
 		third_party/neon_2_sse
 		third_party/node
+		third_party/oak/chromium/proto
+		third_party/oak/chromium/proto/attestation
 		third_party/omnibox_proto
 		third_party/one_euro_filter
 		third_party/openscreen
@@ -3135,11 +3159,11 @@ ewarn "The use of patching can interfere with the pregenerated PGO profile."
 		third_party/zlib/google
 		third_party/zxcvbn-cpp
 		url/third_party/mozilla
-		v8/third_party/siphash
-		v8/third_party/utf8-decoder
 		v8/third_party/glibc
 		v8/third_party/inspector_protocol
 		v8/third_party/rapidhash-v8
+		v8/third_party/siphash
+		v8/third_party/utf8-decoder
 		v8/third_party/v8
 		v8/third_party/valgrind
 
@@ -3672,6 +3696,7 @@ einfo "Using the bundled toolchain"
 	# build/config/clang/clang.gni
 	#
 		"clang_use_chrome_plugins=false"
+		"use_clang_modules=false" # M141 enables this for the linux platform by default.
 		"clang_use_raw_ptr_plugin=false"
 		"enable_check_raw_ptr_fields=false"
 		"enable_check_raw_ref_fields=false"
